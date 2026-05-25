@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Parent Class for all Enemies
-public class BasicEnemy : MonoBehaviour
+public abstract class BasicEnemy : MonoBehaviour
 {
     [Header("Stats")]
     protected float maxHealth;
@@ -58,7 +58,6 @@ public class BasicEnemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Take Damage 
             onPlayer = true;
             timer = 0f;
         }
@@ -78,14 +77,21 @@ public class BasicEnemy : MonoBehaviour
         playerHealth.TakeDamage(amt);
     }
 
-    protected virtual void Update()
+    // Damage Logic
+    private void DamageLogic()
     {
-        // Damage Logic
         timer -= Time.deltaTime;
         if (onPlayer & timer <= 0f)
         {   
             DealDamageToPlayer(collisionDamage);
             timer = damageInterval;
         }
+    }
+    // Each type of enemy must implement their own Walk Pattern
+    protected abstract void WalkLogic();
+    private void Update()
+    {
+        DamageLogic();
+        WalkLogic();
     }
 }

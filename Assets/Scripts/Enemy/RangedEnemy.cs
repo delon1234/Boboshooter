@@ -1,10 +1,10 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MeleeEnemy : BasicEnemy
+public class RangedEnemy : BasicEnemy
 {
     [Header("Stats")]
-    private float speed = 4f;
+    private float speed = 2.5f;
 
     private void Awake()
     {
@@ -12,7 +12,7 @@ public class MeleeEnemy : BasicEnemy
         maxHealth = 100;
         collisionDamage = 10;
     }
-
+    
     // Melee Movement, just follow player
     protected override void WalkLogic()
     {

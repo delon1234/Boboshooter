@@ -7,6 +7,7 @@ public abstract class BasicEnemy : MonoBehaviour
     protected float maxHealth;
     private float currentHealth;
     protected float collisionDamage;
+    protected float speed;
 
     // Player Collision Damage Logic
     private bool onPlayer = false;
@@ -41,7 +42,7 @@ public abstract class BasicEnemy : MonoBehaviour
     }
 
     // Handling for Enemy Death
-    // For now just Destroy enemey, maybe have animations next time?
+    // For now just Destroy enemy, maybe have animations next time?
     private void Die()
     {
         Destroy(gameObject);
@@ -51,6 +52,10 @@ public abstract class BasicEnemy : MonoBehaviour
     protected Vector2 GetDirectionToPlayer()
     {
         return (player.position - transform.position).normalized;
+    }
+    protected float GetDistanceToPlayer()
+    {
+        return Vector2.Distance(transform.position, player.position);
     }
 
     // Collide with Player, start timer for damaging
@@ -89,9 +94,14 @@ public abstract class BasicEnemy : MonoBehaviour
     }
     // Each type of enemy must implement their own Walk Pattern
     protected abstract void WalkLogic();
+
     private void Update()
     {
         DamageLogic();
+    }
+
+    private void FixedUpdate()
+    {
         WalkLogic();
     }
 }

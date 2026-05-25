@@ -3,22 +3,32 @@ using UnityEngine;
 
 public class RangedEnemy : BasicEnemy
 {
-    [Header("Stats")]
-    private float speed = 2.5f;
+    // Distance to shoot from
+    private float SHOOTING_DISTANCE = 5f;
+    private float TOLERANCE = 0.5f;
 
     private void Awake()
     {
         // "Constructor"
         maxHealth = 100;
         collisionDamage = 10;
+        speed = 2.5f;
     }
-    
-    // Melee Movement, just follow player
+
+    // Range Movement
+    // Walk towards player if far, away if close
     protected override void WalkLogic()
     {
-        // Walk to player
-        Vector2 direction = GetDirectionToPlayer();
-        direction = direction * speed;
+        Vector2 direction = GetDirectionToPlayer();  
+        if (GetDistanceToPlayer() < SHOOTING_DISTANCE - TOLERANCE) {     
+            direction = direction * -1;        
+        } else if (GetDistanceToPlayer() > SHOOTING_DISTANCE + TOLERANCE)
+        {
+            direction = direction * speed;
+        } else
+        {
+            direction = Vector2.zero;
+        }
         rb.linearVelocity = direction;
     }
 }

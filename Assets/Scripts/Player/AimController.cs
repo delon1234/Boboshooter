@@ -1,16 +1,20 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class AimController : MonoBehaviour
 {
-
     private Transform playerTransform;
+    private SpriteRenderer weaponSprite;
+
+    [SerializeField] private GameObject weapon;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        playerTransform = transform.root; // RotatePoint is child of Player
+        weaponSprite = weapon.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -31,5 +35,9 @@ public class AimController : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         // 3. Rotate around Z axis as 2D game (Rotates object in XY plane)
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+        // 4. Flip sprite vertically around y-axis
+        // (Angle > 90 or < -90 means mouse is behind player, so flip sprite to face the other way)
+        weaponSprite.flipY = angle > 90f || angle < -90f;
     }
 }

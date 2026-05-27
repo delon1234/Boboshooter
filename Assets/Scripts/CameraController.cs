@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float fixedY = 0f;
-    [SerializeField] private float fixedZ = -10f;
+    //[SerializeField] private float speed = 5f;
+    //[SerializeField] private float fixedY = 0f;
+    //[SerializeField] private float fixedZ = -10f;
 
     private Transform playerTransform;
 

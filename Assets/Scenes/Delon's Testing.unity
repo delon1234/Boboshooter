@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &129876348 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8118916696568009510, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+  m_PrefabInstance: {fileID: 1797535352}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,11 +274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72d653a689dd5b04ab9aee072c6809f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
-  speed: 5
-  fixedY: 0
-  fixedZ: -10
   lerpSpeed: 5
-  cursorInfluence: 0.3
+  cursorWeight: 0.3
 --- !u!1 &626111396
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +360,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &697207459
+--- !u!1001 &1285168703
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -368,11 +370,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4094735412381498060, guid: 0ab193cadf0697f488a2d599118ebd18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.6332235
+      value: 1.39663
       objectReference: {fileID: 0}
     - target: {fileID: 4094735412381498060, guid: 0ab193cadf0697f488a2d599118ebd18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.194864
+      value: 0.73461
       objectReference: {fileID: 0}
     - target: {fileID: 4094735412381498060, guid: 0ab193cadf0697f488a2d599118ebd18, type: 3}
       propertyPath: m_LocalPosition.z
@@ -553,6 +555,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1721925580 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1765204014813142826, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+  m_PrefabInstance: {fileID: 1797535352}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1721925587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721925580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4084c805e0409fa40af6b453cd1eb766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+--- !u!114 &1721925588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721925580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f402834806c844fa293fed245b3682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerShooter
+  bulletPrefab: {fileID: 2306711888877393809, guid: f95d7130426cd1a4d9b8a2d35ae52fb3, type: 3}
+  shootPoint: {fileID: 129876348}
 --- !u!1001 &1797535352
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -608,7 +641,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1765204014813142826, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1721925587}
+    - targetCorrespondingSourceObject: {fileID: 1765204014813142826, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1721925588}
   m_SourcePrefab: {fileID: 100100000, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -618,4 +657,4 @@ SceneRoots:
   - {fileID: 626111398}
   - {fileID: 1380310447}
   - {fileID: 1797535352}
-  - {fileID: 697207459}
+  - {fileID: 1285168703}

@@ -2,15 +2,26 @@ using UnityEngine;
 
 public class PlayerShooter : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform shootPoint;
+    private PlayerInputHandler _input;
+
+    private void Awake()
     {
-        
+        _input = GetComponent<PlayerInputHandler>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable() {
+        _input.OnFirePressed += Shoot;
+    }
+    private void OnDisable()
     {
-        
+        _input.OnFirePressed -= Shoot;
+    }
+
+    private void Shoot()
+    {
+        Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
+        Debug.Log("PlayerShooter: Shoot() called, bullet instantiated at " + shootPoint.position);
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 // stores level information globally for the other scripts to use
 public static class Level
@@ -10,11 +12,15 @@ public static class Level
 
     // map, icon, padding scale to default
     public static float Scale = 1f;
-    public static float IconScale = 0.1f;
-    public static float Padding = 0.01f;
+    public static float IconScale = 0.05f;
+    public static float Padding = 0.005f;
 
     // chance for each adjacent room to spawn
-    public static float RoomGenerationChance = 0.5f;
+    public static float RoomGenerationChance = 0.05f;
+    public static int MaxRoomAway = 8;
+    public static int MinRoomCount = 20;
+    public static int MaxRoomCount = 30;
+
     
     public static Sprite TreasureRoomIcon;
     public static Sprite BossRoomIcon;
@@ -30,6 +36,78 @@ public static class Level
     {
         return (Rooms.Exists(x => x.getLocation() == pos));
     }
+
+    public static int NumberOfRooms()
+    {
+        return Rooms.Count;    
+    }
+
+    public static List<Room> DeadendRooms()
+    {
+        return Rooms.Where(r => r.isDeadend()).ToList();
+    }
+
+    // logic to determine what makes a candidate room generatable
+    public static bool isEligibleForGeneration(Vector2 pos, string direction)
+    {
+        // max of 10 away from spawn
+        if (Math.Abs(pos.x) > MaxRoomAway || Math.Abs(pos.y) > MaxRoomAway) return false;
+        // Max Room Count, stop generating
+        if (NumberOfRooms() > MaxRoomCount) return false;
+
+        switch(direction)
+        {
+            case "Left":
+                {
+                    if (
+                    CheckIfRoomExists(pos + new Vector2(-1,0)) ||
+                    CheckIfRoomExists(pos + new Vector2(0,1)) ||
+                    CheckIfRoomExists(pos + new Vector2(0,-1))
+                    )
+                    {
+                        return false;
+                    }
+                    break;
+                }
+            case "Right":
+                {
+                    if (
+                    CheckIfRoomExists(pos + new Vector2(1,0)) ||
+                    CheckIfRoomExists(pos + new Vector2(0,1)) ||
+                    CheckIfRoomExists(pos + new Vector2(0,-1))
+                    )
+                    {
+                        return false;
+                    }
+                    break;
+                }
+            case "Up":
+                {
+                    if (
+                    CheckIfRoomExists(pos + new Vector2(-1,0)) ||
+                    CheckIfRoomExists(pos + new Vector2(1,0)) ||
+                    CheckIfRoomExists(pos + new Vector2(0,1))
+                    )
+                    {
+                        return false;
+                    }
+                    break;
+                }
+            case "Down":
+                {
+                    if (
+                    CheckIfRoomExists(pos + new Vector2(-1,0)) ||
+                    CheckIfRoomExists(pos + new Vector2(1,0)) ||
+                    CheckIfRoomExists(pos + new Vector2(0,-1))
+                    )
+                    {
+                        return false;
+                    }
+                    break;
+                }
+        }
+        return true;
+    }
 }
 
 // each room will have their data
@@ -38,6 +116,7 @@ public class Room
     public int RoomNumber = 0;
     private Vector2 location;
     private Sprite roomImage;
+    private bool deadend = false;
 
     public Room(Sprite s, Vector2 l)
     {
@@ -72,5 +151,14 @@ public class Room
     public Vector2 getDownLocation()
     {
         return location + new Vector2(0,-1);
+    }
+
+    public bool isDeadend()
+    {
+        return deadend;
+    }
+    public void setDeadend()
+    {
+        deadend = true;
     }
 }

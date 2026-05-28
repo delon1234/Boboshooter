@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,56 +32,78 @@ public class GenerateLevel : MonoBehaviour
         RoomImage.transform.SetParent(transform, false);
     }
     
-    int failsafe = 0;
     private void HandleNestedGeneration(Room room)
     {
-        if (failsafe++ > 50) {
-            Debug.Log("failsafe hit");
-            return;
-        }
-        DrawIconOnMap(room);
-        Level.Rooms.Add(room);
+        bool isDeadend = true;
+        if (!Level.CheckIfRoomExists(room.getLocation()))
+        {
+            DrawIconOnMap(room);
+            Level.Rooms.Add(room);
+        } 
 
         // 4 directions
         // Left
         if (Random.value < Level.RoomGenerationChance)
         {
             Vector2 pos = room.getLeftLocation();             
-            if (!Level.CheckIfRoomExists(pos)) {
+            if (!Level.CheckIfRoomExists(pos) && Level.isEligibleForGeneration(pos, "Left")) {
                 Room newRoom = new Room(DefaultRoom, pos);
                 HandleNestedGeneration(newRoom);
+                isDeadend = false;
             }
         }
         // Right
         if (Random.value < Level.RoomGenerationChance)
         {
             Vector2 pos = room.getRightLocation();             
-            if (!Level.CheckIfRoomExists(pos)) {
+            if (!Level.CheckIfRoomExists(pos) && Level.isEligibleForGeneration(pos, "Right")) {
                 Room newRoom = new Room(DefaultRoom, pos);
                 HandleNestedGeneration(newRoom);
+                isDeadend = false;
             }
         }
         // Up
         if (Random.value < Level.RoomGenerationChance)
         {
             Vector2 pos = room.getUpLocation();             
-            if (!Level.CheckIfRoomExists(pos)) {
+            if (!Level.CheckIfRoomExists(pos) && Level.isEligibleForGeneration(pos, "Up")) {
                 Room newRoom = new Room(DefaultRoom, pos);
                 HandleNestedGeneration(newRoom);
+                isDeadend = false;
             }
         }
         // Down
         if (Random.value < Level.RoomGenerationChance)
         {
             Vector2 pos = room.getDownLocation();             
-            if (!Level.CheckIfRoomExists(pos)) {
+            if (!Level.CheckIfRoomExists(pos) && Level.isEligibleForGeneration(pos, "Down")) {
                 Room newRoom = new Room(DefaultRoom, pos);
                 HandleNestedGeneration(newRoom);
+                isDeadend = false;
             }
+        }
+
+        if (isDeadend)
+        {
+            room.setDeadend();
         }
     }
 
-    private void Start()
+    private void GenerateMap()
+    {
+        // Generate the First Room
+        Room StartingRoom = new Room(CurrentRoom, new Vector2(0,0));
+        HandleNestedGeneration(StartingRoom);
+        // Ensure it hits minimum room count
+        while (Level.NumberOfRooms() < Level.MinRoomCount)
+        {
+            List<Room> deadendRooms = Level.DeadendRooms();
+            Room selectedRoom = deadendRooms[Random.Range(0, deadendRooms.Count)];
+            HandleNestedGeneration(selectedRoom);
+        }
+    }
+
+    private void Awake()
     {
         // Update Global Variables with assigned assets
         Level.TreasureRoomIcon = TreasureRoom;
@@ -89,10 +112,10 @@ public class GenerateLevel : MonoBehaviour
         Level.UnexploredRoomIcon = UnexploredRoom;
         Level.DefaultRoomIcon = DefaultRoom;
         Level.CurrentRoomIcon = CurrentRoom;
-
-        // Generate the First Room
-        Room StartingRoom = new Room(CurrentRoom, new Vector2(0,0));
-        HandleNestedGeneration(StartingRoom);
+    }
+    private void Start()
+    {
+        GenerateMap();
     }
 
 

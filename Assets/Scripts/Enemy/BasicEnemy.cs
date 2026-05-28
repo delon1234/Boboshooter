@@ -4,10 +4,10 @@ using UnityEngine;
 public abstract class BasicEnemy : MonoBehaviour
 {
     [Header("Stats")]
-    protected float maxHealth;
+    protected float maxHealth = 5;
     private float currentHealth;
-    protected float collisionDamage;
-    protected float speed;
+    protected float collisionDamage = 5;
+    protected float speed = 3f;
 
     // Player Collision Damage Logic
     private bool onPlayer = false;

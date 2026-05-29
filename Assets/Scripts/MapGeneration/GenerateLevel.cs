@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+using Random = UnityEngine.Random;
 
 public class GenerateLevel : MonoBehaviour
 {
@@ -18,6 +21,7 @@ public class GenerateLevel : MonoBehaviour
     {   
         // create new MapTile (each icon is one MapTile)
         GameObject MapTile = new GameObject("MapTile");
+        MapTile.name = room.getRoomNumber().ToString();
 
         // Add an Image component and assign the Icon
         Image RoomImage = MapTile.AddComponent<Image>();
@@ -32,52 +36,52 @@ public class GenerateLevel : MonoBehaviour
         RoomImage.transform.SetParent(transform, false);
     }
     
+    private void SetIconOnMap(Room room, Sprite icon)
+    {
+        room.setIcon(icon);
+
+        String roomNumber = room.RoomNumber.ToString();
+        Transform childMapTile = transform.Find(roomNumber);
+        Image img = childMapTile.GetComponent<Image>();
+        img.sprite = icon;
+    }
+
     private void HandleNestedGeneration(Room room)
     {
         bool isDeadend = true;
+        // Continue generation from already generared room?
         if (!Level.CheckIfRoomExists(room.getLocation()))
         {
             DrawIconOnMap(room);
             Level.Rooms.Add(room);
         } 
 
-        // 4 directions
-        // Left
-        if (Random.value < Level.RoomGenerationChance)
+        List<(Level.Direction, Vector2)> directions = new List<(Level.Direction dir, Vector2 offset)>
         {
-            Vector2 pos = room.getLeftLocation();             
-            if (!Level.CheckIfRoomExists(pos) && Level.isEligibleForGeneration(pos, "Left")) {
-                Room newRoom = new Room(DefaultRoom, pos);
-                HandleNestedGeneration(newRoom);
-                isDeadend = false;
-            }
+            (Level.Direction.Left, Vector2.left),
+            (Level.Direction.Right, Vector2.right),
+            (Level.Direction.Up, Vector2.up),
+            (Level.Direction.Down, Vector2.down),
+        };
+
+        for (int i = directions.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            (directions[i], directions[j]) = (directions[j], directions[i]);
         }
-        // Right
-        if (Random.value < Level.RoomGenerationChance)
+
+        // Attempt Generation for each direction
+        foreach (var (name, offset) in directions)
         {
-            Vector2 pos = room.getRightLocation();             
-            if (!Level.CheckIfRoomExists(pos) && Level.isEligibleForGeneration(pos, "Right")) {
-                Room newRoom = new Room(DefaultRoom, pos);
-                HandleNestedGeneration(newRoom);
-                isDeadend = false;
-            }
-        }
-        // Up
-        if (Random.value < Level.RoomGenerationChance)
-        {
-            Vector2 pos = room.getUpLocation();             
-            if (!Level.CheckIfRoomExists(pos) && Level.isEligibleForGeneration(pos, "Up")) {
-                Room newRoom = new Room(DefaultRoom, pos);
-                HandleNestedGeneration(newRoom);
-                isDeadend = false;
-            }
-        }
-        // Down
-        if (Random.value < Level.RoomGenerationChance)
-        {
-            Vector2 pos = room.getDownLocation();             
-            if (!Level.CheckIfRoomExists(pos) && Level.isEligibleForGeneration(pos, "Down")) {
-                Room newRoom = new Room(DefaultRoom, pos);
+            if (Random.value >= Level.RoomGenerationChance)
+                continue;
+
+            Vector2 pos = room.getLocation() + offset;
+
+            if (!Level.CheckIfRoomExists(pos) &&
+                Level.isEligibleForGeneration(pos, name))
+            {
+                Room newRoom = new Room(DefaultRoom, pos, room.getDistance() + 1);
                 HandleNestedGeneration(newRoom);
                 isDeadend = false;
             }
@@ -92,7 +96,7 @@ public class GenerateLevel : MonoBehaviour
     private void GenerateMap()
     {
         // Generate the First Room
-        Room StartingRoom = new Room(CurrentRoom, new Vector2(0,0));
+        Room StartingRoom = new Room(CurrentRoom, new Vector2(0,0), 0);
         HandleNestedGeneration(StartingRoom);
         // Ensure it hits minimum room count
         while (Level.NumberOfRooms() < Level.MinRoomCount)
@@ -101,6 +105,10 @@ public class GenerateLevel : MonoBehaviour
             Room selectedRoom = deadendRooms[Random.Range(0, deadendRooms.Count)];
             HandleNestedGeneration(selectedRoom);
         }
+
+        // Set the furthest distance room into a boss room
+        Room furthestRoom = Level.GetFurthestRoom();
+        SetIconOnMap(furthestRoom, Level.BossRoomIcon);
     }
 
     private void Awake()

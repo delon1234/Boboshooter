@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+using Random = UnityEngine.Random;
+
 // stores level information globally for the other scripts to use
 public static class Level
 {
@@ -16,7 +18,7 @@ public static class Level
     public static float Padding = 0.005f;
 
     // chance for each adjacent room to spawn
-    public static float RoomGenerationChance = 0.05f;
+    public static float RoomGenerationChance = 0.15f;
     public static int MaxRoomAway = 8;
     public static int MinRoomCount = 20;
     public static int MaxRoomCount = 30;
@@ -31,6 +33,14 @@ public static class Level
 
     public static List<Room> Rooms = new List<Room>();
     public static Room CurrentRoom;
+
+    public enum Direction
+    {
+        Left,
+        Right,
+        Up,
+        Down
+    }
 
     public static bool CheckIfRoomExists(Vector2 pos)
     {
@@ -47,8 +57,22 @@ public static class Level
         return Rooms.Where(r => r.isDeadend()).ToList();
     }
 
+    public static Room GetFurthestRoom()
+    {
+        if (Rooms.Count == 0)
+            return null;
+
+        int maxDist = Rooms.Max(r => r.getDistance());
+
+        List<Room> furthestRooms = Rooms
+            .Where(r => r.getDistance() == maxDist)
+            .ToList();
+
+        return furthestRooms[Random.Range(0, furthestRooms.Count)];
+    }
+
     // logic to determine what makes a candidate room generatable
-    public static bool isEligibleForGeneration(Vector2 pos, string direction)
+    public static bool isEligibleForGeneration(Vector2 pos, Direction direction)
     {
         // max of 10 away from spawn
         if (Math.Abs(pos.x) > MaxRoomAway || Math.Abs(pos.y) > MaxRoomAway) return false;
@@ -57,7 +81,7 @@ public static class Level
 
         switch(direction)
         {
-            case "Left":
+            case Direction.Left:
                 {
                     if (
                     CheckIfRoomExists(pos + new Vector2(-1,0)) ||
@@ -69,7 +93,7 @@ public static class Level
                     }
                     break;
                 }
-            case "Right":
+            case Direction.Right:
                 {
                     if (
                     CheckIfRoomExists(pos + new Vector2(1,0)) ||
@@ -81,7 +105,7 @@ public static class Level
                     }
                     break;
                 }
-            case "Up":
+            case Direction.Up:
                 {
                     if (
                     CheckIfRoomExists(pos + new Vector2(-1,0)) ||
@@ -93,7 +117,7 @@ public static class Level
                     }
                     break;
                 }
-            case "Down":
+            case Direction.Down:
                 {
                     if (
                     CheckIfRoomExists(pos + new Vector2(-1,0)) ||
@@ -113,15 +137,21 @@ public static class Level
 // each room will have their data
 public class Room
 {
+    public static int RoomCount = 0;
     public int RoomNumber = 0;
     private Vector2 location;
     private Sprite roomImage;
+    private int distAway;
     private bool deadend = false;
 
-    public Room(Sprite s, Vector2 l)
+    public Room(Sprite s, Vector2 l, int distance)
     {
         roomImage = s;
         location = l;   
+        distAway = distance;
+
+        RoomNumber = RoomCount;
+        RoomCount += 1;
     }
 
     public Vector2 getLocation()
@@ -133,26 +163,14 @@ public class Room
     {
         return roomImage;    
     }
-    public Vector2 getLeftLocation()
+    public void setIcon(Sprite icon)
     {
-        return location + new Vector2(-1,0);
+        roomImage = icon;
     }
-
-    public Vector2 getRightLocation()
+    public int getRoomNumber()
     {
-        return location + new Vector2(1,0);
+        return RoomNumber;
     }
-
-    public Vector2 getUpLocation()
-    {
-        return location + new Vector2(0,1);
-    }
-
-    public Vector2 getDownLocation()
-    {
-        return location + new Vector2(0,-1);
-    }
-
     public bool isDeadend()
     {
         return deadend;
@@ -160,5 +178,15 @@ public class Room
     public void setDeadend()
     {
         deadend = true;
+    }
+
+    public int getDistance()
+    {
+        return distAway;
+    }
+
+    public void setRoom(Sprite icon)
+    {
+        roomImage = icon;
     }
 }

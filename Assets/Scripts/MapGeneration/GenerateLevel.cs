@@ -1,13 +1,21 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
-using Random = UnityEngine.Random;
-
+// Starting point from Unity Run
 public class GenerateLevel : MonoBehaviour
 {
-    // Serialise the Assets via Unity
+    // Serialized map settings and room icons.
+    public float Height = 500;
+    public float Width = 500;
+    public float Scale = 1f;
+    public float IconScale = 0.05f;
+    public float Padding = 0.005f;
+    public float RoomGenerationChance = 0.15f;
+    public int MaxRoomAway = 8;
+    public int MinRoomCount = 20;
+    public int MaxRoomCount = 30;
+
     public Sprite TreasureRoom;
     public Sprite BossRoom;
     public Sprite ShopRoom;
@@ -15,116 +23,56 @@ public class GenerateLevel : MonoBehaviour
     public Sprite DefaultRoom;
     public Sprite CurrentRoom;
 
-    // icon will specify the type of room
-    // location will specify the Cartesian Coordinates of the Map 
-    private void DrawIconOnMap(Room room)
-    {   
-        // create new MapTile (each icon is one MapTile)
-        GameObject MapTile = new GameObject("MapTile");
-        MapTile.name = room.getRoomNumber().ToString();
-
-        // Add an Image component and assign the Icon
-        Image RoomImage = MapTile.AddComponent<Image>();
-        RoomImage.sprite = room.getIcon();
-
-        // Draw the Icon on the specified Location
-        RectTransform rectTransform = RoomImage.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(Level.Height, Level.Width) * Level.IconScale;
-        rectTransform.position = room.getLocation() * ( (Level.IconScale + Level.Padding)  * Level.Height * Level.Scale);
-
-        // Assign the newly created Icon to Canvas Map
-        RoomImage.transform.SetParent(transform, false);
-    }
-    
-    private void SetIconOnMap(Room room, Sprite icon)
-    {
-        room.setIcon(icon);
-
-        String roomNumber = room.RoomNumber.ToString();
-        Transform childMapTile = transform.Find(roomNumber);
-        Image img = childMapTile.GetComponent<Image>();
-        img.sprite = icon;
-    }
-
-    private void HandleNestedGeneration(Room room)
-    {
-        bool isDeadend = true;
-        // Continue generation from already generared room?
-        if (!Level.CheckIfRoomExists(room.getLocation()))
-        {
-            DrawIconOnMap(room);
-            Level.Rooms.Add(room);
-        } 
-
-        List<(Level.Direction, Vector2)> directions = new List<(Level.Direction dir, Vector2 offset)>
-        {
-            (Level.Direction.Left, Vector2.left),
-            (Level.Direction.Right, Vector2.right),
-            (Level.Direction.Up, Vector2.up),
-            (Level.Direction.Down, Vector2.down),
-        };
-
-        for (int i = directions.Count - 1; i > 0; i--)
-        {
-            int j = Random.Range(0, i + 1);
-            (directions[i], directions[j]) = (directions[j], directions[i]);
-        }
-
-        // Attempt Generation for each direction
-        foreach (var (name, offset) in directions)
-        {
-            if (Random.value >= Level.RoomGenerationChance)
-                continue;
-
-            Vector2 pos = room.getLocation() + offset;
-
-            if (!Level.CheckIfRoomExists(pos) &&
-                Level.isEligibleForGeneration(pos, name))
-            {
-                Room newRoom = new Room(DefaultRoom, pos, room.getDistance() + 1);
-                HandleNestedGeneration(newRoom);
-                isDeadend = false;
-            }
-        }
-
-        if (isDeadend)
-        {
-            room.setDeadend();
-        }
-    }
-
-    private void GenerateMap()
-    {
-        // Generate the First Room
-        Room StartingRoom = new Room(CurrentRoom, new Vector2(0,0), 0);
-        HandleNestedGeneration(StartingRoom);
-        // Ensure it hits minimum room count
-        while (Level.NumberOfRooms() < Level.MinRoomCount)
-        {
-            List<Room> deadendRooms = Level.DeadendRooms();
-            Room selectedRoom = deadendRooms[Random.Range(0, deadendRooms.Count)];
-            HandleNestedGeneration(selectedRoom);
-        }
-
-        // Set the furthest distance room into a boss room
-        Room furthestRoom = Level.GetFurthestRoom();
-        SetIconOnMap(furthestRoom, Level.BossRoomIcon);
-    }
+    private MapGenerationConfig config;
+    private MapGenerationState state;
+    private MapGenerator generator;
+    private MinimapRenderer renderer;
 
     private void Awake()
     {
-        // Update Global Variables with assigned assets
-        Level.TreasureRoomIcon = TreasureRoom;
-        Level.BossRoomIcon = BossRoom;
-        Level.ShopRoomIcon = ShopRoom;
-        Level.UnexploredRoomIcon = UnexploredRoom;
-        Level.DefaultRoomIcon = DefaultRoom;
-        Level.CurrentRoomIcon = CurrentRoom;
+        // Collects Config Information from Serialized fields into a config instance
+        config = new MapGenerationConfig(
+            Height,
+            Width,
+            Scale,
+            IconScale,
+            Padding,
+            RoomGenerationChance,
+            MaxRoomAway,
+            MinRoomCount,
+            MaxRoomCount,
+            TreasureRoom,
+            BossRoom,
+            ShopRoom,
+            UnexploredRoom,
+            DefaultRoom,
+            CurrentRoom);
+
+        // Contains current state of map mutated by Generation and used by Renderer
+        state = new MapGenerationState();
+        renderer = new MinimapRenderer(transform, config);
+        generator = new MapGenerator(config, state);
     }
+
+    // Simulate Room Rerender
+    private void DebugFunction()
+    {
+        state.ClearRoom();
+        generator.Generate();
+        renderer.FreshRender(state.Rooms);
+    }
+
     private void Start()
     {
-        GenerateMap();
+        generator.Generate();
+        renderer.FreshRender(state.Rooms);
     }
 
-
+    private void Update()
+    {
+        if (Keyboard.current != null && Keyboard.current.tabKey.wasPressedThisFrame)
+        {
+            DebugFunction();
+        }
+    }
 }

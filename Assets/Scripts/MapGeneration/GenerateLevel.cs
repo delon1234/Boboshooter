@@ -55,21 +55,9 @@ public class GenerateLevel : MonoBehaviour
 
         // Contains current state of map mutated by Generation and used by Renderer
         state = new MapGenerationState();
-        Debug.Log("Room count: " + state.NumberOfRooms);
-
         generator = new MapGenerator(config, state);
-
-        Debug.Log("Room count: " + state.NumberOfRooms);
-
-        // Handle initial Minimap Rendering
         minimap = new MinimapRenderer(transform, config);
-        minimap.FreshRender(state.Rooms);
-
-        // Spawning the Rooms into the Scene
         RoomSpawner = new RoomSpawner(state, RoomPrefab);
-        RoomSpawner.SpawnAllRooms();
-
-        // Initialize Room Switching Logic
         RoomManager = new RoomManager(state, RoomSpawner);
     }
 
@@ -85,6 +73,8 @@ public class GenerateLevel : MonoBehaviour
     {
         generator.Generate();
         minimap.FreshRender(state.Rooms);
+        RoomSpawner.SpawnAllRooms();
+        RoomManager.Initialize();
     }
 
     private void Update()

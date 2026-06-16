@@ -18,18 +18,19 @@ public class MapGenerationState
         rooms.Clear();
         nextRoomNumber = 0;
     }
-    
+
     public Room CreateRoom(Sprite icon, Vector2 location, int distance)
     {
         Room room = new Room(nextRoomNumber, icon, location, distance);
+        rooms[room.Location] = room;
         nextRoomNumber += 1;
         return room;
     }
 
-    public void AddRoom(Room room)
-    {
-        rooms[room.Location] = room;
-    }
+    // public void AddRoom(Room room)
+    // {
+    //     rooms[room.Location] = room;
+    // }
 
     public bool ContainsRoom(Vector2 location)
     {

@@ -44,11 +44,11 @@ public class MapGenerator
     {
         bool isDeadend = true;
 
-        // If room dont exist, add room
-        if (!state.ContainsRoom(room.Location))
-        {
-            state.AddRoom(room);
-        }
+        // // If room dont exist, add room
+        // if (!state.ContainsRoom(room.Location))
+        // {
+        //     state.AddRoom(room);
+        // }
 
         // Define and shuffle 4 Cardinal Directions for non bias generation
         List<(MapGenerationRules.Direction direction, Vector2 offset)> directions = new List<(MapGenerationRules.Direction direction, Vector2 offset)>

@@ -12,9 +12,11 @@ public class RoomManager
     {
         this.state = state;
         this.spawner = spawner;
+    }
+
+    public void Initialize()
+    {
         currentRoom = state.GetRoom(Vector2.zero);
-        Debug.Log("Start room exists: " + state.GetRoom(Vector2.zero));
-        Debug.Log(state);
         spawner.SetActiveRoom(currentRoom.Location);
     }
 

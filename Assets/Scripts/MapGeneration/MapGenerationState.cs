@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class MapGenerationState
 {
-    public List<Room> Rooms = new List<Room>();
-    public int NumberOfRooms => Rooms.Count;
+    // Stores room state in a dictionary Vector2: Room
+    private Dictionary<Vector2, Room> rooms = new Dictionary<Vector2, Room>();
+    // Rooms as a Enumerable List, but not editable
+    public IEnumerable<Room> Rooms => rooms.Values;
+    // NumberOfRooms will Count the dictionary
+    public int NumberOfRooms => rooms.Count;
     private int nextRoomNumber;
 
     // Debugger Function!
-    public void ClearRoom() {
-        Rooms = new List<Room>();
+    public void ClearRoom()
+    {
+        rooms.Clear();
+        nextRoomNumber = 0;
     }
-
+    
     public Room CreateRoom(Sprite icon, Vector2 location, int distance)
     {
         Room room = new Room(nextRoomNumber, icon, location, distance);
@@ -22,12 +28,18 @@ public class MapGenerationState
 
     public void AddRoom(Room room)
     {
-        Rooms.Add(room);
+        rooms[room.Location] = room;
     }
 
     public bool ContainsRoom(Vector2 location)
     {
-        return Rooms.Exists(room => room.Location == location);
+        return rooms.ContainsKey(location);
+    }
+
+    public Room GetRoom(Vector2 location) {
+        // Safely retrieve room using Dictionary
+        rooms.TryGetValue(location, out Room room);
+        return room;
     }
 
     public List<Room> DeadendRooms()

@@ -59,6 +59,10 @@ public class GenerateLevel : MonoBehaviour
         minimap = new MinimapRenderer(transform, config);
         RoomSpawner = new RoomSpawner(state, RoomPrefab);
         RoomManager = new RoomManager(state, RoomSpawner);
+
+        // Subscribe to RoomChanges
+        RoomManager.OnRoomChanged += OnRoomChanged;
+
     }
 
     // Simulate Room Rerender
@@ -73,7 +77,7 @@ public class GenerateLevel : MonoBehaviour
     {
         generator.Generate();
         minimap.FreshRender(state.Rooms);
-        RoomSpawner.SpawnAllRooms();
+        RoomSpawner.SpawnAllRooms(RoomManager);
         RoomManager.Initialize();
     }
 
@@ -83,5 +87,15 @@ public class GenerateLevel : MonoBehaviour
         {
             DebugFunction();
         }
+    }
+
+    // Update all icons on map
+    private void OnRoomChanged(Room room, Vector2 direction)
+    {
+        foreach (Room r in state.Rooms)
+        {
+            minimap.UpdateRoomState(r, room, config);
+        }
+
     }
 }

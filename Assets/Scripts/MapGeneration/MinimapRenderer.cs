@@ -51,4 +51,36 @@ public class MinimapRenderer
         roomImage.transform.SetParent(parent, false);
         tilesByRoomNumber[room.RoomNumber] = roomImage;
     }
+
+    public void UpdateRoomState(Room room, Room CurrentRoom, MapGenerationConfig config)
+    {
+        Image img;
+        if (!tilesByRoomNumber.TryGetValue(room.RoomNumber, out img))
+        {
+            return;
+        }
+
+        if (room == CurrentRoom)
+        {
+            img.sprite = config.CurrentRoomIcon;
+            return;
+        }
+
+        else if (!room.IsNormal)
+        {
+            img.sprite = room.Icon;
+            return;
+        }
+
+        else if (!room.IsVisited)
+        {
+            img.sprite = config.UnexploredRoomIcon;
+            return;
+        }
+
+        else
+        {
+            img.sprite = config.DefaultRoomIcon;
+        }
+    }
 }

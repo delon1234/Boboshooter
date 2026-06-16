@@ -15,18 +15,19 @@ public class RoomSpawner
         this.roomPrefab = prefab;
     }
 
-    public void SpawnAllRooms()
+    public void SpawnAllRooms(RoomManager RoomManager)
     {
         foreach (Room room in state.Rooms)
         {
-            GameObject obj = GameObject.Instantiate(roomPrefab, room.Location, Quaternion.identity);
-            obj.name = $"Room {room.RoomNumber}";
-            obj.SetActive(false);
-            spawnedRooms[room.Location] = obj;
+            GameObject GameRoom = GameObject.Instantiate(roomPrefab, room.Location, Quaternion.identity);
+            GameRoom.SetActive(false);
+            GameRoom.name = $"Room {room.RoomNumber}";
+            InitializeDoors(GameRoom, room, RoomManager);
+            spawnedRooms[room.Location] = GameRoom;
         }
     }
 
-    public void SetActiveRoom(Vector2 location)
+    public GameObject SetActiveRoom(Vector2 location)
     {
         // Make all room Inactive
         foreach (var keyValue in spawnedRooms)
@@ -38,6 +39,18 @@ public class RoomSpawner
         if (spawnedRooms.TryGetValue(location, out GameObject room))
         {
             room.SetActive(true);
+            return room;
+        }
+        return null;
+    }
+
+    // Activates all the Door Scripts
+    private void InitializeDoors(GameObject GameRoom, Room room, RoomManager RoomManager)
+    {
+        Door[] doors = GameRoom.GetComponentsInChildren<Door>();
+        foreach (Door door in doors)
+        {
+            door.Initialize(RoomManager, room);
         }
     }
 }

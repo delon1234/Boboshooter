@@ -4,12 +4,17 @@ using UnityEngine;
 // Responsible to tell RoomManager which direction the player wants to go
 public class Door : MonoBehaviour
 {
-    public Vector2 direction;
-    private RoomManager manager;
+    [SerializeField] public Vector2 direction;
+    [SerializeField] public Transform SpawnPoint;
+    private RoomManager RoomManager;
+    private Room Room;
 
-    public void Initialize(RoomManager manager)
+    public void Initialize(RoomManager RoomManager, Room Room)
     {
-        this.manager = manager;
+        this.RoomManager = RoomManager;
+        this.Room = Room;
+
+        Refresh(Room);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -18,6 +23,18 @@ public class Door : MonoBehaviour
         {
             return;
         }
-        manager.MoveTo(direction);
+        RoomManager.MoveTo(direction);
     }
+
+    private void SetActive(bool active)
+    {
+        gameObject.SetActive(active);
+    }
+
+    // Deactivates itself if room does not have neighbour in that direction
+    public void Refresh(Room room)
+    {
+        SetActive(room.HasNeighbor(direction));
+    }
+
 }

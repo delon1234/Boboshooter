@@ -19,7 +19,7 @@ public class MapGenerator
     // Then returns a fully generated map state
     public MapGenerationState Generate()
     {
-        Room startingRoom = state.CreateRoom(config.CurrentRoomIcon, new Vector2(0, 0), 0);
+        Room startingRoom = state.CreateRoom(config.DefaultRoomIcon, new Vector2(0, 0), 0);
         HandleNestedGeneration(startingRoom);
 
         // Always try generate till minimum
@@ -35,6 +35,7 @@ public class MapGenerator
         if (furthestRoom != null)
         {
             furthestRoom.SetIcon(config.BossRoomIcon);
+            furthestRoom.IsNormal = false;
         }
 
         return state;
@@ -43,12 +44,6 @@ public class MapGenerator
     private void HandleNestedGeneration(Room room)
     {
         bool isDeadend = true;
-
-        // // If room dont exist, add room
-        // if (!state.ContainsRoom(room.Location))
-        // {
-        //     state.AddRoom(room);
-        // }
 
         // Define and shuffle 4 Cardinal Directions for non bias generation
         List<(MapGenerationRules.Direction direction, Vector2 offset)> directions = new List<(MapGenerationRules.Direction direction, Vector2 offset)>
@@ -78,6 +73,10 @@ public class MapGenerator
             if (MapGenerationRules.IsEligibleForGeneration(state, config, position, direction))
             {
                 Room newRoom = state.CreateRoom(config.DefaultRoomIcon, position, room.Distance + 1);
+                // Define Neighbour Connections, needed for Door linkage
+                room.Connect(offset, newRoom);
+                newRoom.Connect(-offset, room);
+
                 HandleNestedGeneration(newRoom);
                 isDeadend = false;
             }

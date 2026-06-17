@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // Starting point from Unity Run
+// Handles all game scene logic
 public class GenerateLevel : MonoBehaviour
 {
     // Serialized map settings and room icons.
@@ -20,11 +21,12 @@ public class GenerateLevel : MonoBehaviour
     public Sprite BossRoom;
     public Sprite ShopRoom;
     public Sprite UnexploredRoom;
-    public Sprite DefaultRoom;
+    public Sprite ExploredRoom;
     public Sprite CurrentRoom;
 
     public GameObject RoomPrefab;
 
+    // Scripts
     private MapGenerationConfig config;
     private MapGenerationState state;
     private MapGenerator generator;
@@ -32,6 +34,7 @@ public class GenerateLevel : MonoBehaviour
 
     private RoomSpawner RoomSpawner;
     private RoomManager RoomManager;
+    private PlayerPosition PlayerPosition;
 
     private void Awake()
     {
@@ -50,19 +53,15 @@ public class GenerateLevel : MonoBehaviour
             BossRoom,
             ShopRoom,
             UnexploredRoom,
-            DefaultRoom,
+            ExploredRoom,
             CurrentRoom);
 
         // Contains current state of map mutated by Generation and used by Renderer
         state = new MapGenerationState();
         generator = new MapGenerator(config, state);
-        minimap = new MinimapRenderer(transform, config);
+        minimap = new MinimapRenderer(transform, config, state);
         RoomSpawner = new RoomSpawner(state, RoomPrefab);
         RoomManager = new RoomManager(state, RoomSpawner);
-
-        // Subscribe to RoomChanges
-        RoomManager.OnRoomChanged += OnRoomChanged;
-
     }
 
     // Simulate Room Rerender
@@ -78,6 +77,12 @@ public class GenerateLevel : MonoBehaviour
         generator.Generate();
         minimap.FreshRender(state.Rooms);
         RoomSpawner.SpawnAllRooms(RoomManager);
+
+        // Help other MonoBehaviour scripts subscribes to RoomChange event
+        minimap.SubscribeOnRoomChanged(RoomManager);
+        PlayerPosition.Instance.SubscribeOnRoomChanged(RoomManager);
+
+        // Logically Enters the Starting Room
         RoomManager.Initialize();
     }
 
@@ -87,15 +92,5 @@ public class GenerateLevel : MonoBehaviour
         {
             DebugFunction();
         }
-    }
-
-    // Update all icons on map
-    private void OnRoomChanged(Room room, Vector2 direction)
-    {
-        foreach (Room r in state.Rooms)
-        {
-            minimap.UpdateRoomState(r, room, config);
-        }
-
     }
 }

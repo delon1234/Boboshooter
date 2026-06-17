@@ -6,12 +6,14 @@ public class MinimapRenderer
 {
     private Transform parent;
     private MapGenerationConfig config;
+    private MapGenerationState state;
     private Dictionary<int, Image> tilesByRoomNumber = new Dictionary<int, Image>();
 
-    public MinimapRenderer(Transform parent, MapGenerationConfig config)
+    public MinimapRenderer(Transform parent, MapGenerationConfig config, MapGenerationState state)
     {
         this.parent = parent;
         this.config = config;
+        this.state = state;
     }
 
     public void FreshRender(IEnumerable<Room> rooms)
@@ -25,14 +27,6 @@ public class MinimapRenderer
         foreach (Room room in rooms)
         {
             DrawIconOnMap(room);
-        }
-    }
-
-    public void UpdateRoomIcon(Room room)
-    {
-        if (tilesByRoomNumber.TryGetValue(room.RoomNumber, out Image image))
-        {
-            image.sprite = room.Icon;
         }
     }
 
@@ -59,28 +53,43 @@ public class MinimapRenderer
         {
             return;
         }
-
+        
+        // Set current room to current room icon
         if (room == CurrentRoom)
         {
             img.sprite = config.CurrentRoomIcon;
             return;
         }
-
-        else if (!room.IsNormal)
+        // Special rooms (boos, treasure, shop) will retain their icon
+        if (!room.IsNormal)
         {
             img.sprite = room.Icon;
             return;
         }
-
-        else if (!room.IsVisited)
+        // Unvisited room will have unexplored room icon
+        if (!room.IsVisited)
         {
             img.sprite = config.UnexploredRoomIcon;
             return;
         }
+        // Visited room will have default room icon
+        img.sprite = config.ExploredRoomIcon;
+    }
 
-        else
+    public void SubscribeOnRoomChanged(RoomManager RoomManager)
+    {
+        RoomManager.OnRoomChanged += OnRoomChanged;
+    }
+
+    private void OnRoomChanged(OnRoomChangedArgs args)
+    {
+        // Update CurrentRoom
+        UpdateRoomState(args.EnteredRoom, args.EnteredRoom, config);
+        
+        // Update all Neighbours of CurrentRoom
+        foreach (var neighbor in args.EnteredRoom.Neighbors.Values)
         {
-            img.sprite = config.DefaultRoomIcon;
+            UpdateRoomState(neighbor, args.EnteredRoom, config);
         }
     }
 }

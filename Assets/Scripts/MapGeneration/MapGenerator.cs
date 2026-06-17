@@ -19,7 +19,7 @@ public class MapGenerator
     // Then returns a fully generated map state
     public MapGenerationState Generate()
     {
-        Room startingRoom = state.CreateRoom(config.DefaultRoomIcon, new Vector2(0, 0), 0);
+        Room startingRoom = state.CreateRoom(config.UnexploredRoomIcon, new Vector2(0, 0), 0);
         HandleNestedGeneration(startingRoom);
 
         // Always try generate till minimum
@@ -72,7 +72,7 @@ public class MapGenerator
 
             if (MapGenerationRules.IsEligibleForGeneration(state, config, position, direction))
             {
-                Room newRoom = state.CreateRoom(config.DefaultRoomIcon, position, room.Distance + 1);
+                Room newRoom = state.CreateRoom(config.UnexploredRoomIcon, position, room.Distance + 1);
                 // Define Neighbour Connections, needed for Door linkage
                 room.Connect(offset, newRoom);
                 newRoom.Connect(-offset, room);

@@ -3,11 +3,14 @@ using UnityEngine;
 // Responsible for Organising Top Level Room Movement
 public class RoomManager
 {
+    // initial scripts
     private MapGenerationState state;
     private RoomSpawner spawner;
 
     public Room CurrentRoom;
-    public System.Action<Room, Vector2> OnRoomChanged;
+
+    // Events
+    public event System.Action<OnRoomChangedArgs> OnRoomChanged;
 
     // Define states and spawner script
     public RoomManager(MapGenerationState state, RoomSpawner spawner)
@@ -40,7 +43,7 @@ public class RoomManager
         CurrentRoom = newRoom;
         CurrentRoom.IsVisited = true;
         GameObject GameRoom = spawner.SetActiveRoom(CurrentRoom.Location);
-        PlayerPosition.Instance.TeleportToRoom(CurrentRoom, direction, GameRoom);
-        OnRoomChanged?.Invoke(CurrentRoom, direction);
+        // All relevant scripts will handle event
+        OnRoomChanged?.Invoke(new OnRoomChangedArgs(CurrentRoom, GameRoom, direction));
     }
 }

@@ -17,7 +17,7 @@ public class MapGenerationConfig
     public readonly Sprite BossRoomIcon;
     public readonly Sprite ShopRoomIcon;
     public readonly Sprite UnexploredRoomIcon;
-    public readonly Sprite DefaultRoomIcon;
+    public readonly Sprite ExploredRoomIcon;
     public readonly Sprite CurrentRoomIcon;
 
     public MapGenerationConfig(
@@ -34,7 +34,7 @@ public class MapGenerationConfig
         Sprite bossRoomIcon,
         Sprite shopRoomIcon,
         Sprite unexploredRoomIcon,
-        Sprite defaultRoomIcon,
+        Sprite exploredRoomIcon,
         Sprite currentRoomIcon)
     {
         Height = height;
@@ -51,7 +51,7 @@ public class MapGenerationConfig
         BossRoomIcon = bossRoomIcon;
         ShopRoomIcon = shopRoomIcon;
         UnexploredRoomIcon = unexploredRoomIcon;
-        DefaultRoomIcon = defaultRoomIcon;
+        ExploredRoomIcon = exploredRoomIcon;
         CurrentRoomIcon = currentRoomIcon;
     }
 }

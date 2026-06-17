@@ -7,15 +7,17 @@ public class Room
     public readonly int RoomNumber;
     public readonly Vector2 Location;
     public readonly int Distance;
-    public bool IsNormal;
     public Dictionary<Vector2, Room> Neighbors = new Dictionary<Vector2, Room>();
 
     // Adjustable Fields (for post map generation)
     public Sprite Icon;
     public bool IsDeadend;
+    public bool IsNormal = true;
 
     // Runtime Fields
     public bool IsVisited = false;
+    public bool HasSpawnedEnemies = false;
+    public bool IsCleared = false;
 
     public Room(int roomNumber, Sprite icon, Vector2 location, int distance)
     {

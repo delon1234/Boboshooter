@@ -7,9 +7,15 @@ public class PlayerPosition : MonoBehaviour
     [SerializeField] private RoomSpawner spawner;
     public static PlayerPosition Instance;
 
+    // Need static Instance as I need to Serialize fields 
     private void Awake()
     {
         Instance = this;
+    }
+
+    public void SubscribeOnRoomChanged(RoomManager RoomManager)
+    {
+        RoomManager.OnRoomChanged += OnRoomChanged;
     }
 
     public void TeleportToRoom(Room targetRoom, Vector2 fromDirection, GameObject GameRoom)
@@ -44,5 +50,10 @@ public class PlayerPosition : MonoBehaviour
         if (dir == Vector2.right) return Vector2.left;
 
         return Vector2.zero;
+    }
+
+    private void OnRoomChanged(OnRoomChangedArgs args)
+    {
+        TeleportToRoom(args.EnteredRoom, args.EnterDirection, args.GameRoom);
     }
 }

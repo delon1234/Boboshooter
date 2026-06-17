@@ -18,8 +18,8 @@ TagManager:
   - EnemyBullet
   - Wall
   - Pickup
-  - 
-  - 
+  - EnemyDamageArea
+  - Door
   - 
   - 
   - 

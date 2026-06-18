@@ -10,6 +10,7 @@ public class Room
     public Dictionary<Vector2, Room> Neighbors = new Dictionary<Vector2, Room>();
 
     // Adjustable Fields (for post map generation)
+    // Icon will decide what type of Room this is
     public Sprite Icon;
     public bool IsDeadend;
     public bool IsNormal = true;

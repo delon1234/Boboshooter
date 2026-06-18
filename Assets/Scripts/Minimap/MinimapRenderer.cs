@@ -76,12 +76,7 @@ public class MinimapRenderer
         img.sprite = config.ExploredRoomIcon;
     }
 
-    public void SubscribeOnRoomChanged(RoomManager RoomManager)
-    {
-        RoomManager.OnRoomChanged += OnRoomChanged;
-    }
-
-    private void OnRoomChanged(OnRoomChangedArgs args)
+    public void OnRoomChanged(OnRoomChangedArgs args)
     {
         // Update CurrentRoom
         UpdateRoomState(args.EnteredRoom, args.EnteredRoom, config);

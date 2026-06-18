@@ -37,6 +37,8 @@ public class GenerateLevel : MonoBehaviour
     private PlayerRoomTeleport PlayerRoomTeleport;
     private EnemySpawner EnemySpawner;
 
+    [SerializeField] private EnemySpawnTable EnemySpawnTable;
+
     private void Awake()
     {
         // Collects Config Information from Serialized fields into a config instance
@@ -63,7 +65,7 @@ public class GenerateLevel : MonoBehaviour
         minimap = new MinimapRenderer(transform, config, state);
         RoomSpawner = new RoomSpawner(state, RoomPrefab);
         RoomManager = new RoomManager(state, RoomSpawner);
-        EnemySpawner = new EnemySpawner();
+        EnemySpawner = new EnemySpawner(EnemySpawnTable);
     }
 
     // Simulate Room Rerender

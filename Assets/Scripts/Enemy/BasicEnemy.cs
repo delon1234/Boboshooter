@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // Parent Class for all Enemies
@@ -18,13 +19,8 @@ public abstract class BasicEnemy : MonoBehaviour
     protected Transform player;
     protected PlayerHealth playerHealth;
 
-    // Script controlling instanced GameRoom logic
-    private RoomRuntime RoomRuntime;
-
-    private void Awake()
-    {
-        
-    }
+    // Event, fired to all RoomRuntimes about an instanced enemy death
+    public static event Action<BasicEnemy> OnEnemyDied;
 
     private void Start()
     {
@@ -32,13 +28,6 @@ public abstract class BasicEnemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
-    }
-
-    // Need to register being spawned in active room for door locking logic
-    public void Initialize(RoomRuntime RoomRuntime)
-    {
-        this.RoomRuntime = RoomRuntime;
-        RoomRuntime.OnEnemySpawned(1);
     }
 
     // Projectiles or damage dealing objects will call this to handle health checks
@@ -55,7 +44,8 @@ public abstract class BasicEnemy : MonoBehaviour
     // For now just Destroy enemy, maybe have animations next time?
     private void Die()
     {
-        RoomRuntime?.OnEnemyDeath(1);
+        // Sends out a trigger that this specific enemy died
+        OnEnemyDied?.Invoke(this);
         Destroy(gameObject);
     }
 

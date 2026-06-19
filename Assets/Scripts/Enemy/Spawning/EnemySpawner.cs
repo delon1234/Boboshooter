@@ -21,7 +21,7 @@ public class EnemySpawner
             Vector2 pos = roomRuntime.GetRandomPoint(GameRoom);
             GameObject EnemyInstance = Object.Instantiate(EnemyPrefab, pos, Quaternion.identity);
             BasicEnemy BasicEnemy = EnemyInstance.GetComponent<BasicEnemy>();
-            BasicEnemy.Initialize(roomRuntime);
+            roomRuntime.OnEnemySpawned(BasicEnemy);
         }
         if (enemyCount > 0)
         {

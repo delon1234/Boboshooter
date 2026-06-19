@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // Attached to RoomPrefabs, collects all enemy spawnpoints
@@ -8,7 +9,8 @@ public class RoomRuntime : MonoBehaviour
     // Zone GameObjects will have BoxCollider2D
     [SerializeField] public GameObject[] SpawnzoneObjects;
     private Door[] doors;
-    public int AliveEnemies = 0;
+    // Collects all Enemies that belongs to this room
+    private HashSet<BasicEnemy> ActiveEnemies = new();
 
     // Need to have Door reference for controlling lock/unlock
     private void Awake()
@@ -52,17 +54,23 @@ public class RoomRuntime : MonoBehaviour
         }
     }
 
-    public void OnEnemySpawned(int amt)
+    public void OnEnemySpawned(BasicEnemy enemy)
     {
-        AliveEnemies += amt;
+        ActiveEnemies.Add(enemy);
     }
 
-    public void OnEnemyDeath(int amt)
+    public void OnEnemyDeath(BasicEnemy enemy)
     {
-        AliveEnemies -= amt;
-        if (AliveEnemies <= 0)
+        ActiveEnemies.Remove(enemy);
+        if (ActiveEnemies.Count <= 0)
         {
             UnlockDoors();
         }
+    }
+
+    // Subscribe to EnemyDeath
+    private void OnEnable()
+    {
+        BasicEnemy.OnEnemyDied += OnEnemyDeath;
     }
 }

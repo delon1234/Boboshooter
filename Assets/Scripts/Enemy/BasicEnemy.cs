@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // Parent Class for all Enemies
@@ -17,11 +18,14 @@ public abstract class BasicEnemy : MonoBehaviour
     protected Rigidbody2D rb;
     protected Transform player;
     protected PlayerHealth playerHealth;
+    
+    private EnemyHealthBar healthBar;
 
-    private void Awake()
-    {
-        
-    }
+    // Event
+    // fired to all RoomRuntimes about an instanced enemy death
+    public static event Action<BasicEnemy> OnEnemyDied;
+    // fired for UI updates
+    public event Action<OnEnemyHealthChangedArgs> OnEnemyHealthChanged;
 
     private void Start()
     {
@@ -31,10 +35,17 @@ public abstract class BasicEnemy : MonoBehaviour
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
 
+    // Finds the script from the Enemy Instance
+    private void Awake()
+    {
+        healthBar = GetComponentInChildren<EnemyHealthBar>();
+    }
+
     // Projectiles or damage dealing objects will call this to handle health checks
     public void TakeDamage(float amt)
     {
         currentHealth -= amt;
+        OnEnemyHealthChanged?.Invoke(new OnEnemyHealthChangedArgs(amt, currentHealth, maxHealth));
         if (currentHealth <= 0)
         {
             Die();
@@ -45,6 +56,8 @@ public abstract class BasicEnemy : MonoBehaviour
     // For now just Destroy enemy, maybe have animations next time?
     private void Die()
     {
+        // Sends out a trigger that this specific enemy died
+        OnEnemyDied?.Invoke(this);
         Destroy(gameObject);
     }
 

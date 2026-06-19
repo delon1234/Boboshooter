@@ -47,4 +47,11 @@ public class Room
     {
         return Neighbors.ContainsKey(direction);
     }
+
+    // First room should not spawn enemies
+    public void SetPeaceful()
+    {
+        this.HasSpawnedEnemies = true;
+        this.IsCleared = true;
+    }
 }

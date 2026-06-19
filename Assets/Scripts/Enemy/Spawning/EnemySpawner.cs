@@ -13,14 +13,19 @@ public class EnemySpawner
     private void SpawnEnemies(Room room, GameObject GameRoom)
     {
         RoomRuntime roomRuntime = GameRoom.GetComponent<RoomRuntime>();
-        Debug.Log($"spawn enemy in {room.RoomNumber}");
         int enemyCount = Random.Range(2, 5);
 
         for (int i = 0; i < enemyCount; i++)
         {
             GameObject EnemyPrefab = GetRandomEnemy();
             Vector2 pos = roomRuntime.GetRandomPoint(GameRoom);
-            Object.Instantiate(EnemyPrefab, pos, Quaternion.identity, GameRoom.transform);
+            GameObject EnemyInstance = Object.Instantiate(EnemyPrefab, pos, Quaternion.identity);
+            BasicEnemy BasicEnemy = EnemyInstance.GetComponent<BasicEnemy>();
+            BasicEnemy.Initialize(roomRuntime);
+        }
+        if (enemyCount > 0)
+        {
+            roomRuntime.LockDoors();
         }
     }
 
@@ -48,6 +53,8 @@ public class EnemySpawner
         return EnemySpawnTable.Enemies[0].Prefab;
     }
 
+    // Triggered by RoomManager
+    // If new room, spawns enemies
     public void OnRoomChanged(OnRoomChangedArgs args)
     {
         Room room = args.EnteredRoom;

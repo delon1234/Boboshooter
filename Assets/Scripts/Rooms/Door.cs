@@ -1,13 +1,16 @@
 using UnityEngine;
 
-// Attached to Doors in the Room Prefabs
+// Attached to every single Doors in the Room Prefabs
 // Responsible to tell RoomManager which direction the player wants to go
+// Deactivated Door = doesnt exist
+// Locked Door = exists but does not work (enemies still in room etc)
 public class Door : MonoBehaviour
 {
     [SerializeField] public Vector2 direction;
     [SerializeField] public Transform SpawnPoint;
     private RoomManager RoomManager;
     private Room Room;
+    private bool locked = false;
 
     public void Initialize(RoomManager RoomManager, Room Room)
     {
@@ -20,6 +23,10 @@ public class Door : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player"))
+        {
+            return;
+        }
+        if (this.locked)
         {
             return;
         }
@@ -37,4 +44,8 @@ public class Door : MonoBehaviour
         SetActive(room.HasNeighbor(direction));
     }
 
+    public void SetLocked(bool locked)
+    {
+        this.locked = locked;
+    }
 }

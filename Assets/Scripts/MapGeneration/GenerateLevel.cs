@@ -34,7 +34,10 @@ public class GenerateLevel : MonoBehaviour
 
     private RoomSpawner RoomSpawner;
     private RoomManager RoomManager;
-    private PlayerPosition PlayerPosition;
+    private PlayerRoomTeleport PlayerRoomTeleport;
+    private EnemySpawner EnemySpawner;
+
+    [SerializeField] private EnemySpawnTable EnemySpawnTable;
 
     private void Awake()
     {
@@ -62,6 +65,7 @@ public class GenerateLevel : MonoBehaviour
         minimap = new MinimapRenderer(transform, config, state);
         RoomSpawner = new RoomSpawner(state, RoomPrefab);
         RoomManager = new RoomManager(state, RoomSpawner);
+        EnemySpawner = new EnemySpawner(EnemySpawnTable);
     }
 
     // Simulate Room Rerender
@@ -79,10 +83,12 @@ public class GenerateLevel : MonoBehaviour
         RoomSpawner.SpawnAllRooms(RoomManager);
 
         // Help other MonoBehaviour scripts subscribes to RoomChange event
-        minimap.SubscribeOnRoomChanged(RoomManager);
-        PlayerPosition.Instance.SubscribeOnRoomChanged(RoomManager);
+        RoomManager.OnRoomChanged += minimap.OnRoomChanged;
+        RoomManager.OnRoomChanged += PlayerRoomTeleport.Instance.OnRoomChanged;
+        RoomManager.OnRoomChanged += EnemySpawner.OnRoomChanged;
 
         // Logically Enters the Starting Room
+        // Note this has to be done AFTER subscribers listen to OnRoomChanged Event
         RoomManager.Initialize();
     }
 

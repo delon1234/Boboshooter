@@ -19,7 +19,9 @@ public class MapGenerator
     // Then returns a fully generated map state
     public MapGenerationState Generate()
     {
+        // First Room
         Room startingRoom = state.CreateRoom(config.UnexploredRoomIcon, new Vector2(0, 0), 0);
+        startingRoom.SetPeaceful();
         HandleNestedGeneration(startingRoom);
 
         // Always try generate till minimum

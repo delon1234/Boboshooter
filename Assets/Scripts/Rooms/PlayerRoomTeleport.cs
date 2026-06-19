@@ -1,21 +1,16 @@
 using System;
 using UnityEngine;
 
-public class PlayerPosition : MonoBehaviour
+public class PlayerRoomTeleport : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     [SerializeField] private RoomSpawner spawner;
-    public static PlayerPosition Instance;
+    public static PlayerRoomTeleport Instance;
 
     // Need static Instance as I need to Serialize fields 
     private void Awake()
     {
         Instance = this;
-    }
-
-    public void SubscribeOnRoomChanged(RoomManager RoomManager)
-    {
-        RoomManager.OnRoomChanged += OnRoomChanged;
     }
 
     public void TeleportToRoom(Room targetRoom, Vector2 fromDirection, GameObject GameRoom)
@@ -24,6 +19,8 @@ public class PlayerPosition : MonoBehaviour
         {
             return;
         }
+        // Find all doors in the GameRoom, and determine the opposite side door
+        // then retrieve the corresponding SpawnPoint position to teleport Player to
         Door[] doors = GameRoom.GetComponentsInChildren<Door>();
         Vector2 opposite = GetOpposite(fromDirection);
         Transform spawnPoint = null;
@@ -52,7 +49,7 @@ public class PlayerPosition : MonoBehaviour
         return Vector2.zero;
     }
 
-    private void OnRoomChanged(OnRoomChangedArgs args)
+    public void OnRoomChanged(OnRoomChangedArgs args)
     {
         TeleportToRoom(args.EnteredRoom, args.EnterDirection, args.GameRoom);
     }

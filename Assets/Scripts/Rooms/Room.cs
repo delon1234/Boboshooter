@@ -10,6 +10,7 @@ public class Room
     public Dictionary<Vector2, Room> Neighbors = new Dictionary<Vector2, Room>();
 
     // Adjustable Fields (for post map generation)
+    // Icon will decide what type of Room this is
     public Sprite Icon;
     public bool IsDeadend;
     public bool IsNormal = true;
@@ -45,5 +46,12 @@ public class Room
     public bool HasNeighbor(Vector2 direction)
     {
         return Neighbors.ContainsKey(direction);
+    }
+
+    // First room should not spawn enemies
+    public void SetPeaceful()
+    {
+        this.HasSpawnedEnemies = true;
+        this.IsCleared = true;
     }
 }

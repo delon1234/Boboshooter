@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
@@ -12,8 +13,10 @@ public class HealthComponent : MonoBehaviour
     public float CurrentHealth { get; private set; } // Float for max flexibility in damage calculations
     // Invincibility property to allow for temporary invincibility
     // 1. Player Dash, 2. Enemy Invincibility Frames, 3. After taking damage (small time window)
-    // Public setter to allow other components to enable/disable invincibility
-    public bool IsInvincible { get; set; } = false;
+    // Public setter to allow other components to enable/disable invulnerability
+    [SerializeField] public bool testInvulnerable = true;
+    [SerializeField] public float invulnerableDuration = 5.0f;
+    public bool IsInvulnerable { get; set; } = false;
 
 
     /* Events to notify when health changes, allowing other components to react accordingly */
@@ -23,7 +26,7 @@ public class HealthComponent : MonoBehaviour
     public event Action<DamageInfo> OnTakingDamage;
     // On death; Death Animation, Game Over Screen
     public event Action OnDeath;
-    // On Gain Invulnerability; Invulnerability Animation
+    // Dual-purpose event; Gaining/Losing Invulnerability;
     public event Action<bool> OnInvulnerabilityChanged;
 
     private void Awake() // Unity's Awake method is called when the script instance is being loaded
@@ -31,10 +34,23 @@ public class HealthComponent : MonoBehaviour
         CurrentHealth = maxHealth; // Initialize health to maxHealth at the start
     }
 
+    private void Start()
+    {
+        // Notify subscribers about the initial health state
+        OnHealthChange?.Invoke(CurrentHealth, maxHealth);
+        // Testing;
+        if (testInvulnerable)
+        {
+            GainInvulnerability(invulnerableDuration);
+            print("Invulnerable for 5s");
+        }
+    }
+
     public void ApplyDamage(DamageInfo damageInfo)
     {
-        if (IsInvincible) {
-            // Add UI feedback for invincibility (Player invulnerability animation)
+        if (IsInvulnerable) {
+            // Add UI feedback for (Hitting invulnerable player animation)
+            print($"Invincible");
             return; 
         } 
         // 1. Reduce health by the damage amount
@@ -53,4 +69,28 @@ public class HealthComponent : MonoBehaviour
         OnHealthChange?.Invoke(CurrentHealth, maxHealth);
         print($"OnHealthChange: Current HP: {CurrentHealth}, Max HP: {maxHealth}");
     }
+
+    private Coroutine invulnerabilityCoroutine;
+
+    public void GainInvulnerability(float duration)
+    {
+        // Player can gain invulnerability from 1. Dashing, 2. Taking a hit (i-frame)
+        // If invincible (mainly from double dashing), stop the old timer and use latest dash timer
+        if (invulnerabilityCoroutine != null)
+        {
+            StopCoroutine(invulnerabilityCoroutine);
+        }
+        // Start the new timer
+        invulnerabilityCoroutine = StartCoroutine(InvulnerabilityRoutine(duration));
+    }
+    private IEnumerator InvulnerabilityRoutine(float duration)
+    {
+        IsInvulnerable = true;
+        OnInvulnerabilityChanged?.Invoke(true); // Trigger UI for invulnerability
+        yield return new WaitForSeconds(duration); // Pause and return control to Unity
+        IsInvulnerable = false;
+        OnInvulnerabilityChanged?.Invoke(false); // Trigger UI to return to normal
+        invulnerabilityCoroutine = null;
+    }
+
 }

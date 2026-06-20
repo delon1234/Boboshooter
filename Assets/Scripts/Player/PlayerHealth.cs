@@ -5,7 +5,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 {
     /* PlayerHealth is a wrapper around HealthComponent that enables player-specific logic to be applied when taking damage before HealthComponent applies common damage logic across entities.
      */
-
+    [Header("Components")] 
     [SerializeField] HealthComponent healthComponent;
 
     /* Forward Events Sub/Unsub to private HealthComponent */
@@ -33,7 +33,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         // Player-specific logic for damage dealt (E.g. damage reduction/i-frame for dash)
         // If dashing, ignore damage
-
         // Else forward to HealthComponent to apply damage
         healthComponent.ApplyDamage(damageInfo);
     }

@@ -7,7 +7,7 @@ public abstract class BasicEnemy : MonoBehaviour
     [Header("Stats")]
     protected float maxHealth = 5;
     private float currentHealth;
-    protected float collisionDamage = 5;
+    protected float collisionDamage = 1;
     protected float speed = 3f;
 
     // Player Collision Damage Logic
@@ -16,8 +16,8 @@ public abstract class BasicEnemy : MonoBehaviour
     private float damageInterval = 0.5f;
 
     protected Rigidbody2D rb;
-    protected Transform player;
-    protected PlayerHealth playerHealth;
+    protected Player player;
+    protected Transform playerTransform;
     
     private EnemyHealthBar healthBar;
 
@@ -31,8 +31,9 @@ public abstract class BasicEnemy : MonoBehaviour
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
+        // Refactored to use Player Instance instead of GameObject.FindWithTag
+        player = Player.Instance;
+        playerTransform = player.transform;
     }
 
     // Finds the script from the Enemy Instance
@@ -64,11 +65,11 @@ public abstract class BasicEnemy : MonoBehaviour
     // Useful info for Enemy Variations to know direction to player
     protected Vector2 GetDirectionToPlayer()
     {
-        return (player.position - transform.position).normalized;
+        return (playerTransform.position - transform.position).normalized;
     }
     protected float GetDistanceToPlayer()
     {
-        return Vector2.Distance(transform.position, player.position);
+        return Vector2.Distance(transform.position, playerTransform.position);
     }
 
     // Collide with Player, start timer for damaging
@@ -92,7 +93,8 @@ public abstract class BasicEnemy : MonoBehaviour
 
     private void DealDamageToPlayer(float amt)
     {
-        playerHealth.TakeDamage(amt);
+        DamageInfo dmg = new DamageInfo(amt, gameObject, GetDirectionToPlayer());
+        player.Health.TakeDamage(dmg);
     }
 
     // Damage Logic

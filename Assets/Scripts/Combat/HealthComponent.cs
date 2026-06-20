@@ -23,6 +23,8 @@ public class HealthComponent : MonoBehaviour
     public event Action<DamageInfo> OnTakingDamage;
     // On death; Death Animation, Game Over Screen
     public event Action OnDeath;
+    // On Gain Invulnerability; Invulnerability Animation
+    public event Action<bool> OnInvulnerabilityChanged;
 
     private void Awake() // Unity's Awake method is called when the script instance is being loaded
     {
@@ -39,13 +41,16 @@ public class HealthComponent : MonoBehaviour
         CurrentHealth -= damageInfo.Amount;
         // 2. Invoke the OnTakingDamage event to notify subscribers about the damage taken
         OnTakingDamage?.Invoke(damageInfo);
+        print($"OnTakingDamage {damageInfo}");
         // 3. Handle Death
         if (CurrentHealth <= 0) // Check if health has dropped to zero or below; good for float comparisons
         {
             CurrentHealth = 0; // Ensure health doesn't go below zero
             OnDeath?.Invoke(); // Invoke the OnDeath event
+            print("Died"); // Debug log for death;  
         }
         // 4. Notify subscribers about the health change, passing current health and max health
         OnHealthChange?.Invoke(CurrentHealth, maxHealth);
+        print($"OnHealthChange: Current HP: {CurrentHealth}, Max HP: {maxHealth}");
     }
 }

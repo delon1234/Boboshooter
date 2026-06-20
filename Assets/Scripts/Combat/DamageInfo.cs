@@ -5,7 +5,7 @@ public readonly struct DamageInfo
 {
     /* DamageInfo is a struct to pass damage-related information to entities 
      - Utilises Parameter Object Pattern to ensure scalability and maintainability as more properties can be added without changing method signatures
-     - Readonly struct for immutability
+     - Readonly struct for immutability to prevent side effects when passing to other systems via event OnTakingDamage
      */
 
     /* Properties */
@@ -21,5 +21,10 @@ public readonly struct DamageInfo
         HitDirection = hitDirection;
     }
 
+    public override string ToString()
+    // Debugging purposes; provides a string representation of the DamageInfo struct
+    {
+        return $"DamageInfo: Amount={Amount}, Attacker={Attacker?.name ?? "null"}, HitDirection={HitDirection}";
+    }
 }
 

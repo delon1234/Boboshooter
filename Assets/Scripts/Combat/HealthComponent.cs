@@ -22,12 +22,15 @@ public class HealthComponent : MonoBehaviour
     /* Events to notify when health changes, allowing other components to react accordingly */
     // Health Bar UI
     public event Action<float, float> OnHealthChange; // (health, maxHealth)
-    // On taking damage; Camera Shake, OnHitSound
+    // On taking damage; OnHitSound from various sources, status effects from enemies
     public event Action<DamageInfo> OnTakingDamage;
     // On death; Death Animation, Game Over Screen
     public event Action OnDeath;
     // Dual-purpose event; Gaining/Losing Invulnerability;
     public event Action<bool> OnInvulnerabilityChanged;
+
+    private Coroutine invulnerabilityCoroutine;
+    private float invulnerabilityEndTime;
 
     private void Awake() // Unity's Awake method is called when the script instance is being loaded
     {
@@ -52,8 +55,8 @@ public class HealthComponent : MonoBehaviour
             // Add UI feedback for (Hitting invulnerable player animation)
             print($"Invincible");
             return; 
-        } 
-        // 1. Reduce health by the damage amount
+        }
+        // 1. Reduce health by the damage amount (instead of clamping to 1 to enable future changes)
         CurrentHealth -= damageInfo.Amount;
         // 2. Invoke the OnTakingDamage event to notify subscribers about the damage taken
         OnTakingDamage?.Invoke(damageInfo);
@@ -70,27 +73,36 @@ public class HealthComponent : MonoBehaviour
         print($"OnHealthChange: Current HP: {CurrentHealth}, Max HP: {maxHealth}");
     }
 
-    private Coroutine invulnerabilityCoroutine;
-
     public void GainInvulnerability(float duration)
     {
         // Player can gain invulnerability from 1. Dashing, 2. Taking a hit (i-frame)
-        // If invincible (mainly from double dashing), stop the old timer and use latest dash timer
+        // Ensure longer duration takes priority / dash (shorter) do not override onHit invuln window
+        float endTime = Time.time + duration;
+        if (endTime <= invulnerabilityEndTime) return;
+        invulnerabilityEndTime = endTime;
+        // If was previously invincible, stop the old timer and use latest timer
+        print($"coroutine: {invulnerabilityCoroutine}");
         if (invulnerabilityCoroutine != null)
         {
             StopCoroutine(invulnerabilityCoroutine);
+            print($"coroutine stopped: {invulnerabilityCoroutine}");
         }
         // Start the new timer
         invulnerabilityCoroutine = StartCoroutine(InvulnerabilityRoutine(duration));
     }
     private IEnumerator InvulnerabilityRoutine(float duration)
     {
-        IsInvulnerable = true;
-        OnInvulnerabilityChanged?.Invoke(true); // Trigger UI for invulnerability
+        if (!IsInvulnerable) {
+            // Prevents double triggering of events
+            IsInvulnerable = true;
+            OnInvulnerabilityChanged?.Invoke(true); // Trigger UI for invulnerability
+            print("Invulnerability start");
+        }
         yield return new WaitForSeconds(duration); // Pause and return control to Unity
         IsInvulnerable = false;
         OnInvulnerabilityChanged?.Invoke(false); // Trigger UI to return to normal
         invulnerabilityCoroutine = null;
+        print("Invulnerability ended");
     }
 
 }

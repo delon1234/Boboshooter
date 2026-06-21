@@ -7,6 +7,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
      */
     [Header("Components")] 
     [SerializeField] HealthComponent healthComponent;
+    [SerializeField] public float dashInvulnDuration = 0.2f;
+    [SerializeField] public float onHitInvulnDuration = 1f;
 
     /* Forward Events Sub/Unsub to private HealthComponent */
 
@@ -32,8 +34,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void TakeDamage(DamageInfo damageInfo)
     {
         // Player-specific logic for damage dealt (E.g. damage reduction/i-frame for dash)
-        // If dashing, ignore damage
+        if (healthComponent.IsInvulnerable) return; // If dashing/just take damage, return
         // Else forward to HealthComponent to apply damage
         healthComponent.ApplyDamage(damageInfo);
+        // Gain temporary invulnerability after taking damage (i-frame)
+        healthComponent.GainInvulnerability(onHitInvulnDuration);
     }
 }

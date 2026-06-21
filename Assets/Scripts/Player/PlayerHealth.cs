@@ -10,6 +10,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] public float dashInvulnDuration = 0.2f;
     [SerializeField] public float onHitInvulnDuration = 1f;
 
+    // Expose properties from HealthComponent without duplicating the state variables (Single source of truth)
+    public bool IsInvulnerable => healthComponent.IsInvulnerable;
+    public float CurrentHealth => healthComponent.CurrentHealth;
+
     /* Forward Events Sub/Unsub to private HealthComponent */
 
     public event Action<float, float> OnHealthChange

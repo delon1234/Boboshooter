@@ -5,15 +5,15 @@ using UnityEngine;
 public abstract class BasicEnemy : MonoBehaviour
 {
     [Header("Stats")]
-    protected float maxHealth = 5;
     private float currentHealth;
-    protected float collisionDamage = 1;
-    protected float speed = 3f;
+    [SerializeField] protected float maxHealth = 5;
+    [SerializeField] protected float collisionDamage = 1;
+    [SerializeField] protected float speed = 3f;
 
     // Player Collision Damage Logic
     private bool onPlayer = false;
     private float timer;
-    private float damageInterval = 0.5f;
+    [SerializeField] private float collisionDamageInterval = 0.5f;
 
     protected Rigidbody2D rb;
     protected Player player;
@@ -93,6 +93,8 @@ public abstract class BasicEnemy : MonoBehaviour
 
     private void DealDamageToPlayer(float amt)
     {
+        // Prevents redundant calls to TakeDamage and creating too many DamageInfo on heap
+        if (player.Health.IsInvulnerable) return;
         DamageInfo dmg = new DamageInfo(amt, gameObject, GetDirectionToPlayer());
         player.Health.TakeDamage(dmg);
     }
@@ -104,7 +106,7 @@ public abstract class BasicEnemy : MonoBehaviour
         if (onPlayer & timer <= 0f)
         {   
             DealDamageToPlayer(collisionDamage);
-            timer = damageInterval;
+            timer = collisionDamageInterval;
         }
     }
     // Each type of enemy must implement their own Walk Pattern

@@ -4680,6 +4680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Door
   direction: {x: 0, y: -1}
   SpawnPoint: {fileID: 3265509777466092012}
+  doorwayController: {fileID: 893661250068082832}
 --- !u!1 &898691113880926722
 GameObject:
   m_ObjectHideFlags: 0
@@ -5220,6 +5221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5696030345756676545}
+  - component: {fileID: 893661250068082832}
   m_Layer: 0
   m_Name: SouthDoorway
   m_TagString: Untagged
@@ -5247,6 +5249,22 @@ Transform:
   - {fileID: 2932814524105758731}
   m_Father: {fileID: 951020270097503979}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &893661250068082832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339562949534707341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1b40289a61f094b9442a0d7334617f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorwayController
+  carpet: {fileID: 1091666127798698113}
+  doorOpen: {fileID: 2605450521530011401}
+  doorClosed: {fileID: 7096757451874842040}
+  wallOpen: {fileID: 898691113880926722}
 --- !u!1 &1428922999469527905
 GameObject:
   m_ObjectHideFlags: 0
@@ -5892,6 +5910,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 809471333697559468}
+  - component: {fileID: 8297869932508097803}
   m_Layer: 0
   m_Name: EastDoorway
   m_TagString: Untagged
@@ -5919,6 +5938,22 @@ Transform:
   - {fileID: 6495941870872632021}
   m_Father: {fileID: 951020270097503979}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8297869932508097803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2380275526133951006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1b40289a61f094b9442a0d7334617f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorwayController
+  carpet: {fileID: 4685299453330154448}
+  doorOpen: {fileID: 3616156956506037379}
+  doorClosed: {fileID: 4037224780226900059}
+  wallOpen: {fileID: 7720058673291229899}
 --- !u!1 &2605450521530011401
 GameObject:
   m_ObjectHideFlags: 0
@@ -6702,6 +6737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Door
   direction: {x: -1, y: 0}
   SpawnPoint: {fileID: 4369864888768592444}
+  doorwayController: {fileID: 7480413868955413931}
 --- !u!1 &4037224780226900059
 GameObject:
   m_ObjectHideFlags: 0
@@ -6983,6 +7019,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Door
   direction: {x: 1, y: 0}
   SpawnPoint: {fileID: 1700002882653454171}
+  doorwayController: {fileID: 8297869932508097803}
 --- !u!1 &4416609247188688037
 GameObject:
   m_ObjectHideFlags: 0
@@ -6992,6 +7029,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2539439661219605510}
+  - component: {fileID: 7480413868955413931}
   m_Layer: 0
   m_Name: WestDoorway
   m_TagString: Untagged
@@ -7019,6 +7057,22 @@ Transform:
   - {fileID: 1879140700027116157}
   m_Father: {fileID: 951020270097503979}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7480413868955413931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416609247188688037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1b40289a61f094b9442a0d7334617f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorwayController
+  carpet: {fileID: 8218563971991228099}
+  doorOpen: {fileID: 7254382929918165295}
+  doorClosed: {fileID: 1428922999469527905}
+  wallOpen: {fileID: 198987030799875723}
 --- !u!1 &4685299453330154448
 GameObject:
   m_ObjectHideFlags: 0
@@ -7424,6 +7478,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Door
   direction: {x: 0, y: 1}
   SpawnPoint: {fileID: 1663205244903175597}
+  doorwayController: {fileID: 7595913711199678067}
 --- !u!1 &5038231028577971189
 GameObject:
   m_ObjectHideFlags: 0
@@ -11256,6 +11311,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1415954935435982176}
+  - component: {fileID: 7595913711199678067}
   m_Layer: 0
   m_Name: NorthDoorway
   m_TagString: Untagged
@@ -11283,3 +11339,19 @@ Transform:
   - {fileID: 5977182721946404240}
   m_Father: {fileID: 951020270097503979}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7595913711199678067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9019970692170913081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1b40289a61f094b9442a0d7334617f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorwayController
+  carpet: {fileID: 8259581250783295553}
+  doorOpen: {fileID: 8835667065237384766}
+  doorClosed: {fileID: 3632758009976869803}
+  wallOpen: {fileID: 8190022702483775037}

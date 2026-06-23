@@ -8,6 +8,8 @@ public class Door : MonoBehaviour
 {
     [SerializeField] public Vector2 direction;
     [SerializeField] public Transform SpawnPoint;
+    [SerializeField] private DoorwayController doorwayController;
+
     private RoomManager RoomManager;
     private Room Room;
     private bool locked = false;
@@ -33,19 +35,29 @@ public class Door : MonoBehaviour
         RoomManager.MoveTo(direction);
     }
 
-    private void SetActive(bool active)
-    {
-        gameObject.SetActive(active);
-    }
-
-    // Deactivates itself if room does not have neighbour in that direction
+    // Tells DoorwayController to update its activated status
     public void Refresh(Room room)
     {
-        SetActive(room.HasNeighbor(direction));
+        bool doorExist = room.HasNeighbor(direction);
+        if (!doorExist)
+        {
+            doorwayController.SetState(DoorwayState.NoDoor);
+            return;
+        }
+        doorwayController.SetState(DoorwayState.Unlocked);
     }
 
+    // Door is active, asked to set to lock/unlocked, impacting trigger conditions
+    // Tells doorwayController to handle visuals
     public void SetLocked(bool locked)
     {
         this.locked = locked;
+        if (locked)
+        {
+            doorwayController.SetState(DoorwayState.Locked);
+        } else
+        {
+            doorwayController.SetState(DoorwayState.Unlocked);
+        }
     }
 }

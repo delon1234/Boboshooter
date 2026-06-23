@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         // Caching Instance
+        // Scripts should access singleton from Start() as Awake() execution order is arbitrary
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);

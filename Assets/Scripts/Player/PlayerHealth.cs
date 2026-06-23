@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     // Expose properties from HealthComponent without duplicating the state variables (Single source of truth)
     public bool IsInvulnerable => healthComponent.IsInvulnerable;
     public float CurrentHealth => healthComponent.CurrentHealth;
+    public float MaxHealth => healthComponent.MaxHealth;
 
     /* Forward Events Sub/Unsub to private HealthComponent */
 

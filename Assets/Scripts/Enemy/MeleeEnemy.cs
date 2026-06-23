@@ -8,7 +8,7 @@ public class MeleeEnemy : BasicEnemy
     {
         // "Constructor"
         maxHealth = 100;
-        collisionDamage = 10;
+        collisionDamage = 1f;
         speed = 4f;
     }
 

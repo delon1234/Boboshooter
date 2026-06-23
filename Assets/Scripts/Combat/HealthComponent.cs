@@ -8,8 +8,9 @@ public class HealthComponent : MonoBehaviour
      * such as taking damage, dying, and notifying other components about health changes.
      * Entities can subscribe different events to enable entity-specific behaviours to health changes
      */
-
-    [SerializeField] private int maxHealth;
+    [Header("Health Settings")]
+    [field: SerializeField]
+    public float MaxHealth { get; private set; } = 5f; // Default max health, can be set in the inspector
     public float CurrentHealth { get; private set; } // Float for max flexibility in damage calculations
     // Invincibility property to allow for temporary invincibility
     // 1. Player Dash, 2. Enemy Invincibility Frames, 3. After taking damage (small time window)
@@ -21,7 +22,7 @@ public class HealthComponent : MonoBehaviour
 
     /* Events to notify when health changes, allowing other components to react accordingly */
     // Health Bar UI
-    public event Action<float, float> OnHealthChange; // (health, maxHealth)
+    public event Action<float, float> OnHealthChange; // (health, MaxHealth)
     // On taking damage; OnHitSound from various sources, status effects from enemies
     public event Action<DamageInfo> OnTakingDamage;
     // On death; Death Animation, Game Over Screen
@@ -34,18 +35,18 @@ public class HealthComponent : MonoBehaviour
 
     private void Awake() // Unity's Awake method is called when the script instance is being loaded
     {
-        CurrentHealth = maxHealth; // Initialize health to maxHealth at the start
+        CurrentHealth = MaxHealth; // Initialize health to MaxHealth at the start
     }
 
     private void Start()
     {
         // Notify subscribers about the initial health state
-        OnHealthChange?.Invoke(CurrentHealth, maxHealth);
+        OnHealthChange?.Invoke(CurrentHealth, MaxHealth);
         // Testing;
         if (testInvulnerable)
         {
             GainInvulnerability(invulnerableDuration);
-            print("Invulnerable for 5s");
+            print($"Invulnerable for {invulnerableDuration}");
         }
     }
 
@@ -69,8 +70,8 @@ public class HealthComponent : MonoBehaviour
             print("Died"); // Debug log for death;  
         }
         // 4. Notify subscribers about the health change, passing current health and max health
-        OnHealthChange?.Invoke(CurrentHealth, maxHealth);
-        print($"OnHealthChange: Current HP: {CurrentHealth}, Max HP: {maxHealth}");
+        OnHealthChange?.Invoke(CurrentHealth, MaxHealth);
+        print($"OnHealthChange: Current HP: {CurrentHealth}, Max HP: {MaxHealth}");
     }
 
     public void GainInvulnerability(float duration)

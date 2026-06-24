@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 1019202735989677153}
   - component: {fileID: 2843168313167225203}
   - component: {fileID: 1599424990423449092}
+  - component: {fileID: 6376162265139665616}
   - component: {fileID: 7452930670118656802}
   - component: {fileID: 8861524273887590787}
   - component: {fileID: 3925627923625933034}
@@ -125,7 +126,7 @@ Transform:
   m_GameObject: {fileID: 1765204014813142826}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.275, y: 2, z: 0}
+  m_LocalPosition: {x: 2.2696075, y: 0.75247747, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -239,6 +240,21 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6376162265139665616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765204014813142826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c58f3ee68c48654c930ec1a6d3f7ce5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
+  <MaxHealth>k__BackingField: 5
+  testInvulnerable: 0
+  invulnerableDuration: 5
 --- !u!114 &7452930670118656802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,7 +292,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0052e50ca1d3f944b2b3a9d73de32df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  healthComponent: {fileID: 0}
+  healthComponent: {fileID: 6376162265139665616}
+  dashInvulnDuration: 0.2
+  onHitInvulnDuration: 1
 --- !u!114 &4015768454261099709
 MonoBehaviour:
   m_ObjectHideFlags: 0

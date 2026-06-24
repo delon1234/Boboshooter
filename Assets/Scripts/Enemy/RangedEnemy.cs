@@ -11,7 +11,7 @@ public class RangedEnemy : BasicEnemy
     {
         // "Constructor"
         maxHealth = 100;
-        collisionDamage = 10;
+        collisionDamage = 1;
         speed = 2.5f;
     }
 

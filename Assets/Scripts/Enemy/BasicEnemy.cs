@@ -1,5 +1,4 @@
 using System;
-using System;
 using UnityEngine;
 
 // Parent Class for all Enemies

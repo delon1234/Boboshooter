@@ -73,4 +73,9 @@ public class RoomRuntime : MonoBehaviour
     {
         BasicEnemy.OnEnemyDied += OnEnemyDeath;
     }
+
+    private void OnDisable()
+    {
+        BasicEnemy.OnEnemyDied -= OnEnemyDeath;
+    }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // Starting point from Unity Run
+// Attached to the Canvas for Minimap
 // Handles all game scene logic
 public class GenerateLevel : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class GenerateLevel : MonoBehaviour
     public Sprite UnexploredRoom;
     public Sprite ExploredRoom;
     public Sprite CurrentRoom;
+
+    [SerializeField] private Transform minimapObject;
 
     public GameObject RoomPrefab;
 
@@ -62,7 +65,7 @@ public class GenerateLevel : MonoBehaviour
         // Contains current state of map mutated by Generation and used by Renderer
         state = new MapGenerationState();
         generator = new MapGenerator(config, state);
-        minimap = new MinimapRenderer(transform, config, state);
+        minimap = new MinimapRenderer(minimapObject, config, state);
         RoomSpawner = new RoomSpawner(state, RoomPrefab);
         RoomManager = new RoomManager(state, RoomSpawner);
         EnemySpawner = new EnemySpawner(EnemySpawnTable);

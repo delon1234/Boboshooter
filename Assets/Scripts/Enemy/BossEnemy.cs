@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MeleeEnemy : BasicEnemy
+public class BossEnemy : BasicEnemy
 {
     private float TOLERANCE = 0.3f;
     private void Awake()

@@ -4,9 +4,9 @@ using UnityEngine;
 // Parent Class for all Enemies
 public abstract class BasicEnemy : MonoBehaviour
 {
-    [Header("Stats")]
     private float currentHealth;
-    [SerializeField] protected float maxHealth = 5;
+    // Each enemy will have own serialisedfields in inspector
+    [SerializeField] protected float maxHealth = 100;
     [SerializeField] protected float collisionDamage = 1;
     [SerializeField] protected float speed = 3f;
 

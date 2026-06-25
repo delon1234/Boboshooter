@@ -236,6 +236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1274d230a2f347f40866f066474a45c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
+  maxHealth: 100
+  collisionDamage: 1
+  speed: 3
+  collisionDamageInterval: 0.5
 --- !u!70 &4556956336146757329
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

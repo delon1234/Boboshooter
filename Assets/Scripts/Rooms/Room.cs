@@ -20,6 +20,8 @@ public class Room
     public bool HasSpawnedEnemies = false;
     public bool IsCleared = false;
 
+    public bool IsBossRoom = false;
+
     public Room(int roomNumber, Sprite icon, Vector2 location, int distance)
     {
         RoomNumber = roomNumber;

@@ -6,5 +6,6 @@ using UnityEngine;
 [Serializable]
 public class EnemySpawnTable
 {
-    public EnemyWeightEntry[] Enemies;
+    public EnemyWeightEntry[] BasicEnemies;
+    public EnemyWeightEntry[] BossEnemies;
 }

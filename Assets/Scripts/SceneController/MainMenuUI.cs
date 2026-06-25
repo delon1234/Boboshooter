@@ -4,7 +4,8 @@ using UnityEngine;
 public class MainMenuUI : MonoBehaviour
 {
     public void StartGame()
-    {
+    {   
+        RunData.StartNewRun();
         SceneLoader.LoadGame();
     }
 

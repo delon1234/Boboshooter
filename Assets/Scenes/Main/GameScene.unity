@@ -517,10 +517,13 @@ MonoBehaviour:
   minimapObject: {fileID: 1850650027}
   RoomPrefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}
   EnemySpawnTable:
-    Enemies:
+    BasicEnemies:
     - Prefab: {fileID: 7850202121345256729, guid: 0ab193cadf0697f488a2d599118ebd18, type: 3}
       Weight: 3
     - Prefab: {fileID: 474725970709593238, guid: bb3e84d3914c3474ea7c8679e86e5b16, type: 3}
+      Weight: 1
+    BossEnemies:
+    - Prefab: {fileID: 7850202121345256729, guid: 5ed9cb289e3dbf04c93872f9a25f46fe, type: 3}
       Weight: 1
 --- !u!1 &1672469384
 GameObject:

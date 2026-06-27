@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public PlayerHealth Health { get; private set; }
     public PlayerController Controller { get; private set; }
     public PlayerInputHandler Input { get; private set; }
+    public PlayerAnimator Animator {  get; private set; }
 
     // Cache singleton instance
     public static Player Instance { get; private set; }
@@ -30,5 +31,6 @@ public class Player : MonoBehaviour
         Health = GetComponent<PlayerHealth>();
         Controller = GetComponent<PlayerController>();
         Input = GetComponent<PlayerInputHandler>();
+        Animator = GetComponentInChildren<PlayerAnimator>(); // PlayerAnimator in Sprite (child of Player)
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class PlayerHeartsUI : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private GameObject heartPrefab; // Prefab for the heart UI element
     private PlayerHealth playerHealth; // Reference to the PlayerHealth component
     List<SingleHeartUI> hearts = new List<SingleHeartUI>(); // List to hold references to the heart UI elements
@@ -26,22 +27,15 @@ public class PlayerHeartsUI : MonoBehaviour
         // If Player.Instance is not yet initialized PlayerHeartsUI.OnEnable() executes before Player.Awake(), exit to prevent nullreference
         if (Player.Instance == null) return;
         playerHealth = Player.Instance.Health;
-        if (playerHealth != null)
-        {
-            // Idempotent subscription prevents duplicate subscription when OnEnable() -> Start().
-            playerHealth.OnHealthChange -= UpdateHearts;
-            playerHealth.OnHealthChange += UpdateHearts; // Subscribe to the OnHealthChange event
-            
-            UpdateHearts(playerHealth.CurrentHealth, playerHealth.MaxHealth);
-        }
+        // Idempotent subscription prevents duplicate subscription when OnEnable() -> Start().
+        playerHealth.OnHealthChange -= UpdateHearts;
+        playerHealth.OnHealthChange += UpdateHearts;
+        UpdateHearts(playerHealth.CurrentHealth, playerHealth.MaxHealth);   
     }
 
     private void UnsubscribeFromPlayerHealth()
     {
-        if (playerHealth != null)
-        {
-            playerHealth.OnHealthChange -= UpdateHearts; // Unsubscribe from the OnHealthChange event
-        }
+        playerHealth.OnHealthChange -= UpdateHearts;
     }
 
     private void UpdateHearts(float currentHealth, float maxHealth)

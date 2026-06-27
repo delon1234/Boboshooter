@@ -9,7 +9,9 @@ public class PlayerInputHandler : MonoBehaviour
     - Decouples input handling from other scripts
      */
     public Vector2 MoveInput { get; private set; }
+    // Events for other scripts to subscribe to for input actions
     public event Action OnFirePressed;
+    public event Action DashPressed;
 
     private PlayerInputActions _input;
 
@@ -22,11 +24,16 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _input.Player.Enable();
         // Input.performed is an event that triggers when the specified action is performed (e.g., button press).
-        // Create lambda to invoke the OnFirePressed event when the Fire action is performed. 
+        // Invoke event when the button is pressed via lambda. 
         _input.Player.Fire.performed += _ => OnFirePressed?.Invoke();
+        _input.Player.Dash.performed += _ => DashPressed?.Invoke();
     }
 
-    private void OnDisable() { _input.Player.Disable(); }
+    private void OnDisable() { 
+        _input.Player.Disable(); 
+        _input.Player.Fire.performed -= _ => OnFirePressed?.Invoke();
+        _input.Player.Dash.performed -= _ => DashPressed?.Invoke();
+    }
 
     private void Update()
     {

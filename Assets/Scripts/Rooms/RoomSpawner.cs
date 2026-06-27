@@ -20,6 +20,9 @@ public class RoomSpawner
         foreach (Room room in state.Rooms)
         {
             GameObject GameRoom = GameObject.Instantiate(roomPrefab, room.Location, Quaternion.identity);
+            RoomRuntime runtime = GameRoom.GetComponent<RoomRuntime>();
+            runtime.Initialize(room);
+
             GameRoom.SetActive(false);
             GameRoom.name = $"Room {room.RoomNumber}";
             InitializeDoors(GameRoom, room, RoomManager);

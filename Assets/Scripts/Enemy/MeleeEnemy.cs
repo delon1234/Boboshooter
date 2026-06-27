@@ -6,10 +6,6 @@ public class MeleeEnemy : BasicEnemy
     private float TOLERANCE = 0.3f;
     private void Awake()
     {
-        // "Constructor"
-        maxHealth = 100;
-        collisionDamage = 1f;
-        speed = 4f;
     }
 
     // Melee Movement, just follow player
@@ -25,6 +21,5 @@ public class MeleeEnemy : BasicEnemy
         {
             rb.linearVelocity = Vector2.zero;
         }
-
     }
 }

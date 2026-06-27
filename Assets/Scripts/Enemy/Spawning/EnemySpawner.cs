@@ -10,14 +10,14 @@ public class EnemySpawner
         this.EnemySpawnTable = EnemySpawnTable;
     }
 
-    private void SpawnEnemies(Room room, GameObject GameRoom)
+    private void SpawnEnemies(Room room, GameObject GameRoom, EnemyWeightEntry[] SpawnList, int minCount, int maxCount)
     {
         RoomRuntime roomRuntime = GameRoom.GetComponent<RoomRuntime>();
-        int enemyCount = Random.Range(2, 5);
+        int enemyCount = Random.Range(minCount, maxCount);
 
         for (int i = 0; i < enemyCount; i++)
         {
-            GameObject EnemyPrefab = GetRandomEnemy();
+            GameObject EnemyPrefab = GetRandomEnemy(SpawnList);
             Vector2 pos = roomRuntime.GetRandomPoint(GameRoom);
             GameObject EnemyInstance = Object.Instantiate(EnemyPrefab, pos, Quaternion.identity);
             BasicEnemy BasicEnemy = EnemyInstance.GetComponent<BasicEnemy>();
@@ -30,11 +30,11 @@ public class EnemySpawner
     }
 
     // Picks an enemy as defined in the weights
-    private GameObject GetRandomEnemy()
+    private GameObject GetRandomEnemy(EnemyWeightEntry[] SpawnList)
     {
         // Sum all weights
         int totalWeight = 0;
-        foreach (var enemy in EnemySpawnTable.Enemies)
+        foreach (var enemy in SpawnList)
         {
             totalWeight += Mathf.Max(1, enemy.Weight);
         }
@@ -42,7 +42,7 @@ public class EnemySpawner
         // Picks enemy based on rolled weight
         // Loops through table, subtracts weight from roll until it < 0
         int roll = Random.Range(0, totalWeight);
-        foreach (var enemy in EnemySpawnTable.Enemies)
+        foreach (var enemy in SpawnList)
         {
             roll -= Mathf.Max(1, enemy.Weight);
             if (roll < 0)
@@ -50,7 +50,7 @@ public class EnemySpawner
                 return enemy.Prefab;
             }   
         }
-        return EnemySpawnTable.Enemies[0].Prefab;
+        return SpawnList[0].Prefab;
     }
 
     // Triggered by RoomManager
@@ -63,7 +63,14 @@ public class EnemySpawner
             return;
         }
 
-        SpawnEnemies(room, args.GameRoom);
+        if (room.IsBossRoom)
+        {
+            SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BossEnemies, 1, 1);
+        } else
+        {
+            SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BasicEnemies, 2, 5);
+        }
+
         room.HasSpawnedEnemies = true;
     }
 }

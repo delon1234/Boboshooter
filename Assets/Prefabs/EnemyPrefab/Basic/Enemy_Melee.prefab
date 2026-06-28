@@ -81,8 +81,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.6681564, g: 1, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 14eb3611ea3c5dd43a365d2e1eb05997, type: 3}
+  m_Color: {r: 0.20000002, g: 0.20000002, b: 0.20000002, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -236,6 +236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1274d230a2f347f40866f066474a45c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
+  maxHealth: 5
+  collisionDamage: 1
+  speed: 3
+  collisionDamageInterval: 0.5
 --- !u!70 &4556956336146757329
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

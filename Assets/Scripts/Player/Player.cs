@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public PlayerController Controller { get; private set; }
     public PlayerInputHandler Input { get; private set; }
     public PlayerAnimator Animator {  get; private set; }
+    public PlayerShooter Shooter { get; private set; }
+    public AimController AimController { get; private set; }
 
     // Cache singleton instance
     public static Player Instance { get; private set; }
@@ -32,5 +34,44 @@ public class Player : MonoBehaviour
         Controller = GetComponent<PlayerController>();
         Input = GetComponent<PlayerInputHandler>();
         Animator = GetComponentInChildren<PlayerAnimator>(); // PlayerAnimator in Sprite (child of Player)
+        Shooter = GetComponent<PlayerShooter>();
+        AimController = GetComponentInChildren<AimController>();
+    }
+
+    private void Start()
+    {
+        Health.OnDeath += HandleDeath;
+    }
+
+    private void OnDestroy()
+    {
+        if (Health != null)
+        {
+            Health.OnDeath -= HandleDeath;
+        }
+    }
+
+    private void HandleDeath()
+    {
+        // 1. Disable inputs and controller movement
+        if (Input != null) Input.enabled = false;
+        if (Controller != null) Controller.enabled = false;
+
+        // 2. Disable shooting and aiming
+        if (Shooter != null) Shooter.enabled = false;
+        if (AimController != null) AimController.enabled = false;
+
+        // 3. Stop physics movement and make kinematic
+        if (TryGetComponent<Rigidbody2D>(out var rb))
+        {
+            rb.linearVelocity = Vector2.zero; // Stops movement
+            rb.bodyType = RigidbodyType2D.Kinematic; // Disables physics from affecting corpse
+        }
+
+        // 4. Disable collision so enemies and projectiles pass through the corpse
+        if (TryGetComponent<Collider2D>(out var col))
+        {
+            col.enabled = false;
+        }
     }
 }

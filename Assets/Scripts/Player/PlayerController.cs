@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     private bool _isDashing = false;
     private bool _canDash = true;
 
-    private Player player;
+    private PlayerHealth _health;
     private PlayerInputHandler _input;
     private Rigidbody2D _rb;
 
@@ -26,11 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         _input = GetComponent<PlayerInputHandler>();
         _rb = GetComponent<Rigidbody2D>();
-    }
-
-    private void Start()
-    {
-        player = Player.Instance;
+        _health = GetComponent<PlayerHealth>();
     }
 
     private void FixedUpdate()
@@ -48,7 +44,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        _input.DashPressed -= HandleDash;
+        if (_input != null)
+        {
+            _input.DashPressed -= HandleDash;
+        }
     }
 
     private IEnumerator Dash()
@@ -56,7 +55,7 @@ public class PlayerController : MonoBehaviour
         _canDash = false;
         _isDashing = true;
         OnDashStateChanged?.Invoke(_isDashing);
-        player.Health.GainInvulnerability(dashDuration + buffer);
+        _health.GainInvulnerability(dashDuration + buffer);
         _rb.linearVelocity = _input.MoveInput.normalized * dashSpeed;
         yield return new WaitForSeconds(dashDuration);
         _isDashing = false;

@@ -6,7 +6,8 @@ public class PlayerAnimator : MonoBehaviour
     [Header("References")]
     [SerializeField] private Animator animator;
 
-    private Player player;
+    private PlayerController controller;
+    private PlayerHealth health;
     private PlayerInputHandler input;
 
     // 1. Cache animator parameter hashes for optimal performance (Prevents runtime string hashing)
@@ -15,43 +16,34 @@ public class PlayerAnimator : MonoBehaviour
     private static readonly int IsDashingHash = Animator.StringToHash("isDashing");
     private static readonly int DieTriggerHash = Animator.StringToHash("die");
 
-    void Start()
+    private void Awake()
     {
-        SubscribeToEvents();
+        controller = GetComponentInParent<PlayerController>();
+        health = GetComponentInParent<PlayerHealth>();
+        input = GetComponentInParent<PlayerInputHandler>();
     }
 
-    void OnEnable() { 
-        SubscribeToEvents();
+    private void OnEnable()
+    {
+        if (controller != null) controller.OnDashStateChanged += AnimateDash;
+        if (health != null) health.OnDeath += AnimateDeath;
     }
 
-    void OnDisable() {
-        UnsubscribeToEvents();
+    private void OnDisable()
+    {
+        if (controller != null) controller.OnDashStateChanged -= AnimateDash;
+        if (health != null) health.OnDeath -= AnimateDeath;
     }
+
     // Update is called once per frame
     void Update()
     {
-        // Set run state based on player's movement input
-        float inputMagnitude = input.MoveInput.sqrMagnitude; // Use squared magnitude for single float
-        animator.SetFloat(SpeedHash, inputMagnitude);
-    }
-
-    private void SubscribeToEvents()
-    {
-        if (Player.Instance == null) { return; }
-        player = Player.Instance;
-        input = player.Input;
-
-        // Idempotent subscription to avoid multiple subscriptions
-        player.Controller.OnDashStateChanged -= AnimateDash;
-        player.Controller.OnDashStateChanged += AnimateDash;
-
-        player.Health.OnDeath -= AnimateDeath;
-        player.Health.OnDeath += AnimateDeath;
-    }
-
-    private void UnsubscribeToEvents() {
-        player.Controller.OnDashStateChanged -= AnimateDash;
-        player.Health.OnDeath -= AnimateDeath;
+        if (input != null)
+        {
+            // Set run state based on player's movement input
+            float inputMagnitude = input.MoveInput.sqrMagnitude; // Use squared magnitude for single float
+            animator.SetFloat(SpeedHash, inputMagnitude);
+        }
     }
 
     private void AnimateDash(bool isDashing)
@@ -63,5 +55,4 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator.SetTrigger(DieTriggerHash); // Use Trigger (1 time event)
     }
-
 }

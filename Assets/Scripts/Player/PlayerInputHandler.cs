@@ -33,6 +33,7 @@ public class PlayerInputHandler : MonoBehaviour
         _input.Player.Disable(); 
         _input.Player.Fire.performed -= _ => OnFirePressed?.Invoke();
         _input.Player.Dash.performed -= _ => DashPressed?.Invoke();
+        MoveInput = Vector2.zero;
     }
 
     private void Update()

@@ -1,16 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 // Attached to RoomPrefabs, collects all enemy spawnpoints
 // Exposes GetRandomPoint given a GameRoom for enemy spawning
 // Tracks the state of a room (enemies alive)
 public class RoomRuntime : MonoBehaviour
 {
+    public Room room;
+
     // Zone GameObjects will have BoxCollider2D
     [SerializeField] public GameObject[] SpawnzoneObjects;
     private Door[] doors;
     // Collects all Enemies that belongs to this room
     private HashSet<BasicEnemy> ActiveEnemies = new();
+
+    // For boss rooms that will spawn a staircase to next level
+    [SerializeField] private Tilemap staircaseTilemap;
+    [SerializeField] private Tile staircaseTile;
+    [SerializeField] private GameObject staircaseTriggerPrefab;
+
+    // Hold reference to Room data on spawn
+    public void Initialize(Room room)
+    {
+        this.room = room;
+    }
 
     // Need to have Door reference for controlling lock/unlock
     private void Awake()
@@ -66,11 +80,29 @@ public class RoomRuntime : MonoBehaviour
         {
             UnlockDoors();
         }
+        if (ActiveEnemies.Count <= 0 && room.IsBossRoom)
+        {
+            SpawnStaircase(enemy.transform.position);
+        }
+    }
+
+    // Tilemaps uses Vector3 and Vector3Int
+    public void SpawnStaircase(Vector3 worldPosition)
+    {
+        Vector3Int cell = staircaseTilemap.WorldToCell(worldPosition);
+        staircaseTilemap.SetTile(cell, staircaseTile);
+
+        Instantiate(staircaseTriggerPrefab, staircaseTilemap.GetCellCenterWorld(cell), Quaternion.identity, transform);
     }
 
     // Subscribe to EnemyDeath
     private void OnEnable()
     {
         BasicEnemy.OnEnemyDied += OnEnemyDeath;
+    }
+
+    private void OnDisable()
+    {
+        BasicEnemy.OnEnemyDied -= OnEnemyDeath;
     }
 }

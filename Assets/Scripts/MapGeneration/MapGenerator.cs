@@ -38,6 +38,7 @@ public class MapGenerator
         {
             furthestRoom.SetIcon(config.BossRoomIcon);
             furthestRoom.IsNormal = false;
+            furthestRoom.IsBossRoom = true;
         }
 
         return state;

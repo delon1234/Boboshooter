@@ -9,10 +9,6 @@ public class RangedEnemy : BasicEnemy
 
     private void Awake()
     {
-        // "Constructor"
-        maxHealth = 100;
-        collisionDamage = 1;
-        speed = 2.5f;
     }
 
     // Range Movement

@@ -109,6 +109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906215a6aa62b7d42a37ba47590c04ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedEnemy
+  maxHealth: 50
+  collisionDamage: 1
+  speed: 2.5
+  collisionDamageInterval: 0.5
 --- !u!70 &33027515128956880
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

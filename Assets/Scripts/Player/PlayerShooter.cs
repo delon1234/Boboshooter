@@ -4,19 +4,26 @@ public class PlayerShooter : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform shootPoint;
-    private PlayerInputHandler _input;
+    private PlayerInputHandler input;
 
     private void Awake()
     {
-        _input = GetComponent<PlayerInputHandler>();
+        input = GetComponent<PlayerInputHandler>();
     }
 
     private void OnEnable() {
-        _input.OnFirePressed += Shoot;
+        if (input != null)
+        {
+            input.OnFirePressed += Shoot;
+        }
     }
+
     private void OnDisable()
     {
-        _input.OnFirePressed -= Shoot;
+        if (input != null)
+        {
+            input.OnFirePressed -= Shoot;
+        }
     }
 
     private void Shoot()

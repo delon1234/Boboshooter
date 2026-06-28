@@ -5,9 +5,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 {
     /* PlayerHealth is a wrapper around HealthComponent that enables player-specific logic to be applied when taking damage before HealthComponent applies common damage logic across entities.
      */
-    [Header("Components")] 
     [SerializeField] HealthComponent healthComponent;
-    [SerializeField] public float dashInvulnDuration = 0.2f;
     [SerializeField] public float onHitInvulnDuration = 1f;
 
     // Expose properties from HealthComponent without duplicating the state variables (Single source of truth)
@@ -40,9 +38,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         // Player-specific logic for damage dealt (E.g. damage reduction/i-frame for dash)
         if (healthComponent.IsInvulnerable) return; // If dashing/just take damage, return
-        // Else forward to HealthComponent to apply damage
         healthComponent.ApplyDamage(damageInfo);
-        // Gain temporary invulnerability after taking damage (i-frame)
         healthComponent.GainInvulnerability(onHitInvulnDuration);
     }
+
+    public void GainInvulnerability(float invulnerabilityDuration)
+    {
+        healthComponent.GainInvulnerability(invulnerabilityDuration);
+    }
+
 }

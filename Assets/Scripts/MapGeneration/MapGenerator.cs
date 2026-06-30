@@ -37,8 +37,7 @@ public class MapGenerator
         if (furthestRoom != null)
         {
             furthestRoom.SetIcon(config.BossRoomIcon);
-            furthestRoom.IsNormal = false;
-            furthestRoom.IsBossRoom = true;
+            furthestRoom.SetType(RoomType.Boss);
         }
 
         return state;

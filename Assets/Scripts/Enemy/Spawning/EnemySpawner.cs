@@ -63,14 +63,15 @@ public class EnemySpawner
             return;
         }
 
-        if (room.IsBossRoom)
+        switch (room.Type)
         {
-            SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BossEnemies, 1, 1);
-        } else
-        {
-            SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BasicEnemies, 2, 5);
+            case RoomType.Boss:
+                SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BossEnemies, 1, 1);
+                return;
+            case RoomType.Normal:
+                SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BasicEnemies, 2, 5);
+                return;
         }
-
         room.HasSpawnedEnemies = true;
     }
 }

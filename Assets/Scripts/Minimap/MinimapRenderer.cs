@@ -48,6 +48,7 @@ public class MinimapRenderer
 
     public void UpdateRoomState(Room room, Room CurrentRoom, MapGenerationConfig config)
     {
+        // Retrieve the Image object in the minimap for the particular room
         Image img;
         if (!tilesByRoomNumber.TryGetValue(room.RoomNumber, out img))
         {
@@ -60,8 +61,9 @@ public class MinimapRenderer
             img.sprite = config.CurrentRoomIcon;
             return;
         }
-        // Special rooms (boos, treasure, shop) will retain their icon
-        if (!room.IsNormal)
+
+        // Special Rooms (boos, treasure, shop) will retain their icon
+        if (room.Type != RoomType.Normal)
         {
             img.sprite = room.Icon;
             return;

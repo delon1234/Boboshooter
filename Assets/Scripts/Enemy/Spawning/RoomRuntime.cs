@@ -80,7 +80,7 @@ public class RoomRuntime : MonoBehaviour
         {
             UnlockDoors();
         }
-        if (ActiveEnemies.Count <= 0 && room.IsBossRoom)
+        if (ActiveEnemies.Count <= 0 && room.Type == RoomType.Boss)
         {
             SpawnStaircase(enemy.transform.position);
         }

@@ -4,23 +4,21 @@ using UnityEngine;
 // Data Structure for a Room with mostly read-only fields
 public class Room
 {
+    // Assigned during Constructor
     public readonly int RoomNumber;
     public readonly Vector2 Location;
     public readonly int Distance;
     public Dictionary<Vector2, Room> Neighbors = new Dictionary<Vector2, Room>();
+    public RoomType Type = RoomType.Normal;
 
     // Adjustable Fields (for post map generation)
-    // Icon will decide what type of Room this is
     public Sprite Icon;
     public bool IsDeadend;
-    public bool IsNormal = true;
 
     // Runtime Fields
     public bool IsVisited = false;
     public bool HasSpawnedEnemies = false;
     public bool IsCleared = false;
-
-    public bool IsBossRoom = false;
 
     public Room(int roomNumber, Sprite icon, Vector2 location, int distance)
     {
@@ -33,6 +31,12 @@ public class Room
     public void SetIcon(Sprite icon)
     {
         Icon = icon;
+    }
+
+    // Post Generation , might turn a normal room into other special rooms
+    public void SetType(RoomType type)
+    {
+        Type = type;
     }
 
     public void MarkDeadend()

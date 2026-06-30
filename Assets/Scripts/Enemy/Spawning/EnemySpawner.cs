@@ -17,7 +17,8 @@ public class EnemySpawner
 
         for (int i = 0; i < enemyCount; i++)
         {
-            GameObject EnemyPrefab = GetRandomEnemy(SpawnList);
+            EnemyWeightEntry ChosenEnemyEntry = WeightedRandom.Pick(SpawnList);
+            GameObject EnemyPrefab = ChosenEnemyEntry.Prefab;
             Vector2 pos = roomRuntime.GetRandomPoint(GameRoom);
             GameObject EnemyInstance = Object.Instantiate(EnemyPrefab, pos, Quaternion.identity);
             BasicEnemy BasicEnemy = EnemyInstance.GetComponent<BasicEnemy>();
@@ -27,30 +28,6 @@ public class EnemySpawner
         {
             roomRuntime.LockDoors();
         }
-    }
-
-    // Picks an enemy as defined in the weights
-    private GameObject GetRandomEnemy(EnemyWeightEntry[] SpawnList)
-    {
-        // Sum all weights
-        int totalWeight = 0;
-        foreach (var enemy in SpawnList)
-        {
-            totalWeight += Mathf.Max(1, enemy.Weight);
-        }
-
-        // Picks enemy based on rolled weight
-        // Loops through table, subtracts weight from roll until it < 0
-        int roll = Random.Range(0, totalWeight);
-        foreach (var enemy in SpawnList)
-        {
-            roll -= Mathf.Max(1, enemy.Weight);
-            if (roll < 0)
-            {
-                return enemy.Prefab;
-            }   
-        }
-        return SpawnList[0].Prefab;
     }
 
     // Triggered by RoomManager
@@ -67,10 +44,10 @@ public class EnemySpawner
         {
             case RoomType.Boss:
                 SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BossEnemies, 1, 1);
-                return;
+                break;
             case RoomType.Normal:
                 SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BasicEnemies, 2, 5);
-                return;
+                break;
         }
         room.HasSpawnedEnemies = true;
     }

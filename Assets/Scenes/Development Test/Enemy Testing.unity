@@ -771,6 +771,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUDCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6653933833520956812, guid: 7fcb0b58ab37576459376f133085c5c0, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
+      objectReference: {fileID: 0}
     - target: {fileID: 8500088742106520819, guid: 7fcb0b58ab37576459376f133085c5c0, type: 3}
       propertyPath: m_Pivot.x
       value: 0

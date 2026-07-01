@@ -340,7 +340,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8978832068574153125}
@@ -4450,7 +4450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomRuntime
   EnemySpawnzoneParent: {fileID: 7524235989068742047}
-  staircaseTilemap: {fileID: 0}
+  staircaseTilemap: {fileID: 3300680857370652386}
   staircaseTile: {fileID: 11400000, guid: 6c07bbee7f1d92e43ae9ca0c1fb86ed8, type: 2}
   staircaseTriggerPrefab: {fileID: 1292825730394807014, guid: 9d1e038b94ee1a74fa924cbab374b716, type: 3}
 --- !u!1001 &6015038301428914835
@@ -4461,6 +4461,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1301200654631650468}
     m_Modifications:
+    - target: {fileID: 3404941151162170817, guid: 9ea2015b5c75b5047a3c06957b8be2e9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3404941151162170817, guid: 9ea2015b5c75b5047a3c06957b8be2e9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3404941151162170817, guid: 9ea2015b5c75b5047a3c06957b8be2e9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4510,6 +4518,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ea2015b5c75b5047a3c06957b8be2e9, type: 3}
+--- !u!1839735485 &3300680857370652386 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 9131024844832928881, guid: 9ea2015b5c75b5047a3c06957b8be2e9, type: 3}
+  m_PrefabInstance: {fileID: 6015038301428914835}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8951311733803935570 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3404941151162170817, guid: 9ea2015b5c75b5047a3c06957b8be2e9, type: 3}

@@ -51,7 +51,7 @@ public class RoomRuntime : MonoBehaviour
     }
 
     // Takes a BoxCollider2D zone and retrieve a random point in its bounds
-    public Vector2 GetRandomPoint(GameObject GameRoom)
+    public Vector2 GetRandomPoint()
     {
         BoxCollider2D selectedSpawnzone = GetRandomZone();
         Bounds b = selectedSpawnzone.bounds;

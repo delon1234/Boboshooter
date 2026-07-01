@@ -12,14 +12,14 @@ public class EnemySpawner
 
     private void SpawnEnemies(Room room, GameObject GameRoom, EnemyWeightEntry[] SpawnList, int minCount, int maxCount)
     {
-        RoomRuntime roomRuntime = GameRoom.GetComponent<RoomRuntime>();
+        RoomRuntime roomRuntime = GameRoom.GetComponentInChildren<RoomRuntime>();
         int enemyCount = Random.Range(minCount, maxCount);
 
         for (int i = 0; i < enemyCount; i++)
         {
             EnemyWeightEntry ChosenEnemyEntry = WeightedRandom.Pick(SpawnList);
             GameObject EnemyPrefab = ChosenEnemyEntry.Prefab;
-            Vector2 pos = roomRuntime.GetRandomPoint(GameRoom);
+            Vector2 pos = roomRuntime.GetRandomPoint();
             GameObject EnemyInstance = Object.Instantiate(EnemyPrefab, pos, Quaternion.identity);
             BasicEnemy BasicEnemy = EnemyInstance.GetComponent<BasicEnemy>();
             roomRuntime.OnEnemySpawned(BasicEnemy);

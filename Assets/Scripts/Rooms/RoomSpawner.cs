@@ -21,7 +21,9 @@ public class RoomSpawner
         {
             GameObject ChosenGameRoom = GetRoomPrefab(room); 
             GameObject GameRoom = Object.Instantiate(ChosenGameRoom, Vector2.zero, Quaternion.identity);
+            Debug.Log(GameRoom);
             RoomRuntime runtime = GameRoom.GetComponentInChildren<RoomRuntime>();
+            Debug.Log(runtime);
             runtime.Initialize(room);
 
             GameRoom.SetActive(false);

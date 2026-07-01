@@ -9,8 +9,10 @@ public class RoomRuntime : MonoBehaviour
 {
     public Room room;
 
-    // Zone GameObjects will have BoxCollider2D
-    [SerializeField] public GameObject[] SpawnzoneObjects;
+    // Serializes the parent, children will contain spawnzone(s)
+    [SerializeField] public Transform EnemySpawnzoneParent;
+    private List<BoxCollider2D> EnemySpawnZones;
+
     private Door[] doors;
     // Collects all Enemies that belongs to this room
     private HashSet<BasicEnemy> ActiveEnemies = new();
@@ -30,18 +32,22 @@ public class RoomRuntime : MonoBehaviour
     private void Awake()
     {
         doors = GetComponentsInChildren<Door>();
-    }
 
-    private BoxCollider2D GetZoneCollider(GameObject zoneObject)
-    {
-        return zoneObject.GetComponent<BoxCollider2D>();
+        // Collects all child BoxCollider spawnzones on wake
+        EnemySpawnZones = new List<BoxCollider2D>();
+        foreach (Transform child in EnemySpawnzoneParent)
+        {
+            if (child.TryGetComponent(out BoxCollider2D zone))
+            {
+                EnemySpawnZones.Add(zone);
+            }
+        }
     }
 
     // Picks a random spawnzone from the GameRoom's list of spawnzones
     private BoxCollider2D GetRandomZone()
     {
-        GameObject selectedSpawnzone = SpawnzoneObjects[Random.Range(0, SpawnzoneObjects.Length)];
-        return GetZoneCollider(selectedSpawnzone);
+        return EnemySpawnZones[Random.Range(0, EnemySpawnZones.Count - 1)];
     }
 
     // Takes a BoxCollider2D zone and retrieve a random point in its bounds

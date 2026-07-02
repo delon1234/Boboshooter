@@ -172,6 +172,8 @@ GameObject:
   - component: {fileID: 8706695892607086063}
   - component: {fileID: 4556956336146757329}
   - component: {fileID: 1917202944779915649}
+  - component: {fileID: 7078109371652515893}
+  - component: {fileID: 2799090305876837890}
   m_Layer: 8
   m_Name: Enemy_Melee
   m_TagString: Enemy
@@ -236,7 +238,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1274d230a2f347f40866f066474a45c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
-  maxHealth: 100
   collisionDamage: 1
   speed: 3
   collisionDamageInterval: 0.5
@@ -289,8 +290,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec1a2ed494cc5644afc41a7ab33c283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBarBinder
-  enemy: {fileID: 8706695892607086063}
+  health: {fileID: 7078109371652515893}
   healthBar: {fileID: 6573377768986710595}
+--- !u!114 &7078109371652515893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7850202121345256729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c58f3ee68c48654c930ec1a6d3f7ce5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::HealthComponent
+  <MaxHealth>k__BackingField: 50
+  testInvulnerable: 0
+  invulnerableDuration: 5
+--- !u!114 &2799090305876837890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7850202121345256729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485f27505031ba54ab966e574e004b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::EnemyHealth
+  healthComponent: {fileID: 7078109371652515893}
 --- !u!1001 &1028349747868561822
 PrefabInstance:
   m_ObjectHideFlags: 0

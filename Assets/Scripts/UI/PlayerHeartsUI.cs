@@ -30,7 +30,7 @@ public class PlayerHeartsUI : MonoBehaviour
         // Idempotent subscription prevents duplicate subscription when OnEnable() -> Start().
         playerHealth.OnHealthChange -= UpdateHearts;
         playerHealth.OnHealthChange += UpdateHearts;
-        UpdateHearts(playerHealth.CurrentHealth, playerHealth.MaxHealth);   
+        UpdateHearts(new HealthInfo(playerHealth.CurrentHealth, playerHealth.MaxHealth));   
     }
 
     private void UnsubscribeFromPlayerHealth()
@@ -38,8 +38,10 @@ public class PlayerHeartsUI : MonoBehaviour
         playerHealth.OnHealthChange -= UpdateHearts;
     }
 
-    private void UpdateHearts(float currentHealth, float maxHealth)
+    private void UpdateHearts(HealthInfo healthInfo)
     {
+        float currentHealth = healthInfo.CurrentHealth;
+        float maxHealth = healthInfo.MaxHealth;
         int maxHealthInt = Mathf.CeilToInt(maxHealth); // Round up maxHealth to the ceiling integer for heart count
         // 1. Add/Remove SingleHeartUI instances to match maxHealthInt 
         AdjustMaxHearts(maxHealthInt);

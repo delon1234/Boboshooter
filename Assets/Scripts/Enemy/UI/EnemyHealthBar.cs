@@ -7,8 +7,8 @@ public class EnemyHealthBar : MonoBehaviour
 {
     [SerializeField] private Image fillImage;
 
-    public void SetHealth(OnEnemyHealthChangedArgs args)
+    public void SetHealth(HealthInfo healthInfo)
     {
-        fillImage.fillAmount = args.currentHealth / args.maxHealth;
+        fillImage.fillAmount = healthInfo.CurrentHealth / healthInfo.MaxHealth;
     }
 }

@@ -1,12 +1,31 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour, IDamageable
+public class EnemyHealth : MonoBehaviour, IDamageable
 {
-    /* PlayerHealth is a wrapper around HealthComponent that enables player-specific logic to be applied when taking damage before HealthComponent applies common damage logic across entities.
+    /* EnemyHealth is a wrapper around HealthComponent that enables enemy-specific logic to be applied when taking damage before HealthComponent applies common damage logic across entities.
      */
     [SerializeField] HealthComponent healthComponent;
-    [SerializeField] public float onHitInvulnDuration = 1f;
+    // Event fired to all RoomRuntimes about an instanced enemy death
+    public static event Action<BasicEnemy> OnEnemyDied;
+
+    private void OnEnable()
+    {
+        healthComponent.OnDeath += HandleDeath;
+    }
+
+    private void OnDisable()
+    {
+        healthComponent.OnDeath -= HandleDeath;
+    }
+
+    private void HandleDeath()
+    {
+        // healthComponent.OnDeath triggers OnEnemyDied event
+        OnEnemyDied?.Invoke(GetComponent<BasicEnemy>());
+        Destroy(gameObject);
+    }
 
     // Expose properties from HealthComponent without duplicating the state variables (Single source of truth)
     public bool IsInvulnerable => healthComponent.IsInvulnerable;
@@ -14,7 +33,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public float MaxHealth => healthComponent.MaxHealth;
 
     /* Forward Events Sub/Unsub to private HealthComponent */
-
     public event Action<HealthInfo> OnHealthChange
     {
         add => healthComponent.OnHealthChange += value;
@@ -36,10 +54,12 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageInfo damageInfo)
     {
-        // Player-specific logic for damage dealt (E.g. damage reduction/i-frame for dash)
-        if (healthComponent.IsInvulnerable) return; // If dashing/just take damage, return
+        // Enemy-specific logic for damage dealt
+        // 1. Get IDamageModifer components
+        // 2. Apply pipeline
+        // 3. Forward damage to healthComponent
+        if (healthComponent.IsInvulnerable) return;
         healthComponent.ApplyDamage(damageInfo);
-        healthComponent.GainInvulnerability(onHitInvulnDuration);
     }
 
     public void GainInvulnerability(float invulnerabilityDuration)
@@ -78,10 +98,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         HealFully();
     }
 
-    [ContextMenu("Test Upgrade Max HP by 1")]
+    [ContextMenu("Test Upgrade Max HP by 20")]
     private void TestUpgrade()
     {
-        UpgradeMaxHealth(1f);
+        UpgradeMaxHealth(20f);
     }
-
 }

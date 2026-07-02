@@ -76,6 +76,10 @@ public class Player : MonoBehaviour
     }
 
     // Commands to expose
+    public void TakeDamage(DamageInfo damageInfo)
+    {
+        Health.TakeDamage(damageInfo);
+    }
     public void Heal(float amount)
     {
         Health.Heal(amount);

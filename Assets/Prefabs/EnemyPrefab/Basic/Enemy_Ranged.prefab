@@ -44,6 +44,8 @@ GameObject:
   - component: {fileID: 8088461224079979418}
   - component: {fileID: 33027515128956880}
   - component: {fileID: -5032490784223610223}
+  - component: {fileID: 5548448725222507790}
+  - component: {fileID: 117080391559702806}
   m_Layer: 8
   m_Name: Enemy_Ranged
   m_TagString: Enemy
@@ -109,7 +111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906215a6aa62b7d42a37ba47590c04ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedEnemy
-  maxHealth: 50
   collisionDamage: 1
   speed: 2.5
   collisionDamageInterval: 0.5
@@ -162,8 +163,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec1a2ed494cc5644afc41a7ab33c283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBarBinder
-  enemy: {fileID: 8088461224079979418}
+  health: {fileID: 5548448725222507790}
   healthBar: {fileID: 340001444317957785}
+--- !u!114 &5548448725222507790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474725970709593238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c58f3ee68c48654c930ec1a6d3f7ce5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::HealthComponent
+  <MaxHealth>k__BackingField: 5
+  testInvulnerable: 1
+  invulnerableDuration: 5
+--- !u!114 &117080391559702806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474725970709593238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485f27505031ba54ab966e574e004b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::EnemyHealth
+  healthComponent: {fileID: 5548448725222507790}
 --- !u!1 &3401511902835060299
 GameObject:
   m_ObjectHideFlags: 0

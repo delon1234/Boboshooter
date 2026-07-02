@@ -15,14 +15,14 @@ public class Bullet : MonoBehaviour
         rb.linearVelocity = transform.right * speed; // Move the bullet in the direction it's facing (right)
     }
 
-    // Will change Bullet to be universal (Player -> Enemy, Enemy -> Player) later, but for now it only damages enemies
     private void OnTriggerEnter2D(Collider2D collision)
     {   
-        BasicEnemy enemy = collision.GetComponent<BasicEnemy>();
-        if (enemy != null)
+        // Universal logic for bullet to deal damage to Player/Enemy
+        IDamageable damageable = collision.GetComponent<IDamageable>();
+        if (damageable != null)
         {
-            enemy.TakeDamage(damage);
-            Debug.Log($"Enemy: {enemy.name} takes {damage} damage");
+            damageable.TakeDamage(new DamageInfo(damage, gameObject, transform.right));
+            Debug.Log($"Entity: {damageable} takes {damage} damage");
         }
         Destroy(gameObject); // Destroy the bullet after it hits something
     }

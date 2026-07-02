@@ -7,9 +7,7 @@ public class RangedEnemy : BasicEnemy
     private float SHOOTING_DISTANCE = 5f;
     private float TOLERANCE = 0.5f;
 
-    private void Awake()
-    {
-    }
+
 
     // Range Movement
     // Walk towards player if far, away if close

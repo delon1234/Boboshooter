@@ -4,9 +4,9 @@ using UnityEngine;
 // Parent Class for all Enemies
 public abstract class BasicEnemy : MonoBehaviour
 {
-    private float currentHealth;
+    [Header("Stats")]
+    public EnemyHealth Health { get; private set; }
     // Each enemy will have own serialisedfields in inspector
-    [SerializeField] protected float maxHealth = 100;
     [SerializeField] protected float collisionDamage = 1;
     [SerializeField] protected float speed = 3f;
 
@@ -21,45 +21,23 @@ public abstract class BasicEnemy : MonoBehaviour
     
     private EnemyHealthBar healthBar;
 
-    // Event
-    // fired to all RoomRuntimes about an instanced enemy death
-    public static event Action<BasicEnemy> OnEnemyDied;
-    // fired for UI updates
-    public event Action<OnEnemyHealthChangedArgs> OnEnemyHealthChanged;
+
+    protected virtual void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        Health = GetComponent<EnemyHealth>();
+        healthBar = GetComponentInChildren<EnemyHealthBar>();
+    }
 
     private void Start()
     {
-        currentHealth = maxHealth;
-        rb = GetComponent<Rigidbody2D>();
         // Refactored to use Player Instance instead of GameObject.FindWithTag
         player = Player.Instance;
         playerTransform = player.transform;
     }
-
-    // Finds the script from the Enemy Instance
-    private void Awake()
+    public void TakeDamage(DamageInfo damageinfo)
     {
-        healthBar = GetComponentInChildren<EnemyHealthBar>();
-    }
-
-    // Projectiles or damage dealing objects will call this to handle health checks
-    public void TakeDamage(float amt)
-    {
-        currentHealth -= amt;
-        OnEnemyHealthChanged?.Invoke(new OnEnemyHealthChangedArgs(amt, currentHealth, maxHealth));
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    // Handling for Enemy Death
-    // For now just Destroy enemy, maybe have animations next time?
-    private void Die()
-    {
-        // Sends out a trigger that this specific enemy died
-        OnEnemyDied?.Invoke(this);
-        Destroy(gameObject);
+        Health.TakeDamage(damageinfo);
     }
 
     // Useful info for Enemy Variations to know direction to player
@@ -93,10 +71,8 @@ public abstract class BasicEnemy : MonoBehaviour
 
     private void DealDamageToPlayer(float amt)
     {
-        // Prevents redundant calls to TakeDamage and creating too many DamageInfo on heap
-        if (player.Health.IsInvulnerable) return;
         DamageInfo dmg = new DamageInfo(amt, gameObject, GetDirectionToPlayer());
-        player.Health.TakeDamage(dmg);
+        player.TakeDamage(dmg);
     }
 
     // Damage Logic

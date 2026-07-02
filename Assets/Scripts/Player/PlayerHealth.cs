@@ -47,4 +47,41 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         healthComponent.GainInvulnerability(invulnerabilityDuration);
     }
 
+    public void Heal(float amount)
+    {
+        // Generic heal method for player
+        healthComponent.RestoreHealth(amount);
+    }
+
+    public void HealFully() // For Level Ascension
+    {
+        healthComponent.RestoreHealth(MaxHealth - CurrentHealth);
+    }
+
+    public void UpgradeMaxHealth(float amount)
+    {
+        // Upgrades to health are "full" - applies flat heal
+        Heal(amount);
+        healthComponent.IncreaseMaxHealth(amount, false);
+    }
+
+    /* Tests */
+    [ContextMenu("Test Heal 2 HP")]
+    private void TestHeal()
+    {
+        Heal(2f);
+    }
+
+    [ContextMenu("Test Heal Full")]
+    private void TestHealFully()
+    {
+        HealFully();
+    }
+
+    [ContextMenu("Test Upgrade Max HP by 1")]
+    private void TestUpgrade()
+    {
+        UpgradeMaxHealth(1f);
+    }
+
 }

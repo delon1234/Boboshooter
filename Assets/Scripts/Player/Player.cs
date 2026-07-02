@@ -74,4 +74,19 @@ public class Player : MonoBehaviour
             col.enabled = false;
         }
     }
+
+    // Commands to expose
+    public void Heal(float amount)
+    {
+        Health.Heal(amount);
+    }
+    public void HealFully() // For Level Ascension
+    {
+        Health.HealFully();
+    }
+    public void UpgradeMaxHealth(float amount)
+    {
+        Health.UpgradeMaxHealth(amount);
+    }
+
 }

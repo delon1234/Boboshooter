@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class HealthComponent : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class HealthComponent : MonoBehaviour
      */
     [Header("Health Settings")]
     [field: SerializeField]
-    public float MaxHealth { get; private set; } = 5f; // Default max health, can be set in the inspector
+    public float MaxHealth { get; private set; } = 5f; 
     public float CurrentHealth { get; private set; } // Float for max flexibility in damage calculations
     // Invincibility property to allow for temporary invincibility
     // 1. Player Dash, 2. Enemy Invincibility Frames, 3. After taking damage (small time window)
@@ -82,11 +83,10 @@ public class HealthComponent : MonoBehaviour
         if (endTime <= invulnerabilityEndTime) return;
         invulnerabilityEndTime = endTime;
         // If was previously invincible, stop the old timer and use latest timer
-        print($"coroutine: {invulnerabilityCoroutine}");
         if (invulnerabilityCoroutine != null)
         {
             StopCoroutine(invulnerabilityCoroutine);
-            print($"coroutine stopped: {invulnerabilityCoroutine}");
+            print($"stopped previous invulnerability coroutine: {invulnerabilityCoroutine}");
         }
         // Start the new timer
         invulnerabilityCoroutine = StartCoroutine(InvulnerabilityRoutine(duration));
@@ -97,7 +97,7 @@ public class HealthComponent : MonoBehaviour
             // Prevents double triggering of events
             IsInvulnerable = true;
             OnInvulnerabilityChanged?.Invoke(true); // Trigger UI for invulnerability
-            print("Invulnerability start");
+            print($"Invulnerability lasts from {Time.time} to {Time.time + duration}");
         }
         yield return new WaitForSeconds(duration); // Pause and return control to Unity
         IsInvulnerable = false;
@@ -106,4 +106,31 @@ public class HealthComponent : MonoBehaviour
         print("Invulnerability ended");
     }
 
+    public void RestoreHealth(float amount) {
+        if (amount <= 0) { return; }
+        CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
+        // Alternative approach - ensures CurrentHealth never goes negative
+        // CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0f, MaxHealth);
+        OnHealthChange?.Invoke(CurrentHealth, MaxHealth);
+    }
+
+    public void IncreaseMaxHealth (float amount, bool healProportionally)
+    {
+        if (amount <= 0) { return; }
+        float oldMaxHealth = MaxHealth;
+        MaxHealth += amount;
+        if (healProportionally)
+        {
+            if (oldMaxHealth > 0)
+            {
+                // Set current health to old proportion
+                CurrentHealth = (CurrentHealth / oldMaxHealth) * MaxHealth; 
+            }
+            else
+            {
+                CurrentHealth = MaxHealth; // Prevents division by 0
+            }
+        }
+        OnHealthChange?.Invoke(CurrentHealth, MaxHealth);
+    }
 }

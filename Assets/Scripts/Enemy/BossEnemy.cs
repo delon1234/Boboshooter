@@ -4,9 +4,7 @@ using UnityEngine;
 public class BossEnemy : BasicEnemy
 {
     private float TOLERANCE = 0.3f;
-    private void Awake()
-    {
-    }
+
 
     // Melee Movement, just follow player
     protected override void WalkLogic()

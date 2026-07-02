@@ -98,11 +98,11 @@ public class RoomRuntime : MonoBehaviour
     // Subscribe to EnemyDeath
     private void OnEnable()
     {
-        BasicEnemy.OnEnemyDied += OnEnemyDeath;
+        EnemyHealth.OnEnemyDied += OnEnemyDeath;
     }
 
     private void OnDisable()
     {
-        BasicEnemy.OnEnemyDied -= OnEnemyDeath;
+        EnemyHealth.OnEnemyDied -= OnEnemyDeath;
     }
 }

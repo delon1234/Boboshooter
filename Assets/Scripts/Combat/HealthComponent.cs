@@ -23,7 +23,7 @@ public class HealthComponent : MonoBehaviour
 
     /* Events to notify when health changes, allowing other components to react accordingly */
     // Health Bar UI
-    public event Action<float, float> OnHealthChange; // (health, MaxHealth)
+    public event Action<HealthInfo> OnHealthChange; // (health, MaxHealth)
     // On taking damage; OnHitSound from various sources, status effects from enemies
     public event Action<DamageInfo> OnTakingDamage;
     // On death; Death Animation, Game Over Screen
@@ -42,7 +42,8 @@ public class HealthComponent : MonoBehaviour
     private void Start()
     {
         // Notify subscribers about the initial health state
-        OnHealthChange?.Invoke(CurrentHealth, MaxHealth);
+        HealthInfo healthInfo = new HealthInfo(CurrentHealth, MaxHealth);
+        OnHealthChange?.Invoke(healthInfo);
         // Testing;
         if (testInvulnerable)
         {
@@ -70,8 +71,9 @@ public class HealthComponent : MonoBehaviour
             OnDeath?.Invoke(); // Invoke the OnDeath event
             print("Died"); // Debug log for death;  
         }
-        // 4. Notify subscribers about the health change, passing current health and max health
-        OnHealthChange?.Invoke(CurrentHealth, MaxHealth);
+        // 4. Notify subscribers about the health change, passing current health and max health\
+        HealthInfo healthInfo = new HealthInfo(CurrentHealth, MaxHealth);
+        OnHealthChange?.Invoke(healthInfo);
         print($"OnHealthChange: Current HP: {CurrentHealth}, Max HP: {MaxHealth}");
     }
 
@@ -111,7 +113,8 @@ public class HealthComponent : MonoBehaviour
         CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
         // Alternative approach - ensures CurrentHealth never goes negative
         // CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0f, MaxHealth);
-        OnHealthChange?.Invoke(CurrentHealth, MaxHealth);
+        HealthInfo healthInfo = new HealthInfo(CurrentHealth, MaxHealth);
+        OnHealthChange?.Invoke(healthInfo);
     }
 
     public void IncreaseMaxHealth (float amount, bool healProportionally)
@@ -131,6 +134,7 @@ public class HealthComponent : MonoBehaviour
                 CurrentHealth = MaxHealth; // Prevents division by 0
             }
         }
-        OnHealthChange?.Invoke(CurrentHealth, MaxHealth);
+        HealthInfo healthInfo = new HealthInfo(CurrentHealth, MaxHealth);
+        OnHealthChange?.Invoke(healthInfo);
     }
 }

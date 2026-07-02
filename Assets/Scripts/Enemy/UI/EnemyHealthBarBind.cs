@@ -4,21 +4,21 @@ using UnityEngine;
 // Responsible for the HealthBar UI updates, triggered from enemy damaged
 public class EnemyHealthBarBinder : MonoBehaviour
 {
-    [SerializeField] private BasicEnemy enemy;
+    [SerializeField] private HealthComponent health;
     [SerializeField] private EnemyHealthBar healthBar;
 
     private void OnEnable()
     {
-        enemy.OnEnemyHealthChanged += HandleHealthChanged;
+        health.OnHealthChange += HandleHealthChanged;
     }
 
     private void OnDisable()
     {
-        enemy.OnEnemyHealthChanged -= HandleHealthChanged;
+        health.OnHealthChange -= HandleHealthChanged;
     }
 
-    private void HandleHealthChanged(OnEnemyHealthChangedArgs args)
+    private void HandleHealthChanged(HealthInfo healthInfo)
     {
-        healthBar.SetHealth(args);
+        healthBar.SetHealth(healthInfo);
     }
 }

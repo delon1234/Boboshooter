@@ -11,7 +11,8 @@ public class GameFlowManager : MonoBehaviour
     {
         if (RunData.CurrentFloor >= RunData.FinalFloor)
         {
-            SceneLoader.LoadWin();
+            RunData.Result = RunResult.Victory;
+            SceneLoader.LoadRunOver();
         }
         else
         {
@@ -22,7 +23,8 @@ public class GameFlowManager : MonoBehaviour
 
     private void HandlePlayerDeath()
     {
-        SceneLoader.LoadGameOver();
+        RunData.Result = RunResult.Defeat;
+        SceneLoader.LoadRunOver();
     }
 
     private void OnEnable()

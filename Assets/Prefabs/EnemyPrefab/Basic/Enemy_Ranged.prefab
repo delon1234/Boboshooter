@@ -177,8 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c58f3ee68c48654c930ec1a6d3f7ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scripts::HealthComponent
-  <MaxHealth>k__BackingField: 5
-  testInvulnerable: 1
+  <MaxHealth>k__BackingField: 50
+  testInvulnerable: 0
   invulnerableDuration: 5
 --- !u!114 &117080391559702806
 MonoBehaviour:

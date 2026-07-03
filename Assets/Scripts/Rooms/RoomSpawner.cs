@@ -5,28 +5,56 @@ using UnityEngine;
 public class RoomSpawner
 {
     private MapGenerationState state;
-    private GameObject roomPrefab;
+    private RoomSpawnTable RoomSpawnTable;
 
     private Dictionary<Vector2, GameObject> spawnedRooms = new();
 
-    public RoomSpawner(MapGenerationState state, GameObject prefab)
+    public RoomSpawner(MapGenerationState state, RoomSpawnTable RoomSpawnTable)
     {
         this.state = state;
-        this.roomPrefab = prefab;
+        this.RoomSpawnTable = RoomSpawnTable;
     }
 
     public void SpawnAllRooms(RoomManager RoomManager)
     {
         foreach (Room room in state.Rooms)
         {
-            GameObject GameRoom = GameObject.Instantiate(roomPrefab, room.Location, Quaternion.identity);
-            RoomRuntime runtime = GameRoom.GetComponent<RoomRuntime>();
+            GameObject ChosenGameRoom = GetRoomPrefab(room); 
+            GameObject GameRoom = Object.Instantiate(ChosenGameRoom, Vector2.zero, Quaternion.identity);
+            Debug.Log(GameRoom);
+            RoomRuntime runtime = GameRoom.GetComponentInChildren<RoomRuntime>();
+            Debug.Log(runtime);
             runtime.Initialize(room);
 
             GameRoom.SetActive(false);
             GameRoom.name = $"Room {room.RoomNumber}";
             InitializeDoors(GameRoom, room, RoomManager);
             spawnedRooms[room.Location] = GameRoom;
+        }
+    }
+
+    // Chooses the correct GameRoom using the Room's RoomType
+    // Normal Rooms go through RNG
+    // The rest (special) is currently fixed defined
+    private GameObject GetRoomPrefab(Room room)
+    {
+        switch (room.Type)
+        {
+            case RoomType.Normal:
+                return WeightedRandom.Pick(RoomSpawnTable.NormalRooms).Prefab;
+
+            case RoomType.Boss:
+                return RoomSpawnTable.BossRoom.Prefab;
+
+            case RoomType.Shop:
+                return RoomSpawnTable.ShopRoom.Prefab;
+
+            case RoomType.Treasure:
+                return RoomSpawnTable.TreasureRoom.Prefab;
+
+
+            default:
+                return RoomSpawnTable.NormalRooms[0].Prefab;
         }
     }
 

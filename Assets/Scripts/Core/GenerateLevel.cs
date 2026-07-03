@@ -27,7 +27,7 @@ public class GenerateLevel : MonoBehaviour
 
     [SerializeField] private Transform minimapObject;
 
-    public GameObject RoomPrefab;
+    [SerializeField] private RoomSpawnTable RoomSpawnTable;
 
     // Scripts
     private MapGenerationConfig config;
@@ -66,7 +66,7 @@ public class GenerateLevel : MonoBehaviour
         state = new MapGenerationState();
         generator = new MapGenerator(config, state);
         minimap = new MinimapRenderer(minimapObject, config, state);
-        RoomSpawner = new RoomSpawner(state, RoomPrefab);
+        RoomSpawner = new RoomSpawner(state, RoomSpawnTable);
         RoomManager = new RoomManager(state, RoomSpawner);
         EnemySpawner = new EnemySpawner(EnemySpawnTable);
     }

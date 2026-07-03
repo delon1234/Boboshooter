@@ -22,6 +22,9 @@ public class RoomRuntime : MonoBehaviour
     [SerializeField] private Tile staircaseTile;
     [SerializeField] private GameObject staircaseTriggerPrefab;
 
+    // Need this for Staircase logic
+    private GameFlowManager gameFlowManager;
+
     // Hold reference to Room data on spawn
     public void Initialize(Room room)
     {
@@ -42,6 +45,9 @@ public class RoomRuntime : MonoBehaviour
                 EnemySpawnZones.Add(zone);
             }
         }
+
+        // "Hack" to find the GameFlowManager script reference
+        gameFlowManager = FindFirstObjectByType<GameFlowManager>();
     }
 
     // Picks a random spawnzone from the GameRoom's list of spawnzones
@@ -98,7 +104,9 @@ public class RoomRuntime : MonoBehaviour
         Vector3Int cell = staircaseTilemap.WorldToCell(worldPosition);
         staircaseTilemap.SetTile(cell, staircaseTile);
 
-        Instantiate(staircaseTriggerPrefab, staircaseTilemap.GetCellCenterWorld(cell), Quaternion.identity, transform);
+        GameObject staircase = Instantiate(staircaseTriggerPrefab, staircaseTilemap.GetCellCenterWorld(cell), Quaternion.identity, transform);
+        staircase.GetComponent<StaircaseTrigger>().Initialize(gameFlowManager);
+
     }
 
     // Subscribe to EnemyDeath

@@ -375,6 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFlowManager
   playerHealth: {fileID: 504820953}
+  floorManager: {fileID: 751135388}
 --- !u!4 &751135387
 Transform:
   m_ObjectHideFlags: 0

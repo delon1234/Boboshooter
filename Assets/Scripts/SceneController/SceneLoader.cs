@@ -19,4 +19,9 @@ public static class SceneLoader
     {
         SceneManager.LoadScene("GameOver");
     }
+
+    public static void LoadWin()
+    {
+        SceneManager.LoadScene("GameOver");
+    }
 }

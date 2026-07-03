@@ -172,6 +172,8 @@ GameObject:
   - component: {fileID: 4556956336146757329}
   - component: {fileID: 1917202944779915649}
   - component: {fileID: 251815275330622293}
+  - component: {fileID: 4210157828960455777}
+  - component: {fileID: 9084770464734025997}
   m_Layer: 8
   m_Name: Enemy_Boss
   m_TagString: Enemy
@@ -273,7 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec1a2ed494cc5644afc41a7ab33c283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBarBinder
-  enemy: {fileID: 251815275330622293}
+  health: {fileID: 4210157828960455777}
   healthBar: {fileID: 6573377768986710595}
 --- !u!114 &251815275330622293
 MonoBehaviour:
@@ -287,10 +289,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d2cbcd8c838e546abf336a08f3833a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossEnemy
-  maxHealth: 300
   collisionDamage: 1
   speed: 1
   collisionDamageInterval: 0.5
+--- !u!114 &4210157828960455777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7850202121345256729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c58f3ee68c48654c930ec1a6d3f7ce5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::HealthComponent
+  <MaxHealth>k__BackingField: 300
+  testInvulnerable: 1
+  invulnerableDuration: 5
+--- !u!114 &9084770464734025997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7850202121345256729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485f27505031ba54ab966e574e004b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::EnemyHealth
+  healthComponent: {fileID: 4210157828960455777}
 --- !u!1001 &1028349747868561822
 PrefabInstance:
   m_ObjectHideFlags: 0

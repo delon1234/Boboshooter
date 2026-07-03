@@ -4,23 +4,23 @@ using UnityEngine.UI;
 
 public class MinimapRenderer
 {
-    private Transform parent;
+    private Transform MinimapRoot;
     private MapGenerationConfig config;
     private MapGenerationState state;
     private Dictionary<int, Image> tilesByRoomNumber = new Dictionary<int, Image>();
 
     public MinimapRenderer(Transform parent, MapGenerationConfig config, MapGenerationState state)
     {
-        this.parent = parent;
+        this.MinimapRoot = parent;
         this.config = config;
         this.state = state;
     }
 
     public void FreshRender(IEnumerable<Room> rooms)
     {
-        for (int i = parent.childCount - 1; i >= 0; i--)
+        for (int i = MinimapRoot.childCount - 1; i >= 0; i--)
         {
-            Object.Destroy(parent.GetChild(i).gameObject);
+            Object.Destroy(MinimapRoot.GetChild(i).gameObject);
         }
         tilesByRoomNumber.Clear();
 
@@ -42,7 +42,7 @@ public class MinimapRenderer
         rectTransform.sizeDelta = new Vector2(config.Height, config.Width) * config.IconScale;
         rectTransform.position = room.Location * ((config.IconScale + config.Padding) * config.Height * config.Scale);
 
-        roomImage.transform.SetParent(parent, false);
+        roomImage.transform.SetParent(MinimapRoot, false);
         tilesByRoomNumber[room.RoomNumber] = roomImage;
     }
 

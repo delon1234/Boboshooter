@@ -12,13 +12,6 @@ public class MapGenerationState
     public int NumberOfRooms => rooms.Count;
     private int nextRoomNumber;
 
-    // Debugger Function!
-    public void ClearRoom()
-    {
-        rooms.Clear();
-        nextRoomNumber = 0;
-    }
-
     public Room CreateRoom(Sprite icon, Vector2 location, int distance)
     {
         Room room = new Room(nextRoomNumber, icon, location, distance);
@@ -27,10 +20,11 @@ public class MapGenerationState
         return room;
     }
 
-    // public void AddRoom(Room room)
-    // {
-    //     rooms[room.Location] = room;
-    // }
+    public void ResetState()
+    {
+        rooms.Clear();
+        nextRoomNumber = 0;
+    }
 
     public bool ContainsRoom(Vector2 location)
     {

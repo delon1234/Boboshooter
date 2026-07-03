@@ -46,7 +46,11 @@ public class EnemySpawner
                 SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BossEnemies, 1, 1);
                 break;
             case RoomType.Normal:
-                SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BasicEnemies, 2, 5);
+                // Normal Enemy count scaling by floor
+                int minCount = 2 + RunData.CurrentFloor;
+                int maxCount = 5+ RunData.CurrentFloor;
+
+                SpawnEnemies(room, args.GameRoom, EnemySpawnTable.BasicEnemies, minCount, maxCount);
                 break;
         }
         room.HasSpawnedEnemies = true;

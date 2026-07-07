@@ -69,11 +69,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     public void Heal(float amount)
     {
-        // Generic heal method for player
+        // Generic heal method for enemy
         healthComponent.RestoreHealth(amount);
     }
 
-    public void HealFully() // For Level Ascension
+    public void HealFully()
     {
         healthComponent.RestoreHealth(MaxHealth - CurrentHealth);
     }
@@ -81,15 +81,15 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void UpgradeMaxHealth(float amount)
     {
         // Upgrades to health are "full" - applies flat heal
-        Heal(amount);
         healthComponent.IncreaseMaxHealth(amount, false);
+        Heal(amount);
     }
 
     /* Tests */
-    [ContextMenu("Test Heal 2 HP")]
+    [ContextMenu("Test Heal 10 HP")]
     private void TestHeal()
     {
-        Heal(2f);
+        Heal(10f);
     }
 
     [ContextMenu("Test Heal Full")]

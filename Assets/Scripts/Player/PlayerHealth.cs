@@ -60,9 +60,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void UpgradeMaxHealth(float amount)
     {
-        // Upgrades to health are "full" - applies flat heal
-        Heal(amount);
+        // Upgrades to health are full hearts
         healthComponent.IncreaseMaxHealth(amount, false);
+        Heal(amount);
     }
 
     /* Tests */

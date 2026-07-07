@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Scripts::HealthComponent
   <MaxHealth>k__BackingField: 300
-  testInvulnerable: 1
+  testInvulnerable: 0
   invulnerableDuration: 5
 --- !u!114 &9084770464734025997
 MonoBehaviour:

@@ -8,16 +8,17 @@ using UnityEngine.InputSystem;
 public class FloorManager : MonoBehaviour
 {
     // Serialized map settings and room icons.
-    public float Height = 500;
-    public float Width = 500;
-    public float Scale = 1f;
-    public float IconScale = 0.05f;
-    public float Padding = 0.005f;
-    public float RoomGenerationChance = 0.15f;
-    public int MaxRoomAway = 8;
-    public int MinRoomCount = 20;
-    public int MaxRoomCount = 30;
+    [Header("Minimap Parent")]
+    [SerializeField] private Transform minimapObject;
 
+    [Header("Minimap Settings")]
+    public float Height; // = 500;
+    public float Width; // = 500;
+    public float Scale; // = 1;
+    public float IconScale; // = 0.05f;
+    public float Padding; // = 0.005f;
+
+    [Header("Minimap Icon Settings")]
     public Sprite TreasureRoom;
     public Sprite BossRoom;
     public Sprite ShopRoom;
@@ -25,10 +26,17 @@ public class FloorManager : MonoBehaviour
     public Sprite ExploredRoom;
     public Sprite CurrentRoom;
 
-    [SerializeField] private Transform minimapObject;
+    [Header("Generator Settings")]
+    public float RoomGenerationChance; // = 0.15f;
+    public int MaxRoomAway; // = 8;
+    public int MinRoomCount; // = 20;
+    public int MaxRoomCount; // = 30;
 
+    [Header("Room Spawning Weights")]
     [SerializeField] private RoomSpawnTable RoomSpawnTable;
 
+    [Header("Enemy Spawning Weights")]
+    [SerializeField] private EnemySpawnTable EnemySpawnTable;
     // Scripts
     private MapGenerationConfig config;
     private MapGenerationState state;
@@ -39,8 +47,6 @@ public class FloorManager : MonoBehaviour
     private RoomManager RoomManager;
     private PlayerRoomTeleport PlayerRoomTeleport;
     private EnemySpawner EnemySpawner;
-
-    [SerializeField] private EnemySpawnTable EnemySpawnTable;
 
     private void Awake()
     {

@@ -7,6 +7,12 @@ public class PickupBehaviour : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private PickupDefinition definition;
 
+    // Assigns spriteRenderer the Component in itself
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     public void Initialize(PickupDefinition definition)
     {
         this.definition = definition;

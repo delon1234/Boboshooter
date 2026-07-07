@@ -241,6 +241,17 @@ MonoBehaviour:
   collisionDamage: 1
   speed: 3
   collisionDamageInterval: 0.5
+  lootTable:
+    LootDropTable:
+    - definition: {fileID: 0}
+      weight: 100
+    - definition: {fileID: 11400000, guid: 7dbcecdd393c5174bb26fdf7e5840747, type: 2}
+      weight: 100
+    - definition: {fileID: 11400000, guid: e730429ba109e2f4badddf4d420965e3, type: 2}
+      weight: 2
+    - definition: {fileID: 11400000, guid: 90a3fd41eed5d6b45abeb41b2698596c, type: 2}
+      weight: 1
+  pickupPrefab: {fileID: 1869031800356667107, guid: ed70c1eee69f0894ca12ee2b4dfcd285, type: 3}
 --- !u!70 &4556956336146757329
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

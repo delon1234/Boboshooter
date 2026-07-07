@@ -5,7 +5,7 @@ public class PlayerHeartsUI : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject heartPrefab; // Prefab for the heart UI element
-    private PlayerHealth playerHealth; // Reference to the PlayerHealth component
+    private IHealth playerHealth; // Reference to the PlayerHealth component
     List<SingleHeartUI> hearts = new List<SingleHeartUI>(); // List to hold references to the heart UI elements
     private void Start()
     {

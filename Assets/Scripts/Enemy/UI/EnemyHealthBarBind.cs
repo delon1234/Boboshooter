@@ -4,8 +4,13 @@ using UnityEngine;
 // Responsible for the HealthBar UI updates, triggered from enemy damaged
 public class EnemyHealthBarBinder : MonoBehaviour
 {
-    [SerializeField] private HealthComponent health;
+    private IHealth health;
     [SerializeField] private EnemyHealthBar healthBar;
+
+    private void Awake()
+    {
+        health = GetComponent<IHealth>();
+    }
 
     private void OnEnable()
     {

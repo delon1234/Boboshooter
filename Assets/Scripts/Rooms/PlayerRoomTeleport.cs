@@ -39,6 +39,12 @@ public class PlayerRoomTeleport : MonoBehaviour
         }
     }
 
+    // Resets to clean slate
+    public void TeleportToSpawn()
+    {
+        player.transform.position = Vector2.zero;
+    }
+
     private Vector2 GetOpposite(Vector2 dir)
     {
         if (dir == Vector2.up) return Vector2.down;

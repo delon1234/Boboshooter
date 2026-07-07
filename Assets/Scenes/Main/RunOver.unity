@@ -705,7 +705,7 @@ GameObject:
   - component: {fileID: 1644198823}
   - component: {fileID: 1644198822}
   m_Layer: 5
-  m_Name: Game Over Text
+  m_Name: Run Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1222,6 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c398096e648dd4d9bbda60720fb928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameOverUI
+  titleText: {fileID: 1644198822}
   floorText: {fileID: 1834767288}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

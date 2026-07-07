@@ -7,7 +7,10 @@ public class RoomSpawner
     private MapGenerationState state;
     private RoomSpawnTable RoomSpawnTable;
 
-    private Dictionary<Vector2, GameObject> spawnedRooms = new();
+    // GameObject parenting all GameRooms, easy for resets
+    private Transform FloorRoot;
+    // Dictionary Lookup for GameRooms
+    private Dictionary<Vector2, GameObject> spawnedRoomObjects = new();
 
     public RoomSpawner(MapGenerationState state, RoomSpawnTable RoomSpawnTable)
     {
@@ -17,19 +20,20 @@ public class RoomSpawner
 
     public void SpawnAllRooms(RoomManager RoomManager)
     {
+        FloorRoot = new GameObject("FloorRoot").transform;
+
         foreach (Room room in state.Rooms)
         {
             GameObject ChosenGameRoom = GetRoomPrefab(room); 
             GameObject GameRoom = Object.Instantiate(ChosenGameRoom, Vector2.zero, Quaternion.identity);
-            Debug.Log(GameRoom);
             RoomRuntime runtime = GameRoom.GetComponentInChildren<RoomRuntime>();
-            Debug.Log(runtime);
             runtime.Initialize(room);
 
             GameRoom.SetActive(false);
             GameRoom.name = $"Room {room.RoomNumber}";
+            GameRoom.transform.SetParent(FloorRoot);
             InitializeDoors(GameRoom, room, RoomManager);
-            spawnedRooms[room.Location] = GameRoom;
+            spawnedRoomObjects[room.Location] = GameRoom;
         }
     }
 
@@ -61,13 +65,13 @@ public class RoomSpawner
     public GameObject SetActiveRoom(Vector2 location)
     {
         // Make all room Inactive
-        foreach (var keyValue in spawnedRooms)
+        foreach (var keyValue in spawnedRoomObjects)
         {
             keyValue.Value.SetActive(false);
         }
 
         // Set requested room as Active
-        if (spawnedRooms.TryGetValue(location, out GameObject room))
+        if (spawnedRoomObjects.TryGetValue(location, out GameObject room))
         {
             room.SetActive(true);
             return room;
@@ -83,5 +87,15 @@ public class RoomSpawner
         {
             door.Initialize(RoomManager, room);
         }
+    }
+
+    // Resets everything, GameRoom parent and dictionary
+    public void Reset()
+    {
+        if (FloorRoot != null)
+        {
+            Object.Destroy(FloorRoot.gameObject);
+        }
+        spawnedRoomObjects.Clear();
     }
 }

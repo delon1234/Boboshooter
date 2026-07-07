@@ -4,20 +4,21 @@ using UnityEngine.InputSystem;
 
 // Starting point from Unity Run
 // Attached to the Canvas for Minimap
-// Handles all game scene logic
-public class GenerateLevel : MonoBehaviour
+// Orchestrator of all Floor related Managers
+public class FloorManager : MonoBehaviour
 {
     // Serialized map settings and room icons.
-    public float Height = 500;
-    public float Width = 500;
-    public float Scale = 1f;
-    public float IconScale = 0.05f;
-    public float Padding = 0.005f;
-    public float RoomGenerationChance = 0.15f;
-    public int MaxRoomAway = 8;
-    public int MinRoomCount = 20;
-    public int MaxRoomCount = 30;
+    [Header("Minimap Parent")]
+    [SerializeField] private Transform minimapObject;
 
+    [Header("Minimap Settings")]
+    public float Height; // = 500;
+    public float Width; // = 500;
+    public float Scale; // = 1;
+    public float IconScale; // = 0.05f;
+    public float Padding; // = 0.005f;
+
+    [Header("Minimap Icon Settings")]
     public Sprite TreasureRoom;
     public Sprite BossRoom;
     public Sprite ShopRoom;
@@ -25,10 +26,17 @@ public class GenerateLevel : MonoBehaviour
     public Sprite ExploredRoom;
     public Sprite CurrentRoom;
 
-    [SerializeField] private Transform minimapObject;
+    [Header("Generator Settings")]
+    public float RoomGenerationChance; // = 0.15f;
+    public int MaxRoomAway; // = 8;
+    public int MinRoomCount; // = 20;
+    public int MaxRoomCount; // = 30;
 
+    [Header("Room Spawning Weights")]
     [SerializeField] private RoomSpawnTable RoomSpawnTable;
 
+    [Header("Enemy Spawning Weights")]
+    [SerializeField] private EnemySpawnTable EnemySpawnTable;
     // Scripts
     private MapGenerationConfig config;
     private MapGenerationState state;
@@ -39,8 +47,6 @@ public class GenerateLevel : MonoBehaviour
     private RoomManager RoomManager;
     private PlayerRoomTeleport PlayerRoomTeleport;
     private EnemySpawner EnemySpawner;
-
-    [SerializeField] private EnemySpawnTable EnemySpawnTable;
 
     private void Awake()
     {
@@ -71,35 +77,40 @@ public class GenerateLevel : MonoBehaviour
         EnemySpawner = new EnemySpawner(EnemySpawnTable);
     }
 
-    // Simulate Room Rerender
-    private void DebugFunction()
-    {
-        state.ClearRoom();
-        generator.Generate();
-        minimap.FreshRender(state.Rooms);
-    }
-
     private void Start()
     {
-        generator.Generate();
-        minimap.FreshRender(state.Rooms);
-        RoomSpawner.SpawnAllRooms(RoomManager);
-
         // Help other MonoBehaviour scripts subscribes to RoomChange event
         RoomManager.OnRoomChanged += minimap.OnRoomChanged;
         RoomManager.OnRoomChanged += PlayerRoomTeleport.Instance.OnRoomChanged;
         RoomManager.OnRoomChanged += EnemySpawner.OnRoomChanged;
+
+        GenerateFloor();
+    }
+
+    // Expose 1 function to clear and generate a new floor
+    public void GenerateNewFloor()
+    {
+        ClearFloor();
+        GenerateFloor();
+        PlayerRoomTeleport.TeleportToSpawn();
+    }
+
+    // Assumes a clean slate, preps the scene for a new
+    private void GenerateFloor()
+    {
+        generator.Generate();
+        minimap.FreshRender(state.Rooms);
+        RoomSpawner.SpawnAllRooms(RoomManager);
 
         // Logically Enters the Starting Room
         // Note this has to be done AFTER subscribers listen to OnRoomChanged Event
         RoomManager.Initialize();
     }
 
-    private void Update()
+    // Cleans up Level state for a clean slate
+    private void ClearFloor()
     {
-        if (Keyboard.current != null && Keyboard.current.tabKey.wasPressedThisFrame)
-        {
-            DebugFunction();
-        }
+        RoomSpawner.Reset();
+        state.ResetState();
     }
 }

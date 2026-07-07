@@ -375,6 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFlowManager
   playerHealth: {fileID: 504820953}
+  floorManager: {fileID: 751135388}
 --- !u!4 &751135387
 Transform:
   m_ObjectHideFlags: 0
@@ -402,22 +403,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231ac7fef25a6f943b4c5e0aaa4a9ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GenerateLevel
+  minimapObject: {fileID: 122326427}
   Height: 500
   Width: 500
   Scale: 1
   IconScale: 0.05
   Padding: 0.005
-  RoomGenerationChance: 0.15
-  MaxRoomAway: 8
-  MinRoomCount: 20
-  MaxRoomCount: 30
   TreasureRoom: {fileID: 7860793303983921566, guid: 8bf56aa43ff49054b88e6e97a3ba20bc, type: 3}
   BossRoom: {fileID: -6248741079362886434, guid: 2130b2bc124477d4d97af945b47daaa4, type: 3}
   ShopRoom: {fileID: 7860793303983921566, guid: 8bf56aa43ff49054b88e6e97a3ba20bc, type: 3}
   UnexploredRoom: {fileID: -9053184620634773490, guid: 1edd5ac85abf9294cb5d27c9af42f40f, type: 3}
   ExploredRoom: {fileID: -7230648020599751077, guid: 58dee1ed138903e47a8a5c620b99a827, type: 3}
   CurrentRoom: {fileID: 6132706867374971017, guid: a4ec276ac70455440a34c8ef43ef2fc5, type: 3}
-  minimapObject: {fileID: 122326427}
+  RoomGenerationChance: 0.15
+  MaxRoomAway: 8
+  MinRoomCount: 20
+  MaxRoomCount: 30
   RoomSpawnTable:
     BossRoom:
       Prefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}

@@ -15,8 +15,8 @@ public static class SceneLoader
         SceneManager.LoadScene("GameScene");
     }
 
-    public static void LoadGameOver()
+    public static void LoadRunOver()
     {
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("RunOver");
     }
 }

@@ -5,8 +5,7 @@ public class MainMenuUI : MonoBehaviour
 {
     public void StartGame()
     {   
-        RunData.StartNewRun();
-        SceneLoader.LoadGame();
+        SceneLoader.StartNewRun();
     }
 
     public void QuitGame()

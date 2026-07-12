@@ -1,7 +1,6 @@
 using UnityEngine;
 
-// Defines how the Prefab Pickup behaves by Definitions stored in Assets/Data/Pickup for Sprite and Amount
-// Behaviour will be defined under Collect()
+// Defines how the Prefab Pickup Collision behaves by Definitions stored in Assets/Data/Pickup for Sprite and Amount
 public class PickupBehaviour : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
@@ -26,27 +25,7 @@ public class PickupBehaviour : MonoBehaviour
         {
             return;
         }
-        Collect(other.gameObject);
-    }
-
-    // all choices for the Pickup behaviour
-    private void Collect(GameObject player)
-    {
-        switch (definition.Type)
-        {
-            case PickupType.Coin:
-                RunData.AddCoins(definition.Amount);
-                break;
-
-            case PickupType.Heal:
-                player.GetComponent<PlayerHealth>().Heal(definition.Amount);
-                break;
-
-            case PickupType.MaxHealth:
-                player.GetComponent<PlayerHealth>().UpgradeMaxHealth(definition.Amount);
-                break;
-        }
-
+        PickupEffect.Apply(other.gameObject, definition);
         Destroy(gameObject);
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class ShopWeightEntry : IWeighted
 {
-    [SerializeField] public PickupDefinition pickup;
+    [SerializeField] public PickupDefinition definition;
     [SerializeField] public int cost;
     [SerializeField] public int weight;
 

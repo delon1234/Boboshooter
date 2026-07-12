@@ -1,21 +1,12 @@
 using UnityEngine;
 
+// Pickups readily available for collect, spawned by enemies
 // Defines how the Prefab Pickup Collision behaves by Definitions stored in Assets/Data/Pickup for Sprite and Amount
-public class PickupBehaviour : MonoBehaviour
+public class PickupBehaviour : BasePickupBehaviour
 {
-    private SpriteRenderer spriteRenderer;
-    private PickupDefinition definition;
-
-    // Assigns spriteRenderer the Component in itself
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
     public void Initialize(PickupDefinition definition)
     {
-        this.definition = definition;
-        spriteRenderer.sprite = definition.Sprite;
+        InitializePickup(definition);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -25,7 +16,6 @@ public class PickupBehaviour : MonoBehaviour
         {
             return;
         }
-        PickupEffect.Apply(other.gameObject, definition);
-        Destroy(gameObject);
+        Collect(other.gameObject);
     }
 }

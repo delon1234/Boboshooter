@@ -20,9 +20,14 @@ public class EnemySpawner
             EnemyWeightEntry ChosenEnemyEntry = WeightedRandom.Pick(SpawnList);
             GameObject EnemyPrefab = ChosenEnemyEntry.Prefab;
             Vector2 pos = roomRuntime.GetRandomPoint();
-            GameObject EnemyInstance = Object.Instantiate(EnemyPrefab, pos, Quaternion.identity);
+            GameObject EnemyInstance = Object.Instantiate(EnemyPrefab, pos, Quaternion.identity, GameRoom.transform);
             BasicEnemy BasicEnemy = EnemyInstance.GetComponent<BasicEnemy>();
+
+            // Pass Enemy into RoomRuntime to help with Door Logic            
             roomRuntime.OnEnemySpawned(BasicEnemy);
+
+            // Pass GameRoom into Enemy to help with Parenting LootDrops under Room
+            BasicEnemy.Initialize(roomRuntime);
         }
         if (enemyCount > 0)
         {

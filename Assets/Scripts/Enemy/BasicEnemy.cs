@@ -21,6 +21,10 @@ public abstract class BasicEnemy : MonoBehaviour
     
     private EnemyHealthBar healthBar;
 
+    // Pickup Drops. Each Enemy has own LootTable
+    [SerializeField] private LootTable lootTable;
+    [SerializeField] private PickupBehaviour pickupPrefab;
+    private RoomRuntime roomRuntime;
 
     protected virtual void Awake()
     {
@@ -35,6 +39,12 @@ public abstract class BasicEnemy : MonoBehaviour
         player = Player.Instance;
         playerTransform = player.transform;
     }
+
+    public void Initialize(RoomRuntime roomRuntime)
+    {
+        this.roomRuntime = roomRuntime;
+    }
+
     public void TakeDamage(DamageInfo damageinfo)
     {
         Health.TakeDamage(damageinfo);
@@ -87,6 +97,43 @@ public abstract class BasicEnemy : MonoBehaviour
     }
     // Each type of enemy must implement their own Walk Pattern
     protected abstract void WalkLogic();
+
+    private void DropLoot()
+    {
+        // No Serialized Loot Table, maybe never drops loot
+        if (lootTable == null)
+        {
+            return;
+        }
+        // Chooses random loot, if null, means No Loot, return
+        LootWeightEntry RandomLoot = WeightedRandom.Pick(lootTable.LootDropTable);
+        if (RandomLoot.definition == null)
+        {
+            return;
+        }
+        PickupBehaviour PickupObject = Instantiate(pickupPrefab, transform.position, Quaternion.identity, roomRuntime.transform);
+        PickupObject.Initialize(RandomLoot.definition);
+    }
+
+    // Common Handling of Enemy Death
+    // Might want to separate Destroy() for Visual Animations in future
+    // Handles Loot Drop
+    public void OnEnemyDeath(BasicEnemy enemy)
+    {
+        DropLoot();
+        Destroy(gameObject);
+    }
+
+    // Subscribe to its own EnemyDeath
+    private void OnEnable()
+    {
+        Health.OnEnemyDied += OnEnemyDeath;
+    }
+
+    private void OnDisable()
+    {
+        Health.OnEnemyDied -= OnEnemyDeath;
+    }
 
     private void Update()
     {

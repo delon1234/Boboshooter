@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
      */
     [SerializeField] HealthComponent healthComponent;
     // Event fired to all RoomRuntimes about an instanced enemy death
-    public static event Action<BasicEnemy> OnEnemyDied;
+    public event Action<BasicEnemy> OnEnemyDied;
 
     private void OnEnable()
     {
@@ -24,7 +24,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         // healthComponent.OnDeath triggers OnEnemyDied event
         OnEnemyDied?.Invoke(GetComponent<BasicEnemy>());
-        Destroy(gameObject);
     }
 
     // Expose properties from HealthComponent without duplicating the state variables (Single source of truth)

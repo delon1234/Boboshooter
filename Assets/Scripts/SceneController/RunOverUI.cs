@@ -25,7 +25,7 @@ public class RunOverUI : MonoBehaviour
 
     public void Replay()
     {
-        SceneLoader.LoadGame();
+        SceneLoader.StartNewRun();
     }
 
     public void MainMenu()

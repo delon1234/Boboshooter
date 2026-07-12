@@ -83,10 +83,13 @@ public class RoomRuntime : MonoBehaviour
     public void OnEnemySpawned(BasicEnemy enemy)
     {
         ActiveEnemies.Add(enemy);
+        // Subscribe to EnemyDeath for each Enemy
+        enemy.GetComponent<EnemyHealth>().OnEnemyDied += OnEnemyDeath;
     }
 
     public void OnEnemyDeath(BasicEnemy enemy)
     {
+        enemy.Health.OnEnemyDied -= OnEnemyDeath;
         ActiveEnemies.Remove(enemy);
         if (ActiveEnemies.Count <= 0)
         {
@@ -107,16 +110,5 @@ public class RoomRuntime : MonoBehaviour
         GameObject staircase = Instantiate(staircaseTriggerPrefab, staircaseTilemap.GetCellCenterWorld(cell), Quaternion.identity, transform);
         staircase.GetComponent<StaircaseTrigger>().Initialize(gameFlowManager);
 
-    }
-
-    // Subscribe to EnemyDeath
-    private void OnEnable()
-    {
-        EnemyHealth.OnEnemyDied += OnEnemyDeath;
-    }
-
-    private void OnDisable()
-    {
-        EnemyHealth.OnEnemyDied -= OnEnemyDeath;
     }
 }

@@ -41,17 +41,30 @@ public class Shooter : MonoBehaviour
         }
     }
 
+    public void EquipWeapon(WeaponData weapon) {
+        activeWeapon = weapon;
+        // PlayerUpgrades.RecalculateStaticStats() or some cached part;
+        UpdateBaseStats(activeWeapon.baseStats);
+    }
+
+    public void UpdateBaseStats(WeaponStats newBaseStats) {
+        // Base weapon stats + Static Modifiers
+        cachedStaticStats = newBaseStats;
+    }
+
     public void TryFire() {
         // 1. Check cooldown based on fireRate
         if (cooldownTimer > 0f) return;
         // 2. Checks ammo
         // 3. Reset cooldown timer
+        // if (ammoComponent != null && !ammoComponent.CanFire()) return;
         cooldownTimer = 1f / activeWeapon.baseStats.fireRate;
         // 4. Fire
         FireOnce();
     }
 
     public void FireOnce() {
+        /* No timing elements to shooting here;*/
         // Reduce ammo by 1
         // Get Final Stats
         WeaponStats finalStats = activeWeapon.baseStats;

@@ -36,6 +36,7 @@ public class Bullet : MonoBehaviour
         transform.localScale = Vector3.one * weaponStats.projectileScale; // For upgrades that increase scale of bullet
         // 3. Return bullet to pool after lifetime to prevent bullets from permanenently persisting when shot outside of map
         if (lifetimeCoroutine != null) {
+            // Prevents double-release bug when Initialize() is called twice on same bullet
             StopCoroutine(lifetimeCoroutine);
         }
         lifetimeCoroutine = StartCoroutine(DeactivateAfterDelay(lifetime));
@@ -47,14 +48,17 @@ public class Bullet : MonoBehaviour
         ReleaseToPool();
     }
     
+    // No need for OnGet() and OnRelease() as state is set in Initialize()
+
     public void ReleaseToPool()
     {
         if (lifetimeCoroutine != null)
         {
-            StopCoroutine(lifetimeCoroutine);
+            // Prevents double-release to pool bug when bullet hits enemy
+            StopCoroutine(lifetimeCoroutine); // Stops coroutine before release
             lifetimeCoroutine = null;
         }
-        // In case of not using PoolManager
+        // Prevents NullReference in case of not using PoolManager (e.g. Instantiate)
         if (associatedPool != null)
         {
             associatedPool.Release(this);

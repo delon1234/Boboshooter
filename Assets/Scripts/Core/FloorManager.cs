@@ -19,12 +19,10 @@ public class FloorManager : MonoBehaviour
     public float Padding; // = 0.005f;
 
     [Header("Minimap Icon Settings")]
-    public Sprite TreasureRoom;
-    public Sprite BossRoom;
-    public Sprite ShopRoom;
-    public Sprite UnexploredRoom;
-    public Sprite ExploredRoom;
-    public Sprite CurrentRoom;
+    [SerializeField] private RoomIconEntry[] RoomIcons;
+    [SerializeField] private Sprite UnexploredRoom;
+    [SerializeField] private Sprite ExploredRoom;
+    [SerializeField] private Sprite CurrentRoom;
 
     [Header("Generator Settings")]
     public float RoomGenerationChance; // = 0.15f;
@@ -61,9 +59,7 @@ public class FloorManager : MonoBehaviour
             MaxRoomAway,
             MinRoomCount,
             MaxRoomCount,
-            TreasureRoom,
-            BossRoom,
-            ShopRoom,
+            RoomIcons,
             UnexploredRoom,
             ExploredRoom,
             CurrentRoom);

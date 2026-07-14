@@ -409,16 +409,20 @@ MonoBehaviour:
   Scale: 1
   IconScale: 0.05
   Padding: 0.005
-  TreasureRoom: {fileID: 7860793303983921566, guid: 8bf56aa43ff49054b88e6e97a3ba20bc, type: 3}
-  BossRoom: {fileID: -6248741079362886434, guid: 2130b2bc124477d4d97af945b47daaa4, type: 3}
-  ShopRoom: {fileID: 7860793303983921566, guid: 8bf56aa43ff49054b88e6e97a3ba20bc, type: 3}
+  RoomIcons:
+  - Type: 1
+    Icon: {fileID: -6248741079362886434, guid: 2130b2bc124477d4d97af945b47daaa4, type: 3}
+  - Type: 2
+    Icon: {fileID: 7860793303983921566, guid: 8bf56aa43ff49054b88e6e97a3ba20bc, type: 3}
+  - Type: 3
+    Icon: {fileID: -1151905075149521417, guid: ec0711fc2aa195d4ab2ac669d40d620e, type: 3}
   UnexploredRoom: {fileID: -9053184620634773490, guid: 1edd5ac85abf9294cb5d27c9af42f40f, type: 3}
   ExploredRoom: {fileID: -7230648020599751077, guid: 58dee1ed138903e47a8a5c620b99a827, type: 3}
   CurrentRoom: {fileID: 6132706867374971017, guid: a4ec276ac70455440a34c8ef43ef2fc5, type: 3}
   RoomGenerationChance: 0.15
   MaxRoomAway: 8
-  MinRoomCount: 20
-  MaxRoomCount: 30
+  MinRoomCount: 4
+  MaxRoomCount: 5
   RoomSpawnTable:
     BossRoom:
       Prefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}
@@ -427,7 +431,7 @@ MonoBehaviour:
       Prefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}
       weight: 1
     ShopRoom:
-      Prefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}
+      Prefab: {fileID: 771417032029515251, guid: 6260be3321bdc6643a24d49d4a6737ef, type: 3}
       weight: 1
     NormalRooms:
     - Prefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}
@@ -641,6 +645,14 @@ PrefabInstance:
     - target: {fileID: 1458361704693606796, guid: 7fcb0b58ab37576459376f133085c5c0, type: 3}
       propertyPath: m_Name
       value: HUDCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645940200147299027, guid: 7fcb0b58ab37576459376f133085c5c0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 12.862915
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645940200147299027, guid: 7fcb0b58ab37576459376f133085c5c0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -18.86554
       objectReference: {fileID: 0}
     - target: {fileID: 5597267043125276208, guid: 7fcb0b58ab37576459376f133085c5c0, type: 3}
       propertyPath: m_AnchoredPosition.y

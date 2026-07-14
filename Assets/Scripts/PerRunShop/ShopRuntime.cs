@@ -3,12 +3,14 @@ using UnityEngine;
 
 // Attached to ShopRooms
 // Helps initialize ShopPickups into the GameScene via Serialized Positions
-public class ShopRuntime : MonoBehaviour
+public class ShopRuntime : MonoBehaviour , IRoomRuntime
 {
+    private Room room;
+
     [SerializeField] private ShopTable shopTable;
     [SerializeField] private GameObject shopPickupPrefab;
     [SerializeField] private Transform pickupSpawnpointParent;
-    private List<Transform> pickupSpawnpoints;
+    private List<Transform> pickupSpawnpoints = new List<Transform>();
 
     private void Awake()
     {
@@ -26,5 +28,10 @@ public class ShopRuntime : MonoBehaviour
             GameObject ShopPickupClone = Instantiate(shopPickupPrefab, point.position, Quaternion.identity, transform);
             ShopPickupClone.GetComponent<ShopPickupBehaviour>().Initialize(selectedEntry);
         }
+    }
+
+    public void Initialize(Room room)
+    {
+        this.room = room;
     }
 }

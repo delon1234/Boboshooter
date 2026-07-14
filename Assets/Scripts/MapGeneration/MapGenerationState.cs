@@ -12,9 +12,9 @@ public class MapGenerationState
     public int NumberOfRooms => rooms.Count;
     private int nextRoomNumber;
 
-    public Room CreateRoom(Sprite icon, Vector2 location, int distance)
+    public Room CreateRoom(Vector2 location, int distance)
     {
-        Room room = new Room(nextRoomNumber, icon, location, distance);
+        Room room = new Room(nextRoomNumber, location, distance);
         rooms[room.Location] = room;
         nextRoomNumber += 1;
         return room;
@@ -42,15 +42,26 @@ public class MapGenerationState
         return Rooms.Where(room => room.IsDeadend).ToList();
     }
 
-    public Room GetFurthestRoom()
+    // Maximum Distance + RoomType is Normal
+    public Room GetFurthestAvailableRoom()
     {
         if (NumberOfRooms == 0)
         {
             return null;
         }
-
         int maxDistance = Rooms.Max(room => room.Distance);
-        List<Room> furthestRooms = Rooms.Where(room => room.Distance == maxDistance).ToList();
-        return furthestRooms[Random.Range(0, furthestRooms.Count)];
+
+        // Filters all rooms for Max Distance + RoomType is Normal
+        List<Room> candidateRooms = Rooms.Where(room => room.Distance == maxDistance).Where(room => room.Type == RoomType.Normal).ToList();
+        while (candidateRooms.Count == 0 && maxDistance > 0)
+        {
+            // Ideally, candidate will not be 0, but if it is, decrease Max by 1 and pick again.
+            maxDistance -= 1;
+            candidateRooms = Rooms.Where(room => room.Distance == maxDistance).Where(room => room.Type == RoomType.Normal).ToList();
+        } 
+
+        // Guard against Candidate 0. Should not happen
+        Debug.Log("Room Generation Error, GetFurthestAvailableRoom has no Candidates");
+        return candidateRooms.Count == 0 ? null : candidateRooms[Random.Range(0, candidateRooms.Count)];
     }
 }

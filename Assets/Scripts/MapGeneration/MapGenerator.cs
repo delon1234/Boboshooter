@@ -20,7 +20,7 @@ public class MapGenerator
     public MapGenerationState Generate()
     {
         // First Room
-        Room startingRoom = state.CreateRoom(config.UnexploredRoomIcon, new Vector2(0, 0), 0);
+        Room startingRoom = state.CreateRoom(new Vector2(0, 0), 0);
         startingRoom.SetPeaceful();
         HandleNestedGeneration(startingRoom);
 
@@ -33,11 +33,17 @@ public class MapGenerator
         }
 
         // Sets a random furthest room into a boss room
-        Room furthestRoom = state.GetFurthestRoom();
+        Room furthestRoom = state.GetFurthestAvailableRoom();
         if (furthestRoom != null)
         {
-            furthestRoom.SetIcon(config.BossRoomIcon);
             furthestRoom.SetType(RoomType.Boss);
+        }
+
+        // Sets a random furthest room into a Shop room
+        furthestRoom = state.GetFurthestAvailableRoom();
+        if (furthestRoom != null)
+        {
+            furthestRoom.SetType(RoomType.Shop);
         }
 
         return state;
@@ -74,7 +80,7 @@ public class MapGenerator
 
             if (MapGenerationRules.IsEligibleForGeneration(state, config, position, direction))
             {
-                Room newRoom = state.CreateRoom(config.UnexploredRoomIcon, position, room.Distance + 1);
+                Room newRoom = state.CreateRoom(position, room.Distance + 1);
                 // Define Neighbour Connections, needed for Door linkage
                 room.Connect(offset, newRoom);
                 newRoom.Connect(-offset, room);

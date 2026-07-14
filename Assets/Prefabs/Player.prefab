@@ -108,9 +108,9 @@ GameObject:
   - component: {fileID: 7452930670118656802}
   - component: {fileID: 8861524273887590787}
   - component: {fileID: 3925627923625933034}
-  - component: {fileID: 4015768454261099709}
   - component: {fileID: -6583379883000457598}
   - component: {fileID: 5728599460420044215}
+  - component: {fileID: 5784454363283574928}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -299,20 +299,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   healthComponent: {fileID: 6376162265139665616}
   onHitInvulnDuration: 1
---- !u!114 &4015768454261099709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765204014813142826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95f402834806c844fa293fed245b3682, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerShooter
-  bulletPrefab: {fileID: 2306711888877393809, guid: f95d7130426cd1a4d9b8a2d35ae52fb3, type: 3}
-  shootPoint: {fileID: 8118916696568009510}
 --- !u!114 &-6583379883000457598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,6 +325,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   animator: {fileID: 3911892710930190160}
+--- !u!114 &5784454363283574928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765204014813142826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f89a3e6df3d4b484c8ede5c6ceba160b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::Shooter
+  shootPoint: {fileID: 8118916696568009510}
+  activeWeapon: {fileID: 11400000, guid: e2d261d0f8dd9f844a07a7cc8ae3f4d6, type: 2}
 --- !u!1 &2290543837856853993
 GameObject:
   m_ObjectHideFlags: 0

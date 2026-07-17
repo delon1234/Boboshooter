@@ -13,7 +13,7 @@ public struct WeaponStats
     // Ammo Stats
     public int magazineSize;
     public float reloadTime;
-    public int ammoReserveCapacity;
+    public int ammoReserveCapacity; // -1 = infinite ammo (sentinel value)
 
     // Visuals and effects stored in BulletPrefab
     // Bullet Stats

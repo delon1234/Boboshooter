@@ -1,6 +1,6 @@
 public enum ShootingMode
 {
     Auto,
-    Semi,
+    SemiAuto,
     Burst,
 }

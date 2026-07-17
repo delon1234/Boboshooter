@@ -15,6 +15,12 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IHealth, IInvulnerable
 
     /* Forward Events Sub/Unsub to private HealthComponent */
 
+    public event Action<bool> OnInvulnerabilityChanged
+    {
+        add => healthComponent.OnInvulnerabilityChanged += value;
+        remove => healthComponent.OnInvulnerabilityChanged -= value;
+    }
+
     public event Action<HealthInfo> OnHealthChange
     {
         add => healthComponent.OnHealthChange += value;

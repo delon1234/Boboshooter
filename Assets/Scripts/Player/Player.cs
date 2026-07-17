@@ -12,8 +12,9 @@ public class Player : MonoBehaviour
     public PlayerController Controller { get; private set; }
     public PlayerInputHandler Input { get; private set; }
     public PlayerAnimator Animator {  get; private set; }
-    public PlayerShooter Shooter { get; private set; }
+    public Shooter Shooter { get; private set; }
     public AimController AimController { get; private set; }
+    public AmmoComponent Ammo { get; private set; }
 
     // Cache singleton instance
     public static Player Instance { get; private set; }
@@ -34,8 +35,9 @@ public class Player : MonoBehaviour
         Controller = GetComponent<PlayerController>();
         Input = GetComponent<PlayerInputHandler>();
         Animator = GetComponentInChildren<PlayerAnimator>(); // PlayerAnimator in Sprite (child of Player)
-        Shooter = GetComponent<PlayerShooter>();
+        Shooter = GetComponent<Shooter>();
         AimController = GetComponentInChildren<AimController>();
+        Ammo = GetComponent<AmmoComponent>();
     }
 
     private void Start()

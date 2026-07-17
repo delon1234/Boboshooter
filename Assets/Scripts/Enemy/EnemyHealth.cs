@@ -2,14 +2,19 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour, IDamageable, IHealth
+public class EnemyHealth : MonoBehaviour, IDamageable, IHealth, IInvulnerable
 {
     /* EnemyHealth is a wrapper around HealthComponent that enables enemy-specific logic to be applied when taking damage before HealthComponent applies common damage logic across entities.
      */
     [SerializeField] HealthComponent healthComponent;
-    [SerializeField] private bool canBeInvulnerable = false; // True only for Bosses/Elites
+    [SerializeField] private bool canBeInvulnerable = true; // True only for Bosses/Elites
     // Event fired to all RoomRuntimes about an instanced enemy death
     public static event Action<BasicEnemy> OnEnemyDied;
+
+    // private void Start() {
+    //     // Testing
+    //     healthComponent.GainInvulnerability(5);
+    // }
 
     private void OnEnable()
     {
@@ -32,6 +37,13 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IHealth
     public bool IsInvulnerable => healthComponent.IsInvulnerable;
     public float CurrentHealth => healthComponent.CurrentHealth;
     public float MaxHealth => healthComponent.MaxHealth;
+
+    // Testing for invulnerable enemies
+    public event Action<bool> OnInvulnerabilityChanged
+    {
+        add => healthComponent.OnInvulnerabilityChanged += value;
+        remove => healthComponent.OnInvulnerabilityChanged -= value;
+    }
 
     /* Forward Events Sub/Unsub to private HealthComponent */
     public event Action<HealthInfo> OnHealthChange

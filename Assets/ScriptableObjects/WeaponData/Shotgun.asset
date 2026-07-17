@@ -24,7 +24,7 @@ MonoBehaviour:
     fireRate: 1
     magazineSize: 8
     reloadTime: 3
-    ammoReserveCapacity: 60
+    ammoReserveCapacity: 64
     damage: 5
     projectileSpeed: 5
     projectileLifetime: 2

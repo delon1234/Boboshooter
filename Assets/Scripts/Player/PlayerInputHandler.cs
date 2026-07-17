@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class PlayerInputHandler : MonoBehaviour
     // Events for other scripts to subscribe to for input actions
     public event Action OnFirePressed;
     public event Action DashPressed;
+    public event Action OnReloadPressed;
+
+    public bool IsFiring => _input != null && _input.Player.Fire.IsPressed();
 
     private PlayerInputActions _input;
 
@@ -27,12 +31,14 @@ public class PlayerInputHandler : MonoBehaviour
         // Invoke event when the button is pressed via lambda. 
         _input.Player.Fire.performed += _ => OnFirePressed?.Invoke();
         _input.Player.Dash.performed += _ => DashPressed?.Invoke();
+        _input.Player.Reload.performed += _ => OnReloadPressed?.Invoke();
     }
 
     private void OnDisable() { 
         _input.Player.Disable(); 
         _input.Player.Fire.performed -= _ => OnFirePressed?.Invoke();
         _input.Player.Dash.performed -= _ => DashPressed?.Invoke();
+        _input.Player.Reload.performed -= _ => OnReloadPressed?.Invoke();
         MoveInput = Vector2.zero;
     }
 

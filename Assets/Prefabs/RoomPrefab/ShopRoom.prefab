@@ -14696,9 +14696,9 @@ MonoBehaviour:
     ShopWeightTable:
     - definition: {fileID: 11400000, guid: e730429ba109e2f4badddf4d420965e3, type: 2}
       cost: 10
-      weight: 100
+      weight: 400
     - definition: {fileID: 11400000, guid: 90a3fd41eed5d6b45abeb41b2698596c, type: 2}
       cost: 30
-      weight: 400
+      weight: 100
   shopPickupPrefab: {fileID: 5084947223770589211, guid: af0845cb35841de44ba4aae5fc3e8f9a, type: 3}
   pickupSpawnpointParent: {fileID: 6725610481757757503}

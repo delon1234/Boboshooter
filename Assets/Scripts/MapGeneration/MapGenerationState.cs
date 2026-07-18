@@ -61,7 +61,6 @@ public class MapGenerationState
         } 
 
         // Guard against Candidate 0. Should not happen
-        Debug.Log("Room Generation Error, GetFurthestAvailableRoom has no Candidates");
         return candidateRooms.Count == 0 ? null : candidateRooms[Random.Range(0, candidateRooms.Count)];
     }
 }

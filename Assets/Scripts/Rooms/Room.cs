@@ -13,6 +13,7 @@ public class Room
 
     // Adjustable Fields (for post map generation)
     public bool IsDeadend;
+    public bool IsStartingRoom;
 
     // Runtime Fields
     public bool IsVisited = false;
@@ -27,6 +28,8 @@ public class Room
 
         // Default Type is Normal until Post Generation processing turns it into a different room
         Type = RoomType.Normal;
+        // Default is NOT starting room unless specified
+        IsStartingRoom = false;
     }
 
     // Post Generation , might turn a normal room into other special rooms
@@ -50,10 +53,15 @@ public class Room
         return Neighbors.ContainsKey(direction);
     }
 
-    // First room should not spawn enemies
+    // Some room should not spawn enemies
     public void SetPeaceful()
     {
         this.HasSpawnedEnemies = true;
         this.IsCleared = true;
+    }
+
+    public void SetStartingRoom()
+    {
+        this.IsStartingRoom = true;
     }
 }

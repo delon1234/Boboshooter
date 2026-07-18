@@ -424,6 +424,9 @@ MonoBehaviour:
   MinRoomCount: 20
   MaxRoomCount: 25
   RoomSpawnTable:
+    StartingRoom:
+      Prefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}
+      weight: 1
     BossRoom:
       Prefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}
       weight: 1
@@ -435,6 +438,8 @@ MonoBehaviour:
       weight: 1
     NormalRooms:
     - Prefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}
+      weight: 1
+    - Prefab: {fileID: 771417032029515251, guid: f48708468bd00694aa5b2d755a31aeb8, type: 3}
       weight: 1
   EnemySpawnTable:
     BasicEnemies:

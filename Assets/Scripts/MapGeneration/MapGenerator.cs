@@ -22,6 +22,7 @@ public class MapGenerator
         // First Room
         Room startingRoom = state.CreateRoom(new Vector2(0, 0), 0);
         startingRoom.SetPeaceful();
+        startingRoom.SetStartingRoom();
         HandleNestedGeneration(startingRoom);
 
         // Always try generate till minimum

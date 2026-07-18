@@ -1,5 +1,5 @@
 ﻿<Solution>
+  <Project Path="PlayMode.csproj" />
   <Project Path="Scripts.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
-  <Project Path="PlayMode.csproj" />
 </Solution>

@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 // Attached to RoomPrefabs, collects all enemy spawnpoints
 // Exposes GetRandomPoint given a GameRoom for enemy spawning
 // Tracks the state of a room (enemies alive)
-public class RoomRuntime : MonoBehaviour
+public class RoomRuntime : MonoBehaviour , IRoomRuntime
 {
     public Room room;
 

@@ -9,10 +9,9 @@ public class Room
     public readonly Vector2 Location;
     public readonly int Distance;
     public Dictionary<Vector2, Room> Neighbors = new Dictionary<Vector2, Room>();
-    public RoomType Type = RoomType.Normal;
+    public RoomType Type;
 
     // Adjustable Fields (for post map generation)
-    public Sprite Icon;
     public bool IsDeadend;
 
     // Runtime Fields
@@ -20,17 +19,14 @@ public class Room
     public bool HasSpawnedEnemies = false;
     public bool IsCleared = false;
 
-    public Room(int roomNumber, Sprite icon, Vector2 location, int distance)
+    public Room(int roomNumber, Vector2 location, int distance)
     {
         RoomNumber = roomNumber;
-        Icon = icon;
         Location = location;
         Distance = distance;
-    }
 
-    public void SetIcon(Sprite icon)
-    {
-        Icon = icon;
+        // Default Type is Normal until Post Generation processing turns it into a different room
+        Type = RoomType.Normal;
     }
 
     // Post Generation , might turn a normal room into other special rooms

@@ -7,6 +7,7 @@ using UnityEngine;
 public class RoomSpawnTable
 {
     [Header("Fixed Rooms")]
+    public RoomWeightEntry StartingRoom;
     public RoomWeightEntry BossRoom;
     public RoomWeightEntry TreasureRoom;
     public RoomWeightEntry ShopRoom;

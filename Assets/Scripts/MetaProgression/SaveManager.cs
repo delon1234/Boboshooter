@@ -13,7 +13,6 @@ public static class SaveManager
         SaveData save = MetaData.GetSaveData();
         String json = JsonUtility.ToJson(save, true);
         File.WriteAllText(SavePath, json);
-        Debug.Log($"Saved to {SavePath}");
     }
 
     // Reads file from filepath and sends it to MetaData for unpackaging

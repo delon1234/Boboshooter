@@ -2,7 +2,7 @@
 // And Defines how each of these stats will impact each run
 public static class MetaData
 {
-    private static int MetaCurrency = 0;
+    public static int MetaCurrency = 0;
 
     // Takes a SaveData struct and initialises values
     public static void LoadFromSave(SaveData loadedSave)

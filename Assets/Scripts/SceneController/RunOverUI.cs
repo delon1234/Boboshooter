@@ -6,6 +6,8 @@ public class RunOverUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text floorText;
+    [SerializeField] private TMP_Text earnedCurrencyText;
+    [SerializeField] private TMP_Text totalCurrencyText;
 
     private void Start()
     {
@@ -21,6 +23,9 @@ public class RunOverUI : MonoBehaviour
                 floorText.text = $"You reached Floor {RunData.CurrentFloor}.";
                 break;
         }
+
+        earnedCurrencyText.text = $"You have earned {RunData.EarnedCurrency} MetaCoins.";
+        totalCurrencyText.text = $"You now have {MetaData.MetaCurrency} MetaCoins.";
     }
 
     public void Replay()

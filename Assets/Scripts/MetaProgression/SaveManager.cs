@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
+// Uses downloaded package Newtonsoft to help with serializing Dictionaries to JSON for Upgrade saving
 
 public static class SaveManager 
 {
@@ -11,7 +13,8 @@ public static class SaveManager
     public static void Save()
     {
         SaveData save = MetaData.GetSaveData();
-        String json = JsonUtility.ToJson(save, true);
+        // String json = JsonUtility.ToJson(save, true);
+        String json = JsonConvert.SerializeObject(save, Formatting.Indented);
         File.WriteAllText(SavePath, json);
     }
 
@@ -25,7 +28,8 @@ public static class SaveManager
         }
 
         String json = File.ReadAllText(SavePath);
-        SaveData save = JsonUtility.FromJson<SaveData>(json);
+        // SaveData save = JsonUtility.FromJson<SaveData>(json);
+        SaveData save = JsonConvert.DeserializeObject<SaveData>(json);
         MetaData.LoadFromSave(save);
     }
 }

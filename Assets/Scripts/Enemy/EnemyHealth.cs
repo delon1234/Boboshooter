@@ -9,7 +9,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IHealth, IInvulnerable
     [SerializeField] HealthComponent healthComponent;
     [SerializeField] private bool canBeInvulnerable = true; // True only for Bosses/Elites
     // Event fired to all RoomRuntimes about an instanced enemy death
-    public static event Action<BasicEnemy> OnEnemyDied;
+    public event Action<BasicEnemy> OnEnemyDied;
 
     // private void Start() {
     //     // Testing
@@ -30,7 +30,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IHealth, IInvulnerable
     {
         // healthComponent.OnDeath triggers OnEnemyDied event
         OnEnemyDied?.Invoke(GetComponent<BasicEnemy>());
-        Destroy(gameObject);
     }
 
     // Expose properties from HealthComponent without duplicating the state variables (Single source of truth)

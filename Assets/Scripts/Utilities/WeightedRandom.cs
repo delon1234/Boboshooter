@@ -8,11 +8,12 @@ public static class WeightedRandom
 {
     public static T Pick<T>(IList<T> items) where T : IWeighted
     {
+        // Constantly makes sure item.Weight is >=0
         // Sum all weights
         int totalWeight = 0;
         foreach(var item in items)
         {
-            totalWeight += Mathf.Max(1, item.Weight);
+            totalWeight += Mathf.Max(0, item.Weight);
         }
 
         // Picks item based on roll
@@ -20,7 +21,7 @@ public static class WeightedRandom
         int roll = Random.Range(0, totalWeight);
         foreach(var item in items)
         {
-            roll -= Mathf.Max(1, item.Weight);
+            roll -= Mathf.Max(0, item.Weight);
             if(roll < 0)
             {
                 return item;

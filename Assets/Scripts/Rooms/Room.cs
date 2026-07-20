@@ -9,28 +9,27 @@ public class Room
     public readonly Vector2 Location;
     public readonly int Distance;
     public Dictionary<Vector2, Room> Neighbors = new Dictionary<Vector2, Room>();
-    public RoomType Type = RoomType.Normal;
+    public RoomType Type;
 
     // Adjustable Fields (for post map generation)
-    public Sprite Icon;
     public bool IsDeadend;
+    public bool IsStartingRoom;
 
     // Runtime Fields
     public bool IsVisited = false;
     public bool HasSpawnedEnemies = false;
     public bool IsCleared = false;
 
-    public Room(int roomNumber, Sprite icon, Vector2 location, int distance)
+    public Room(int roomNumber, Vector2 location, int distance)
     {
         RoomNumber = roomNumber;
-        Icon = icon;
         Location = location;
         Distance = distance;
-    }
 
-    public void SetIcon(Sprite icon)
-    {
-        Icon = icon;
+        // Default Type is Normal until Post Generation processing turns it into a different room
+        Type = RoomType.Normal;
+        // Default is NOT starting room unless specified
+        IsStartingRoom = false;
     }
 
     // Post Generation , might turn a normal room into other special rooms
@@ -54,10 +53,15 @@ public class Room
         return Neighbors.ContainsKey(direction);
     }
 
-    // First room should not spawn enemies
+    // Some room should not spawn enemies
     public void SetPeaceful()
     {
         this.HasSpawnedEnemies = true;
         this.IsCleared = true;
+    }
+
+    public void SetStartingRoom()
+    {
+        this.IsStartingRoom = true;
     }
 }

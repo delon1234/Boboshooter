@@ -28,15 +28,19 @@ public class MinimapRenderer
         {
             DrawIconOnMap(room);
         }
+        foreach (Room room in rooms)
+        {
+            UpdateIconVisual(room, null);
+        }
     }
 
+    // Will Draw Empty Image Icons to be Updated in the next Pass in UpdateIconVisual
     private void DrawIconOnMap(Room room)
     {
         GameObject mapTile = new GameObject("MapTile");
         mapTile.name = room.RoomNumber.ToString();
 
         Image roomImage = mapTile.AddComponent<Image>();
-        roomImage.sprite = room.Icon;
 
         RectTransform rectTransform = roomImage.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(config.Height, config.Width) * config.IconScale;
@@ -46,7 +50,8 @@ public class MinimapRenderer
         tilesByRoomNumber[room.RoomNumber] = roomImage;
     }
 
-    public void UpdateRoomState(Room room, Room CurrentRoom, MapGenerationConfig config)
+    // Updates Icon accordingly
+    public void UpdateIconVisual(Room room, Room CurrentRoom)
     {
         // Retrieve the Image object in the minimap for the particular room
         Image img;
@@ -65,7 +70,7 @@ public class MinimapRenderer
         // Special Rooms (boos, treasure, shop) will retain their icon
         if (room.Type != RoomType.Normal)
         {
-            img.sprite = room.Icon;
+            img.sprite = config.GetRoomIcon(room.Type);
             return;
         }
         // Unvisited room will have unexplored room icon
@@ -81,12 +86,12 @@ public class MinimapRenderer
     public void OnRoomChanged(OnRoomChangedArgs args)
     {
         // Update CurrentRoom
-        UpdateRoomState(args.EnteredRoom, args.EnteredRoom, config);
+        UpdateIconVisual(args.EnteredRoom, args.EnteredRoom);
         
         // Update all Neighbours of CurrentRoom
         foreach (var neighbor in args.EnteredRoom.Neighbors.Values)
         {
-            UpdateRoomState(neighbor, args.EnteredRoom, config);
+            UpdateIconVisual(neighbor, args.EnteredRoom);
         }
     }
 }

@@ -10,8 +10,9 @@ public static class SceneLoader
         SceneManager.LoadScene("MainMenu");
     }
 
-    public static void LoadGame()
+    public static void StartNewRun()
     {
+        RunData.StartNewRun();
         SceneManager.LoadScene("GameScene");
     }
 

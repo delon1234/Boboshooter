@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Config Class responsible solely for containing read-only config values
@@ -13,12 +15,11 @@ public class MapGenerationConfig
     public readonly int MinRoomCount;
     public readonly int MaxRoomCount;
 
-    public readonly Sprite TreasureRoomIcon;
-    public readonly Sprite BossRoomIcon;
-    public readonly Sprite ShopRoomIcon;
+    public RoomIconEntry[] RoomIcons;
     public readonly Sprite UnexploredRoomIcon;
     public readonly Sprite ExploredRoomIcon;
     public readonly Sprite CurrentRoomIcon;
+    private Dictionary<RoomType, Sprite> RoomIconsDict;
 
     public MapGenerationConfig(
         float height,
@@ -30,9 +31,7 @@ public class MapGenerationConfig
         int maxRoomAway,
         int minRoomCount,
         int maxRoomCount,
-        Sprite treasureRoomIcon,
-        Sprite bossRoomIcon,
-        Sprite shopRoomIcon,
+        RoomIconEntry[] roomIcons,
         Sprite unexploredRoomIcon,
         Sprite exploredRoomIcon,
         Sprite currentRoomIcon)
@@ -47,11 +46,17 @@ public class MapGenerationConfig
         MinRoomCount = minRoomCount;
         MaxRoomCount = maxRoomCount;
 
-        TreasureRoomIcon = treasureRoomIcon;
-        BossRoomIcon = bossRoomIcon;
-        ShopRoomIcon = shopRoomIcon;
+        RoomIcons = roomIcons;
         UnexploredRoomIcon = unexploredRoomIcon;
         ExploredRoomIcon = exploredRoomIcon;
         CurrentRoomIcon = currentRoomIcon;
+
+        // Key, Elem converted to a nice Dict
+        RoomIconsDict = RoomIcons.ToDictionary(entry => entry.Type, entry => entry.Icon);
+    }
+
+    public Sprite GetRoomIcon(RoomType type)
+    {
+        return RoomIconsDict[type];
     }
 }

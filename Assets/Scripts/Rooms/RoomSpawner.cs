@@ -26,7 +26,7 @@ public class RoomSpawner
         {
             GameObject ChosenGameRoom = GetRoomPrefab(room); 
             GameObject GameRoom = Object.Instantiate(ChosenGameRoom, Vector2.zero, Quaternion.identity);
-            RoomRuntime runtime = GameRoom.GetComponentInChildren<RoomRuntime>();
+            IRoomRuntime runtime = GameRoom.GetComponentInChildren<IRoomRuntime>();
             runtime.Initialize(room);
 
             GameRoom.SetActive(false);
@@ -42,6 +42,12 @@ public class RoomSpawner
     // The rest (special) is currently fixed defined
     private GameObject GetRoomPrefab(Room room)
     {
+        // Starting room must always return the Start room (some rooms middle is wall, not suitable to start in)
+        if (room.IsStartingRoom)
+        {
+            return RoomSpawnTable.StartingRoom.Prefab;
+        }
+
         switch (room.Type)
         {
             case RoomType.Normal:

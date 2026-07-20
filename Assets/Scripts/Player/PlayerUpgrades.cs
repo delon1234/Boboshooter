@@ -69,12 +69,6 @@ public class PlayerUpgrades : MonoBehaviour
     /// </param>
     public void RecalculateStaticStats(bool isWeaponSwap = false)
     {
-        if (shooter == null || shooter.ActiveWeapon == null)
-        {
-            Debug.LogWarning("[PlayerUpgrades] RecalculateStaticStats called but Shooter or ActiveWeapon is null.");
-            return;
-        }
-
         // Start from the weapon's unmodified base stats
         WeaponStats stats = shooter.ActiveWeapon.baseStats;
 

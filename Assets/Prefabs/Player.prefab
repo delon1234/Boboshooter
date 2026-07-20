@@ -112,6 +112,8 @@ GameObject:
   - component: {fileID: 5728599460420044215}
   - component: {fileID: 5784454363283574928}
   - component: {fileID: 4353720960643028114}
+  - component: {fileID: 1225586055164298815}
+  - component: {fileID: 2736888925549574827}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -367,6 +369,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7a2d0571061f54198929cea0c05e59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scripts::AmmoComponent
+--- !u!114 &1225586055164298815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765204014813142826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44eb2442163c2514a81fb7891d5e4b0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::PlayerUpgrades
+--- !u!114 &2736888925549574827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765204014813142826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44eb2442163c2514a81fb7891d5e4b0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::PlayerUpgrades
 --- !u!1 &2290543837856853993
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,13 +9,15 @@ public class PlayerInputHandler : MonoBehaviour
     - Exposes public properties and events for other Player scripts to subscribe to. 
     - Decouples input handling from other scripts
      */
+    #region Public Events and Properties
     public Vector2 MoveInput { get; private set; }
     // Events for other scripts to subscribe to for input actions
     public event Action OnFirePressed;
     public event Action DashPressed;
     public event Action OnReloadPressed;
-
+    // Boolean property to check trigger held for auto mode
     public bool IsFiring => _input != null && _input.Player.Fire.IsPressed();
+    #endregion
 
     private PlayerInputActions _input;
 
@@ -39,7 +41,7 @@ public class PlayerInputHandler : MonoBehaviour
         _input.Player.Fire.performed -= _ => OnFirePressed?.Invoke();
         _input.Player.Dash.performed -= _ => DashPressed?.Invoke();
         _input.Player.Reload.performed -= _ => OnReloadPressed?.Invoke();
-        MoveInput = Vector2.zero;
+        MoveInput = Vector2.zero; // Disables movement
     }
 
     private void Update()

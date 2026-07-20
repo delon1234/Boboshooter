@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public Shooter Shooter { get; private set; }
     public AimController AimController { get; private set; }
     public AmmoComponent Ammo { get; private set; }
+    public PlayerUpgrades Upgrades { get; private set; }
 
     // Cache singleton instance
     public static Player Instance { get; private set; }
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
         Shooter = GetComponent<Shooter>();
         AimController = GetComponentInChildren<AimController>();
         Ammo = GetComponent<AmmoComponent>();
+        Upgrades = GetComponent<PlayerUpgrades>();
     }
 
     private void Start()

@@ -1,21 +1,30 @@
 using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Pool;
 
 public class Shooter : MonoBehaviour
 {
-    /* Responsible for tracking ammo, reloading of weapons
-    */
+    /* Responsible for weapon state, cooldowns, firing mode dispatch, and triggering BulletPattern.
+     * Invariant: activeWeapon is never null. The player always holds exactly one weapon.
+     * Weapon changes are always swaps — EquipWeapon replaces one weapon with another.
+     */
     #region Inspector Variables
     [SerializeField] private Transform shootPoint;
+    [SerializeField] private Transform weaponTransform;
     [SerializeField] private WeaponData activeWeapon;
     #endregion
 
-    #region Private variables
+    #region References
     private PlayerInputHandler input;
-    private WeaponStats cachedStaticStats;    
     private AmmoComponent ammoComponent;
+    private SpriteRenderer weaponSpriteRenderer;
     #endregion
+
+    [field: SerializeField, HideInInspector] 
+    private WeaponStats cachedStaticStats; // View changes by upgrades
+    private readonly List<IDynamicModifier> dynamicModifiers = new List<IDynamicModifier>();
 
     #region State variables
     private float cooldownTimer = 0f; // Timer to control fireRate
@@ -24,35 +33,84 @@ public class Shooter : MonoBehaviour
     private Coroutine burstCoroutine;
     #endregion
 
+    #region Public API
+    // PlayerUpgrades reads this to know BaseStats of weapons to apply upgrades
+    public WeaponData ActiveWeapon => activeWeapon;
+    // Fired with the OLD weapon just before it is replaced — Pickup uses this to spawn it in the world
+    public event Action<WeaponData> OnWeaponDropped;
+    // Fired after the new weapon is fully set — PlayerUpgrades uses this to recalculate static stats
+    public event Action<WeaponData> OnWeaponEquipped;
+    #endregion
+
     private void Awake()
     {
         input = GetComponent<PlayerInputHandler>();
         ammoComponent = GetComponent<AmmoComponent>();
-        EquipWeapon(activeWeapon);
+
+        if (weaponTransform != null)
+        {
+            weaponSpriteRenderer = weaponTransform.GetComponent<SpriteRenderer>();
+        }
+
+        // Initialize directly — EquipWeapon is for runtime swaps only.
+        // PlayerUpgrades hasn't subscribed yet (subscribes in Start) so we set the
+        // baseline stats here; PlayerUpgrades will override them with modifiers in its Start().
+        UpdateBaseStats(activeWeapon.baseStats);
+        SubscribeToInput();
+        ammoComponent?.SyncFromStats(cachedStaticStats);
+        ApplyWeaponVisualOffsets();
+    }
+
+    private void ApplyWeaponVisualOffsets()
+    {
+        // Adjusts positions of ShootPoint and Weapon gameObjects via offsets in WeaponData to align to various weapon sprites
+        // Ensures bullets are spawned at barrel and shoots accurately towards crosshair
+        if (activeWeapon == null) return;
+
+        if (shootPoint != null)
+        {
+            shootPoint.localPosition = activeWeapon.shootPointOffset;
+        }
+
+        if (weaponTransform != null)
+        {
+            weaponTransform.localPosition = activeWeapon.weaponSpriteOffset;
+
+            if (weaponSpriteRenderer == null)
+            {
+                weaponSpriteRenderer = weaponTransform.GetComponent<SpriteRenderer>();
+            }
+
+            if (weaponSpriteRenderer != null)
+            {
+                weaponSpriteRenderer.sprite = activeWeapon.weaponSprite;
+            }
+        }
     }
 
     private void OnEnable() {
         if (input != null)
-        {
             input.OnFirePressed += TryFire;
-        }
     }
 
     private void OnDisable()
     {
         if (input != null)
-        {
             input.OnFirePressed -= TryFire;
-        }
     }
 
-     private void SubscribeToInput() {
+    private void SubscribeToInput() {
+        if (input == null) return;
         input.OnFirePressed -= TryFire;
         // Auto is polled in Update(); Semi and Burst use press events
         if (activeWeapon.shootingMode != ShootingMode.Auto)
             input.OnFirePressed += TryFire;
     }
 
+    /// <summary>
+    /// Swaps the current weapon for a new one. Always a swap — never equip from nothing.
+    /// Fires OnWeaponDropped(old) then OnWeaponEquipped(new).
+    /// </summary>
     public void EquipWeapon(WeaponData weapon) {
         if (isBursting && burstCoroutine != null) {
             StopCoroutine(burstCoroutine);
@@ -60,18 +118,26 @@ public class Shooter : MonoBehaviour
             burstCoroutine = null;
         }
 
+        OnWeaponDropped?.Invoke(activeWeapon);  // old weapon — pickup spawner creates world object
         activeWeapon = weapon;
-        // PlayerUpgrades.RecalculateStaticStats() or some cached part;
-        UpdateBaseStats(activeWeapon.baseStats);
+        UpdateBaseStats(activeWeapon.baseStats); // baseline; PlayerUpgrades overrides via OnWeaponEquipped
+        ApplyWeaponVisualOffsets();
+        OnWeaponEquipped?.Invoke(activeWeapon);  // PlayerUpgrades recalculates static modifiers
         SubscribeToInput();
-        if (ammoComponent != null) {
-            ammoComponent.SyncFromStats(cachedStaticStats);
-        }
+        ammoComponent?.SyncFromStats(cachedStaticStats);
     }
 
     public void UpdateBaseStats(WeaponStats newBaseStats) {
-        // Base weapon stats + Static Modifiers
         cachedStaticStats = newBaseStats;
+    }
+
+    public void AddDynamicModifier(IDynamicModifier modifier) {
+        if (!dynamicModifiers.Contains(modifier))
+            dynamicModifiers.Add(modifier);
+    }
+
+    public void RemoveDynamicModifier(IDynamicModifier modifier) {
+        dynamicModifiers.Remove(modifier);
     }
 
     public void TryFire() {
@@ -79,7 +145,7 @@ public class Shooter : MonoBehaviour
         if (cooldownTimer > 0f) return;
         // 2. Check for active burst to not interrupt
         if (isBursting) return;
-        // 3. Checks ammo
+        // 3. Checks ammo for Player only
         if (ammoComponent != null) {
             if (ammoComponent.IsReloading) return; // Do nothing when reloading
             if (ammoComponent.IsMagazineEmpty) {
@@ -87,9 +153,8 @@ public class Shooter : MonoBehaviour
                 return;
             }
         }
-        // 4. Reset cooldown timer
+        // 4. Reset cooldown timer for fireRate
         cooldownTimer = 1f / cachedStaticStats.fireRate;
-
         switch (activeWeapon.shootingMode) {
             case ShootingMode.Auto:
             case ShootingMode.SemiAuto:
@@ -102,11 +167,20 @@ public class Shooter : MonoBehaviour
     }
 
     public void FireOnce() {
-        // Pure execution of shooting (Checks done in TryFire). Called by TryFire() and burst coroutines
+        // Pure execution of shooting without checks. Called by TryFire() and burst coroutines
         ammoComponent?.ConsumeBullet();
         totalShotsFired++;
-        // Get Final Stats
-        WeaponStats finalStats = activeWeapon.baseStats;
+        // Build shot context for dynamic modifiers
+        ShotContext ctx = new ShotContext {
+            totalShotsFired = totalShotsFired,
+            ownerHealthPercent = 1f // TODO: wire to HealthComponent when available
+        };
+        // Apply dynamic modifiers on top of the cached static stats
+        WeaponStats finalStats = cachedStaticStats;
+        foreach (var mod in dynamicModifiers)
+            finalStats = mod.ModifyDynamicStats(finalStats, ctx);
+        Debug.Log($"[Shot] dmg={finalStats.damage} fireRate={finalStats.fireRate} count={finalStats.projectileCount}");
+
         ObjectPool<Bullet> pool = PoolManager.Instance.GetPool<Bullet>(activeWeapon.bulletPrefab);
         activeWeapon.bulletPattern.Shoot(shootPoint, finalStats, pool);
     }
@@ -114,7 +188,7 @@ public class Shooter : MonoBehaviour
     private IEnumerator ExecuteBurst() {
         isBursting = true;
         int shotsRemaining = ammoComponent != null
-        ? ammoComponent.GetShotsAvailable(activeWeapon.burstCount)
+        ? ammoComponent.GetShotsAvailable(activeWeapon.burstCount) // Gets available bullets (can be lesser than burstCount)
         : activeWeapon.burstCount; // enemies have no ammoComponent
 
         for (int i = 0; i < shotsRemaining; i++) {
@@ -124,7 +198,7 @@ public class Shooter : MonoBehaviour
                 yield return new WaitForSeconds(activeWeapon.burstDelay);
         }
         if (ammoComponent != null && ammoComponent.IsMagazineEmpty)
-            ammoComponent.TriggerReload(); // trigger reload AFTER burst completes
+            ammoComponent.TriggerReload();
         isBursting = false;
         burstCoroutine = null;
     }
@@ -132,9 +206,8 @@ public class Shooter : MonoBehaviour
     private void Update() {
         if (cooldownTimer > 0f) cooldownTimer -= Time.deltaTime;
 
-        // Auto-firing check: if the player is holding fire for an automatic weapon
-        if (input != null && input.IsFiring && activeWeapon != null && activeWeapon.shootingMode == ShootingMode.Auto) {
+        // Auto-firing: poll TryFire each frame while the trigger is held
+        if (input != null && input.IsFiring && activeWeapon.shootingMode == ShootingMode.Auto)
             TryFire();
-        }
     }
 }

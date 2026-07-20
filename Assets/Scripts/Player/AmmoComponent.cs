@@ -5,8 +5,7 @@ using UnityEngine;
 public class AmmoComponent : MonoBehaviour
 {
     /* Component to be attached to Player
-    - Tracks magazine size, total ammo
-    - Reload system
+    - Tracks magazine size, total ammo reserves, and reload system
     */
 
     private int maxMagazineSize;
@@ -21,7 +20,7 @@ public class AmmoComponent : MonoBehaviour
     public event Action<AmmoInfo> OnAmmoChanged;
     public event Action OnReloadStarted;
     public event Action OnReloadFinished;
-    public event Action OnReloadCancelled; // future\
+    public event Action OnReloadCancelled; // future
     // For implementation of starter weapon (Infinite reserve, limited clip + reload)
     public bool HasInfiniteReserves => maxReserveSize < 0;
     public bool IsReloading => isReloading;
@@ -51,14 +50,33 @@ public class AmmoComponent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Full reset — called on weapon equip only.
+    /// Resets current ammo counts to the new weapon's full capacity.
+    /// </summary>
     public void SyncFromStats(WeaponStats stats) {
-        // Called when weapon is equipped or upgrades pickup that can affect ammo
         CancelReload();
         maxMagazineSize = stats.magazineSize;
         maxReserveSize = stats.ammoReserveCapacity;
         reloadTime = stats.reloadTime;
         currentMagazineSize = maxMagazineSize;
         currentReserveSize = maxReserveSize;
+        OnAmmoChanged?.Invoke(CurrentAmmo);
+    }
+
+    /// <summary>
+    /// Cap-only update — called when a static upgrade is applied mid-session.
+    /// Preserves current ammo counts; only adjusts the maximums and reload time.
+    /// If an upgrade shrinks the cap below current ammo, current is clamped down.
+    /// </summary>
+    public void UpdateCaps(WeaponStats stats) {
+        maxMagazineSize = stats.magazineSize;
+        maxReserveSize = stats.ammoReserveCapacity;
+        reloadTime = stats.reloadTime;
+        // Clamp current values so they never exceed the new caps
+        currentMagazineSize = Mathf.Min(currentMagazineSize, maxMagazineSize);
+        if (!HasInfiniteReserves)
+            currentReserveSize = Mathf.Min(currentReserveSize, maxReserveSize);
         OnAmmoChanged?.Invoke(CurrentAmmo);
     }
 
@@ -74,9 +92,8 @@ public class AmmoComponent : MonoBehaviour
 
     public void ConsumeBullet() {
         currentMagazineSize--;
-        AmmoInfo ammo = new AmmoInfo(currentMagazineSize, maxMagazineSize, currentReserveSize, HasInfiniteReserves);
-        OnAmmoChanged?.Invoke(ammo);
-        print(ammo);
+        OnAmmoChanged?.Invoke(CurrentAmmo);
+        print(CurrentAmmo);
 
         if (currentMagazineSize <= 0) {
             TriggerReload();

@@ -17,6 +17,8 @@ MonoBehaviour:
   muzzleFlashPrefab: {fileID: 0}
   shootSound: {fileID: 0}
   bulletPrefab: {fileID: 2306711888877393809, guid: f95d7130426cd1a4d9b8a2d35ae52fb3, type: 3}
+  weaponSpriteOffset: {x: 0, y: -0.05}
+  shootPointOffset: {x: 0.6, y: 0}
   shootingMode: 0
   burstCount: 0
   burstDelay: 0

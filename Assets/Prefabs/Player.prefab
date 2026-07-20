@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1262287558085840078}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -81,15 +81,15 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8389134475083476877, guid: 6ac7cb16885b28f4586851a70b5b27d0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a7334312768a84249b504aa6fee608c3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!1 &1765204014813142826
 GameObject:
@@ -326,6 +326,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   animator: {fileID: 3911892710930190160}
+  spriteRenderer: {fileID: 2011540827836777250}
+  flickerOnAlpha: 1
+  flickerOffAlpha: 0.25
+  flickerInterval: 0.05
 --- !u!114 &5784454363283574928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,7 +343,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Scripts::Shooter
   shootPoint: {fileID: 8118916696568009510}
-  activeWeapon: {fileID: 11400000, guid: e2d261d0f8dd9f844a07a7cc8ae3f4d6, type: 2}
+  weaponTransform: {fileID: 799252376111801323}
+  activeWeapon: {fileID: 11400000, guid: c4bba32429a863347b7b04caa11d5c09, type: 2}
+  cachedStaticStats:
+    fireRate: 0
+    magazineSize: 0
+    reloadTime: 0
+    ammoReserveCapacity: 0
+    damage: 0
+    projectileSpeed: 0
+    projectileLifetime: 0
+    projectileScale: 0
+    projectileCount: 0
 --- !u!114 &4353720960643028114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +367,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7a2d0571061f54198929cea0c05e59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scripts::AmmoComponent
-  currentMagazineSize: 0
 --- !u!1 &2290543837856853993
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,8 +392,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2290543837856853993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.35, y: 0, z: 0}
   m_LocalScale: {x: 0.05, y: 0.05, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -584,7 +598,7 @@ Transform:
   m_GameObject: {fileID: 7549817494005351396}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.4, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -605,3 +619,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   weapon: {fileID: 1262287558085840078}
+  shootPoint: {fileID: 8118916696568009510}
+  playerSpriteRenderer: {fileID: 2011540827836777250}

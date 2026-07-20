@@ -13,37 +13,47 @@ public class HealthComponent : MonoBehaviour
     [field: SerializeField]
     public float MaxHealth { get; private set; } = 5f; 
     public float CurrentHealth { get; private set; } // Float for max flexibility in damage calculations
-    // Invincibility property to allow for temporary invincibility
-    // 1. Player Dash, 2. Enemy Invincibility Frames, 3. After taking damage (small time window)
+
     // Public setter to allow other components to enable/disable invulnerability
     [SerializeField] public bool testInvulnerable = true;
     [SerializeField] public float invulnerableDuration = 5.0f;
+        
+    // Invincibility property to allow for temporary invincibility
+    // 1. Player Dash, 2. Enemy Invincibility Frames, 3. onHit
+    #region Invulnerability variables
     public bool IsInvulnerable { get; set; } = false;
-
+    private Coroutine invulnerabilityCoroutine;
+    private float invulnerabilityEndTime;
+    #endregion
 
     /* Events to notify when health changes, allowing other components to react accordingly */
+    #region Events for other components
     // Health Bar UI
-    public event Action<HealthInfo> OnHealthChange; // (health, MaxHealth)
+    public event Action<HealthInfo> OnHealthChange;
     // On taking damage; OnHitSound from various sources, status effects from enemies
     public event Action<DamageInfo> OnTakingDamage;
     // On death; Death Animation, Game Over Screen
     public event Action OnDeath;
     // Dual-purpose event; Gaining/Losing Invulnerability;
     public event Action<bool> OnInvulnerabilityChanged;
+    #endregion
 
-    private Coroutine invulnerabilityCoroutine;
-    private float invulnerabilityEndTime;
+    private HealthInfo CurrentHealthInfo => new HealthInfo(CurrentHealth, MaxHealth);
+
+    private void NotifyHealthChanged() // Helper method to inform health changes
+    {
+        OnHealthChange?.Invoke(CurrentHealthInfo);
+    }
 
     private void Awake() // Unity's Awake method is called when the script instance is being loaded
     {
-        CurrentHealth = MaxHealth; // Initialize health to MaxHealth at the start
+        CurrentHealth = MaxHealth;
     }
 
     private void Start()
     {
         // Notify subscribers about the initial health state
-        HealthInfo healthInfo = new HealthInfo(CurrentHealth, MaxHealth);
-        OnHealthChange?.Invoke(healthInfo);
+        NotifyHealthChanged();
         // Testing;
         if (testInvulnerable)
         {
@@ -56,10 +66,9 @@ public class HealthComponent : MonoBehaviour
     {
         if (IsInvulnerable) {
             // Add UI feedback for (Hitting invulnerable player animation)
-            print($"Invincible");
             return; 
         }
-        // 1. Reduce health by the damage amount (instead of clamping to 1 to enable future changes)
+        // 1. Reduce health by the damage amount (Clamping to 1 can be done in PlayerHealth)
         CurrentHealth -= damageInfo.Amount;
         // 2. Invoke the OnTakingDamage event to notify subscribers about the damage taken
         OnTakingDamage?.Invoke(damageInfo);
@@ -71,16 +80,15 @@ public class HealthComponent : MonoBehaviour
             OnDeath?.Invoke(); // Invoke the OnDeath event
             print("Died"); // Debug log for death;  
         }
-        // 4. Notify subscribers about the health change, passing current health and max health\
-        HealthInfo healthInfo = new HealthInfo(CurrentHealth, MaxHealth);
-        OnHealthChange?.Invoke(healthInfo);
+        // 4. Notify subscribers about the health change, passing current health and max health
+        NotifyHealthChanged();
         print($"OnHealthChange: Current HP: {CurrentHealth}, Max HP: {MaxHealth}");
     }
 
     public void GainInvulnerability(float duration)
     {
-        // Player can gain invulnerability from 1. Dashing, 2. Taking a hit (i-frame)
-        // Ensure longer duration takes priority / dash (shorter) do not override onHit invuln window
+        // Ensure invuln duration prioritizes longest duration in event of multiple invulnerability gains 
+        // E.g. dash (shorter, more recent) do not override onHit invuln window
         float endTime = Time.time + duration;
         if (endTime <= invulnerabilityEndTime) return;
         invulnerabilityEndTime = endTime;
@@ -90,7 +98,6 @@ public class HealthComponent : MonoBehaviour
             StopCoroutine(invulnerabilityCoroutine);
             print($"stopped previous invulnerability coroutine: {invulnerabilityCoroutine}");
         }
-        // Start the new timer
         invulnerabilityCoroutine = StartCoroutine(InvulnerabilityRoutine(duration));
     }
     private IEnumerator InvulnerabilityRoutine(float duration)
@@ -113,8 +120,7 @@ public class HealthComponent : MonoBehaviour
         CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
         // Alternative approach - ensures CurrentHealth never goes negative
         // CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0f, MaxHealth);
-        HealthInfo healthInfo = new HealthInfo(CurrentHealth, MaxHealth);
-        OnHealthChange?.Invoke(healthInfo);
+        NotifyHealthChanged();
     }
 
     public void IncreaseMaxHealth (float amount, bool healProportionally)
@@ -122,7 +128,7 @@ public class HealthComponent : MonoBehaviour
         if (amount <= 0) { return; }
         float oldMaxHealth = MaxHealth;
         MaxHealth += amount;
-        if (healProportionally)
+        if (healProportionally) // Maintains health % while increasing max health
         {
             if (oldMaxHealth > 0)
             {
@@ -134,7 +140,6 @@ public class HealthComponent : MonoBehaviour
                 CurrentHealth = MaxHealth; // Prevents division by 0
             }
         }
-        HealthInfo healthInfo = new HealthInfo(CurrentHealth, MaxHealth);
-        OnHealthChange?.Invoke(healthInfo);
+        NotifyHealthChanged();
     }
 }

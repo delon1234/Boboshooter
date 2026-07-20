@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 public class PlayerHeartsUI : MonoBehaviour
 {
+    /* PlayerHeartsUI is responsible for listening to PlayerHealth script and rendering player hearts.
+    It creates multiple HeartTemplate prefab to match maxHealth and set its sprite (3 states full, half, empty) to match health.
+    */
     [Header("References")]
     [SerializeField] private GameObject heartPrefab; // Prefab for the heart UI element
-    private IHealth playerHealth; // Reference to the PlayerHealth component
+    private PlayerHealth playerHealth; // Reference to the PlayerHealth component
     List<SingleHeartUI> hearts = new List<SingleHeartUI>(); // List to hold references to the heart UI elements
     private void Start()
     {
@@ -30,12 +33,15 @@ public class PlayerHeartsUI : MonoBehaviour
         // Idempotent subscription prevents duplicate subscription when OnEnable() -> Start().
         playerHealth.OnHealthChange -= UpdateHearts;
         playerHealth.OnHealthChange += UpdateHearts;
+        playerHealth.OnInvulnerabilityChanged -= SetHeartsGreyed;
+        playerHealth.OnInvulnerabilityChanged += SetHeartsGreyed;
         UpdateHearts(new HealthInfo(playerHealth.CurrentHealth, playerHealth.MaxHealth));   
     }
 
     private void UnsubscribeFromPlayerHealth()
     {
         playerHealth.OnHealthChange -= UpdateHearts;
+        playerHealth.OnInvulnerabilityChanged -= SetHeartsGreyed;
     }
 
     private void UpdateHearts(HealthInfo healthInfo)
@@ -64,7 +70,7 @@ public class PlayerHeartsUI : MonoBehaviour
     private void AdjustMaxHearts(int maxHeartsInt)
     {
         // Future extension for maxHealth is increased/decreased (e.g. upgrades like health pickup)
-        // Expensive as create/destroy GameObject; minimize by avoiding to clear all hearts whenever OnHealthChange is called
+        // Expensive to create/destroy GameObject; minimize by avoiding to clear all hearts whenever OnHealthChange is called
         if (hearts.Count == maxHeartsInt) { return; }
         // If list is too small (1. list is empty, 2. maxHearts is increased), create new hearts to match maxHearts
         if (hearts.Count < maxHeartsInt)
@@ -96,5 +102,11 @@ public class PlayerHeartsUI : MonoBehaviour
                 hearts[i].SetState(HeartState.Empty);
             }
         }
+    }
+
+    private void SetHeartsGreyed(bool isInvulnerable)
+    {
+        foreach (SingleHeartUI heart in hearts)
+            heart.SetGreyed(isInvulnerable);
     }
 }

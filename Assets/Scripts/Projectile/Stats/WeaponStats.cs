@@ -9,20 +9,22 @@ public struct WeaponStats
     */
 
     // Gun stats needed by Shooter
+    [Tooltip("Bullets per second")]
     public float fireRate;
-    // Ammo Stats
+    [Header("Ammo Stats")]
     public int magazineSize;
     public float reloadTime;
+    [Tooltip("Total Ammo Capacity; -1 for infinite ammo")]
     public int ammoReserveCapacity; // -1 = infinite ammo (sentinel value)
 
     // Visuals and effects stored in BulletPrefab
-    // Bullet Stats
+    [Header("Bullet Stats")]
     public float damage;
     public float projectileSpeed;
     public float projectileLifetime;
     public float projectileScale;
 
-    // Generic count used by BulletPatterns
+    [Tooltip("Additional Projectiles for BulletPatterns. Default is 1")]
     public int projectileCount; // Default is 1. Modifiers can increase this.
 }
 

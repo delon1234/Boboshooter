@@ -11,6 +11,7 @@ public class PermanentUpgradeDefinition : ScriptableObject
     public string DisplayDescription;
 
     public int[] LevelCosts;
+    public int MaxLevel => LevelCosts.Length; // Derive MaxLevel from LevelCosts length
 
     public float BaseValue;
     public float ValuePerLevel;

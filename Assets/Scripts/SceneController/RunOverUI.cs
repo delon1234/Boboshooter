@@ -25,7 +25,7 @@ public class RunOverUI : MonoBehaviour
         }
 
         earnedCurrencyText.text = $"You have earned {RunData.EarnedCurrency} MetaCoins.";
-        totalCurrencyText.text = $"You now have {MetaData.MetaCurrency} MetaCoins.";
+        totalCurrencyText.text = $"You now have {MetaData.MetaCoins} MetaCoins.";
     }
 
     public void Replay()

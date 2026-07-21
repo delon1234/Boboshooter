@@ -7,12 +7,12 @@ using System.Collections.Generic;
 [Serializable]
 public struct SaveData
 {
-    public int MetaCurrency;
+    public int MetaCoins;
     public Dictionary<PermanentUpgradeType, int> PermanentUpgrades;
 
-    public SaveData(int MetaCurrency, Dictionary<PermanentUpgradeType, int> PermanentUpgrades)
+    public SaveData(int MetaCoins, Dictionary<PermanentUpgradeType, int> PermanentUpgrades)
     {
-        this.MetaCurrency = MetaCurrency;
+        this.MetaCoins = MetaCoins;
         this.PermanentUpgrades = PermanentUpgrades;
     }
 }

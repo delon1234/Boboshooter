@@ -12,13 +12,14 @@ public class PermanentShopUI : MonoBehaviour
     private void Start()
     {
         PopulateShop();
+        MetaDataLookup.RegisterDefinitions(definitions);
     }
 
     private void Awake()
     {
         RefreshCurrency();
     }
-    
+
     public void ReturnToMainMenu()
     {
         SceneLoader.LoadMainMenu();

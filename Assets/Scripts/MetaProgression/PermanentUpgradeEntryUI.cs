@@ -28,9 +28,6 @@ public class PermanentUpgradeEntryUI : MonoBehaviour
         descriptionText.text = definition.DisplayDescription;
 
         Refresh();
-
-        upgradeButton.onClick.AddListener(OnUpgradeClicked);
-        downgradeButton.onClick.AddListener(OnDowngradeClicked);
     }
 
     // Dynamic Information

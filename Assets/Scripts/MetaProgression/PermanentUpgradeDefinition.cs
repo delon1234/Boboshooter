@@ -6,6 +6,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Permanent Upgrade")]
 public class PermanentUpgradeDefinition : ScriptableObject
 {
+    // Fine tuning UI to decide whether to show % value or not
+    public enum UpgradeValueFormat
+    {
+        Flat,
+        Percentage
+    }
+
     public PermanentUpgradeType Type;
     public Sprite Icon;
     public string DisplayName;
@@ -15,6 +22,9 @@ public class PermanentUpgradeDefinition : ScriptableObject
     public int MaxLevel => LevelCosts.Length; // Derive MaxLevel from LevelCosts length
 
     public float[] LevelEffectValues; // Fine-tuned level effects
+
+    [SerializeField] private UpgradeValueFormat valueFormat;
+
 
     // Helper methods, query information based on given CurrentLevel
     public bool IsMaxLevel(int level)
@@ -54,19 +64,32 @@ public class PermanentUpgradeDefinition : ScriptableObject
         return LevelCosts[level - 1];
     }
 
+    // Returns a readable UI for a value based on its valueFormat
+    public string GetFormattedEffect(float value)
+    {
+        switch (valueFormat)
+        {
+            case UpgradeValueFormat.Percentage:
+                return $"+{value}%";
+
+            case UpgradeValueFormat.Flat:
+            default:
+                return $"+{value}";
+        }
+    }
+
     public String GetFormattedStatText(int level)
     {
+        String CurrentEffectString = GetFormattedEffect( GetCurrentEffectValue(level) );
+        
         if (IsMaxLevel(level))
         {
-            return $"Current: +{GetCurrentEffectValue(level)} > MAX";
-        }
-        else if (level == 0)
-        {
-            return $"Current: +0 > +{GetNextEffectValue(level)}";
+            return $"Current: {CurrentEffectString} > MAX";
         }
         else
         {
-            return $"Current: +{GetCurrentEffectValue(level)} > +{GetNextEffectValue(level)}";
+            String NextEffectString = GetFormattedEffect( GetNextEffectValue(level) );
+            return $"Current: {CurrentEffectString} > {NextEffectString}";
         }
     }
 }

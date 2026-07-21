@@ -7,12 +7,21 @@ public class GameFlowManager : MonoBehaviour
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private FloorManager floorManager;
 
+    // After every run, coordinates reward calculation and saving
+    private void EndRun(RunResult result)
+    {
+        RunData.Result = result;
+        RunData.UpdateEarnedCurrency();
+        MetaData.AddCurrency(RunData.EarnedCurrency);
+        SaveManager.Save();
+        SceneLoader.LoadRunOver();
+    }
+
     public void AdvanceFloor()
     {
-        if (RunData.CurrentFloor >= RunData.FinalFloor)
+        if (RunData.CurrentFloor > RunData.FinalFloor)
         {
-            RunData.Result = RunResult.Victory;
-            SceneLoader.LoadRunOver();
+            EndRun(RunResult.Victory);
         }
         else
         {
@@ -23,8 +32,7 @@ public class GameFlowManager : MonoBehaviour
 
     private void HandlePlayerDeath()
     {
-        RunData.Result = RunResult.Defeat;
-        SceneLoader.LoadRunOver();
+        EndRun(RunResult.Defeat);
     }
 
     private void OnEnable()

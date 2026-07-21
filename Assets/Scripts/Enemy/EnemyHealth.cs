@@ -30,6 +30,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable, IHealth, IInvulnerable
     {
         // healthComponent.OnDeath triggers OnEnemyDied event
         OnEnemyDied?.Invoke(GetComponent<BasicEnemy>());
+
+        // Increments RunData Counter
+        RunData.IncrementEnemyKilled(1);
     }
 
     // Expose properties from HealthComponent without duplicating the state variables (Single source of truth)

@@ -17,5 +17,7 @@ MonoBehaviour:
   DisplayName: Max Health
   DisplayDescription: 'Increases your starting Max Health. (Default: 5)'
   LevelCosts: 64000000c80000002c010000
-  BaseValue: 0
-  ValuePerLevel: 1
+  LevelEffectValues:
+  - 1
+  - 2
+  - 3

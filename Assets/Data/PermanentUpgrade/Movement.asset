@@ -17,5 +17,8 @@ MonoBehaviour:
   DisplayName: Movement Speed
   DisplayDescription: Increases your movement speed.
   LevelCosts: 64000000c80000002c01000090010000f4010000
-  BaseValue: 0
-  ValuePerLevel: 1
+  LevelEffectValues:
+  - 1
+  - 2
+  - 3
+  - 4

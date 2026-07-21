@@ -15,10 +15,12 @@ public static class MetaData
 
 
     // Takes a SaveData struct and initialises values
+    // Try to prevent no dictionary if possible
     public static void LoadFromSave(SaveData loadedSave)
     {
         MetaCoins = loadedSave.MetaCoins;
-        UpgradeLevels = loadedSave.PermanentUpgrades;
+        UpgradeLevels = loadedSave.PermanentUpgrades ?? new Dictionary<PermanentUpgradeType, int>();
+        Debug.Log($"Loaded Save: \nMetaCoins: {MetaCoins}");
     }
 
     // Packages current data into SaveData and returns it for saving
@@ -40,7 +42,7 @@ public static class MetaData
             return false;
         }
         MetaCoins -= amt;
-        OnMetaCoinsChanged?.Invoke(new OnMetaCoinsChangedArgs(amt, MetaCoins));
+        OnMetaCoinsChanged?.Invoke(new OnMetaCoinsChangedArgs(-amt, MetaCoins));
         return true;
     }
 
@@ -72,7 +74,7 @@ public static class MetaData
         }
 
         // Cost Checks
-        int cost = definition.LevelCosts[currentLevel];
+        int cost = definition.GetUpgradeCostToNext(currentLevel);
         if (!SpendCurrency(cost))
         {
             return false;
@@ -94,7 +96,7 @@ public static class MetaData
         }
 
         // Cost Checks
-        int refund = definition.LevelCosts[currentLevel - 1];
+        int refund = definition.GetRefundToPrevious(currentLevel);
         AddCurrency(refund);
 
         // Runtime Saves

@@ -17,5 +17,9 @@ MonoBehaviour:
   DisplayName: Firerate
   DisplayDescription: Increases your weapon firerate.
   LevelCosts: 64000000c80000002c01000090010000f4010000
-  BaseValue: 0
-  ValuePerLevel: 2
+  LevelEffectValues:
+  - 2
+  - 4
+  - 6
+  - 8
+  - 10

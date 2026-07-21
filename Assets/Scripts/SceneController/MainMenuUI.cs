@@ -14,6 +14,11 @@ public class MainMenuUI : MonoBehaviour
         SceneLoader.StartNewRun();
     }
 
+    public void LoadShop()
+    {   
+        SceneLoader.LoadShop();
+    }
+
     public void QuitGame()
     {
         Application.Quit();

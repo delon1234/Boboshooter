@@ -16,6 +16,7 @@ public static class SaveManager
         // String json = JsonUtility.ToJson(save, true);
         String json = JsonConvert.SerializeObject(save, Formatting.Indented);
         File.WriteAllText(SavePath, json);
+        Debug.Log($"Saved to {SavePath}");
     }
 
     // Reads file from filepath and sends it to MetaData for unpackaging
@@ -31,5 +32,6 @@ public static class SaveManager
         // SaveData save = JsonUtility.FromJson<SaveData>(json);
         SaveData save = JsonConvert.DeserializeObject<SaveData>(json);
         MetaData.LoadFromSave(save);
+        Debug.Log($"Loaded from {SavePath}");
     }
 }

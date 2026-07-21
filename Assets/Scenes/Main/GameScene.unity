@@ -421,8 +421,8 @@ MonoBehaviour:
   CurrentRoom: {fileID: 6132706867374971017, guid: a4ec276ac70455440a34c8ef43ef2fc5, type: 3}
   RoomGenerationChance: 0.15
   MaxRoomAway: 8
-  MinRoomCount: 3
-  MaxRoomCount: 4
+  MinRoomCount: 20
+  MaxRoomCount: 25
   RoomSpawnTable:
     StartingRoom:
       Prefab: {fileID: 771417032029515251, guid: 5d6777dcfb0f58f4b9c5457101a692c9, type: 3}

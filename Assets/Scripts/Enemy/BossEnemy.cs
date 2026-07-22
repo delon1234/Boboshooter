@@ -1,21 +1,118 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// A data-driven boss enemy driven by an FSM with two attack phases.
+/// 
+/// Variants are created by assigning different <see cref="BossData"/> assets —
+/// no subclassing required.
+/// 
+/// State flow:
+///   Chase ──(in range)──► Attack ──(attack done)──► Cooldown ──(timer done)──► Chase
+///                              └──(HP &lt; threshold)──► Phase 2 transition
+/// </summary>
 public class BossEnemy : BasicEnemy
 {
-    private float TOLERANCE = 0.3f;
+    // ── Inspector ────────────────────────────────────────────────────────────────
+    [SerializeField] private BossData data;
 
+    // ── Private references ────────────────────────────────────────────────────────
+    private EnemyAttackController attackController;
 
-    // Melee Movement, just follow player
+    // ── FSM state ─────────────────────────────────────────────────────────────────
+    private enum BossState { Chase, Attack, Cooldown }
+    private BossState currentState = BossState.Chase;
+
+    private float cooldownTimer;
+    private bool isPhaseTwo = false;
+
+    // ── Unity lifecycle ───────────────────────────────────────────────────────────
+
+    protected override void Awake()
+    {
+        base.Awake();
+        attackController = GetComponent<EnemyAttackController>();
+    }
+
+    private void Update()
+    {
+        CheckPhaseTransition();
+        TickFSM();
+    }
+
+    // NOTE: No FixedUpdate here — BasicEnemy.FixedUpdate() calls WalkLogic(),
+    // and virtual dispatch already routes it to BossEnemy.WalkLogic() below.
+
+    // ── FSM ───────────────────────────────────────────────────────────────────────
+
+    private void TickFSM()
+    {
+        switch (currentState)
+        {
+            case BossState.Chase:
+                if (GetDistanceToPlayer() <= data.attackRange)
+                    EnterAttack();
+                break;
+
+            case BossState.Attack:
+                // EnemyAttackController.IsAttacking goes false when the coroutine finishes
+                if (!attackController.IsAttacking)
+                    EnterCooldown();
+                break;
+
+            case BossState.Cooldown:
+                cooldownTimer -= Time.deltaTime;
+                if (cooldownTimer <= 0f)
+                    currentState = BossState.Chase;
+                break;
+        }
+    }
+
+    private void CheckPhaseTransition()
+    {
+        if (isPhaseTwo || data.phase2Attack == null) return;
+
+        float healthPercent = Health.CurrentHealth / Health.MaxHealth;
+        if (healthPercent < data.phase2HealthThreshold)
+        {
+            isPhaseTwo = true;
+            // Interrupt the current attack immediately and start phase 2
+            attackController.StopAttack();
+            EnterAttack();
+        }
+    }
+
+    private void EnterAttack()
+    {
+        currentState = BossState.Attack;
+        EnemyAttackBehaviour chosen = isPhaseTwo ? data.phase2Attack : data.phase1Attack;
+        attackController.ExecuteAttack(chosen);
+    }
+
+    private void EnterCooldown()
+    {
+        currentState = BossState.Cooldown;
+        cooldownTimer = data.attackCooldown;
+    }
+
+    // ── Movement ──────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Stand still while attacking; chase the player otherwise.
+    /// </summary>
     protected override void WalkLogic()
     {
-        // Walk to player
-        if (GetDistanceToPlayer() > TOLERANCE)
+        if (currentState == BossState.Attack)
         {
-            Vector2 direction = GetDirectionToPlayer();
-            direction = direction * speed;
-            rb.linearVelocity = direction;
-        } else
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        float dist = GetDistanceToPlayer();
+        if (dist > data.movementTolerance)
+        {
+            rb.linearVelocity = GetDirectionToPlayer() * speed;
+        }
+        else
         {
             rb.linearVelocity = Vector2.zero;
         }

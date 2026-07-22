@@ -17,23 +17,37 @@ public class Bullet : MonoBehaviour
 
     private ObjectPool<Bullet> associatedPool;
     private Coroutine lifetimeCoroutine;
+    private bool isEnemyBullet;
+
+    private Vector3 originalScale;
 
     private void Awake() { // Cache references earliest on initialization
         rb = GetComponent<Rigidbody2D>();
+        originalScale = transform.localScale;
     }
 
     // Do not require Start() as BulletPattern spawns Bullet and calls Initialize
 
-    public void Initialize(WeaponStats weaponStats, ObjectPool<Bullet> pool)
+    public void Initialize(WeaponStats weaponStats, ObjectPool<Bullet> pool, bool isEnemyBullet)
     {
         associatedPool = pool;
+        this.isEnemyBullet = isEnemyBullet;
+
+        // Set Layer so physics ignores collisions on the same team
+        int targetLayer = LayerMask.NameToLayer(isEnemyBullet ? "EnemyBullet" : "PlayerBullet");
+        if (targetLayer != -1)
+        {
+            gameObject.layer = targetLayer;
+        }
+
         // 1. Initializes bullet with weaponStats
         damage = weaponStats.damage;
         speed = weaponStats.projectileSpeed;
         lifetime = weaponStats.projectileLifetime;
         // 2. Set movement
         rb.linearVelocity = transform.right * weaponStats.projectileSpeed; // Move the bullet in the direction it's facing (right)
-        transform.localScale = Vector3.one * weaponStats.projectileScale; // For upgrades that increase scale of bullet
+        float finalScaleMultiplier = weaponStats.projectileScale > 0f ? weaponStats.projectileScale : 1f;
+        transform.localScale = originalScale * finalScaleMultiplier; // Apply multiplier on top of prefab's original scale
         // 3. Return bullet to pool after lifetime to prevent bullets from permanenently persisting when shot outside of map
         if (lifetimeCoroutine != null) {
             // Prevents double-release bug when Initialize() is called twice on same bullet
@@ -71,6 +85,12 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {   
+        // Ignore same team collisions
+        // Check the attached Rigidbody's GameObject if present (e.g. for child colliders like DamageArea)
+        GameObject hitObject = collision.attachedRigidbody != null ? collision.attachedRigidbody.gameObject : collision.gameObject;
+        if (isEnemyBullet && (hitObject.CompareTag("Enemy") || hitObject.GetComponent<BasicEnemy>() != null)) return;
+        if (!isEnemyBullet && (hitObject.CompareTag("Player") || hitObject.GetComponent<Player>() != null)) return;
+
         // Universal logic for bullet to deal damage to Player/Enemy
         IDamageable damageable = collision.GetComponent<IDamageable>();
         if (damageable != null)

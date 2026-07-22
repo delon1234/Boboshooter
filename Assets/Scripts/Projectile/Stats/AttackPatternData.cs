@@ -17,6 +17,7 @@ public class AttackPatternData : ScriptableObject
     public float projectileSpeed = 10f;
     public float projectileLifetime = 3f;
     public float damage = 1f;
+    public float projectileScale = 1f;
 
     // Helper to generate WeaponStats at runtime
     public WeaponStats GetStats()
@@ -26,7 +27,8 @@ public class AttackPatternData : ScriptableObject
             projectileCount = this.projectileCount,
             projectileSpeed = this.projectileSpeed,
             projectileLifetime = this.projectileLifetime,
-            damage = this.damage
+            damage = this.damage,
+            projectileScale = this.projectileScale
         };
     }
 }

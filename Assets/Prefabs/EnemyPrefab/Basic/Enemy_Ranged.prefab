@@ -116,8 +116,8 @@ MonoBehaviour:
   collisionDamageInterval: 0.5
   lootTable:
     LootDropTable:
-    - definition: {fileID: 0}
-      weight: 100
+    - definition: {fileID: 11400000, guid: e3565cf6ffa98f14583bd57010a57096, type: 2}
+      weight: 25
     - definition: {fileID: 11400000, guid: 7dbcecdd393c5174bb26fdf7e5840747, type: 2}
       weight: 100
     - definition: {fileID: 11400000, guid: e730429ba109e2f4badddf4d420965e3, type: 2}
@@ -203,6 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Scripts::EnemyHealth
   healthComponent: {fileID: 5548448725222507790}
+  canBeInvulnerable: 1
 --- !u!1 &3401511902835060299
 GameObject:
   m_ObjectHideFlags: 0

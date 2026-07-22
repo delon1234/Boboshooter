@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4949428806544636344}
   - component: {fileID: 5888543698307317037}
+  - component: {fileID: 7252859660481304292}
   m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 14eb3611ea3c5dd43a365d2e1eb05997, type: 3}
-  m_Color: {r: 0.20000002, g: 0.20000002, b: 0.20000002, a: 1}
+  m_Color: {r: 0.7294118, g: 0.7294118, b: 0.7294118, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -91,6 +92,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &7252859660481304292
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4307219234174352371}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 18c1a93a94b50ff47b680ffdbd6ada9a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5689119297670578268
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,8 +266,8 @@ MonoBehaviour:
   collisionDamageInterval: 0.5
   lootTable:
     LootDropTable:
-    - definition: {fileID: 0}
-      weight: 100
+    - definition: {fileID: 11400000, guid: e3565cf6ffa98f14583bd57010a57096, type: 2}
+      weight: 25
     - definition: {fileID: 11400000, guid: 7dbcecdd393c5174bb26fdf7e5840747, type: 2}
       weight: 100
     - definition: {fileID: 11400000, guid: e730429ba109e2f4badddf4d420965e3, type: 2}
@@ -252,6 +275,15 @@ MonoBehaviour:
     - definition: {fileID: 11400000, guid: 90a3fd41eed5d6b45abeb41b2698596c, type: 2}
       weight: 1
   pickupPrefab: {fileID: 1869031800356667107, guid: ed70c1eee69f0894ca12ee2b4dfcd285, type: 3}
+  attackRange: 2
+  attackCooldown: 1.5
+  attackDamage: 2
+  attackWindup: 0.25
+  attackDuration: 0.5
+  animator: {fileID: 7252859660481304292}
+  spriteRenderer: {fileID: 5888543698307317037}
+  defaultFacingLeft: 1
+  deathDelay: 0.5
 --- !u!70 &4556956336146757329
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -317,6 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Scripts::EnemyHealth
   healthComponent: {fileID: 7078109371652515893}
+  canBeInvulnerable: 1
 --- !u!114 &6186223892115701563
 MonoBehaviour:
   m_ObjectHideFlags: 0

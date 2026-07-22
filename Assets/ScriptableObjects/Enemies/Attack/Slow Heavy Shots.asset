@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194d576b3bbd1c64482ebd687e7cc4f1, type: 3}
+  m_Name: Slow Heavy Shots
+  m_EditorClassIdentifier: Scripts::AttackPatternData
+  bulletPrefab: {fileID: 2306711888877393809, guid: f95d7130426cd1a4d9b8a2d35ae52fb3, type: 3}
+  shootSound: {fileID: 0}
+  bulletPattern: {fileID: 11400000, guid: 4b685eda060be3e40a08db4e5687c1cb, type: 2}
+  projectileCount: 1
+  projectileSpeed: 4
+  projectileLifetime: 5
+  damage: 2
+  projectileScale: 1

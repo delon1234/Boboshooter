@@ -4,5 +4,7 @@ public enum PickupType
 {
     Coin,
     Heal,
-    MaxHealth
+    MaxHealth,
+    Magazine,
+    AmmoCrate
 }

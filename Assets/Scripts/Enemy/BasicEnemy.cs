@@ -38,6 +38,15 @@ public abstract class BasicEnemy : MonoBehaviour
         // Refactored to use Player Instance instead of GameObject.FindWithTag
         player = Player.Instance;
         playerTransform = player.transform;
+        // Resolve roomRuntime for enemies pre-placed in scenes
+        if (roomRuntime == null)
+        {
+            roomRuntime = GetComponentInParent<RoomRuntime>();
+            if (roomRuntime == null && transform.parent != null)
+            {
+                roomRuntime = transform.parent.GetComponentInChildren<RoomRuntime>();
+            }
+        }
     }
 
     public void Initialize(RoomRuntime roomRuntime)
@@ -79,7 +88,7 @@ public abstract class BasicEnemy : MonoBehaviour
         }
     }
 
-    private void DealDamageToPlayer(float amt)
+    protected void DealDamageToPlayer(float amt)
     {
         DamageInfo dmg = new DamageInfo(amt, gameObject, GetDirectionToPlayer());
         player.TakeDamage(dmg);
@@ -98,7 +107,7 @@ public abstract class BasicEnemy : MonoBehaviour
     // Each type of enemy must implement their own Walk Pattern
     protected abstract void WalkLogic();
 
-    private void DropLoot()
+    protected void DropLoot()
     {
         // No Serialized Loot Table, maybe never drops loot
         if (lootTable == null)
@@ -118,21 +127,28 @@ public abstract class BasicEnemy : MonoBehaviour
     // Common Handling of Enemy Death
     // Might want to separate Destroy() for Visual Animations in future
     // Handles Loot Drop
-    public void OnEnemyDeath(BasicEnemy enemy)
+    public virtual void OnEnemyDeath(BasicEnemy enemy)
     {
         DropLoot();
         Destroy(gameObject);
     }
 
     // Subscribe to its own EnemyDeath
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
-        Health.OnEnemyDied += OnEnemyDeath;
+        if (Health == null) Health = GetComponent<EnemyHealth>();
+        if (Health != null)
+        {
+            Health.OnEnemyDied += OnEnemyDeath;
+        }
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
-        Health.OnEnemyDied -= OnEnemyDeath;
+        if (Health != null)
+        {
+            Health.OnEnemyDied -= OnEnemyDeath;
+        }
     }
 
     private void Update()

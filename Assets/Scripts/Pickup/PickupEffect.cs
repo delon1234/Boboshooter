@@ -20,6 +20,19 @@ public static class PickupEffect
             case PickupType.MaxHealth:
                 player.GetComponent<PlayerHealth>().UpgradeMaxHealth(definition.Amount);
                 break;
+
+            case PickupType.Magazine:
+                if (player.TryGetComponent<AmmoComponent>(out var ammo))
+                {
+                    ammo.RestoreMagazine(definition.Amount); // Restores 1 magazine size by default
+                }
+                break;
+            case PickupType.AmmoCrate:
+                if (player.TryGetComponent<AmmoComponent>(out var ammoComp))
+                {
+                    ammoComp.ReplenishMaxReserve(); // Fully replenishes reserves
+                }
+                break;
         }
     }
 }

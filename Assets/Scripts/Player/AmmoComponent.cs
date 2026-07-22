@@ -129,12 +129,37 @@ public class AmmoComponent : MonoBehaviour
         }
     }
 
+    public int MaxMagazineSize => maxMagazineSize;
+
     public void AddReserveAmmo(int amount) {
         // Method is called by ammo pickup system to replenish reserves
         if (HasInfiniteReserves) return;
         currentReserveSize = Mathf.Min(currentReserveSize + amount, maxReserveSize);
         OnAmmoChanged?.Invoke(CurrentAmmo);
     }
+
+    /// <summary>
+    /// Restores reserve ammo by a multiple of the current weapon's maximum magazine size.
+    /// Intended for enemy drops or pickup items.
+    /// </summary>
+    /// <param name="magazineCount">Number of full magazines to restore (defaults to 1).</param>
+    public void RestoreMagazine(int magazineCount = 1) {
+        if (HasInfiniteReserves) return;
+        AddReserveAmmo(maxMagazineSize * magazineCount);
+    }
+
+    /// <summary>
+    /// Alias for RestoreMagazine. Restores reserve ammo by magazine size count.
+    /// </summary>
+    public void AddMagazines(int count = 1) => RestoreMagazine(count);
+
+    public void ReplenishMaxReserve()
+    {
+        if (HasInfiniteReserves) return;
+        currentReserveSize = maxReserveSize;
+        OnAmmoChanged?.Invoke(CurrentAmmo);
+    }
+
 
     private void ReloadAmmo() {
         int needed = maxMagazineSize - currentMagazineSize;

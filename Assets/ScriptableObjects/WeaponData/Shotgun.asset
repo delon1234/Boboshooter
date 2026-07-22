@@ -30,6 +30,6 @@ MonoBehaviour:
     damage: 5
     projectileSpeed: 5
     projectileLifetime: 2
-    projectileScale: 0.2
+    projectileScale: 1
     projectileCount: 3
   bulletPattern: {fileID: 11400000, guid: e9c1a3168e5bc024badd6eef8c1e4832, type: 2}

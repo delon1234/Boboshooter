@@ -9,6 +9,7 @@ public class RadialPattern : BulletPattern
     public override void Shoot(Transform shootPoint, WeaponStats weaponStats, ObjectPool<Bullet> pool)
     {
         int count = weaponStats.projectileCount;
+        bool isEnemyBullet = shootPoint.GetComponentInParent<Player>() == null;
 
         if (count <= 0) return;
 
@@ -18,7 +19,7 @@ public class RadialPattern : BulletPattern
             Bullet bullet = pool.Get();
             Vector3 spawnPos = shootPoint.position + shootPoint.right * spatialSettings.radiusOffset;
             bullet.transform.SetPositionAndRotation(spawnPos, shootPoint.rotation);
-            bullet.Initialize(weaponStats, pool);
+            bullet.Initialize(weaponStats, pool, isEnemyBullet);
             return;
         }
 
@@ -36,7 +37,7 @@ public class RadialPattern : BulletPattern
 
             Bullet bullet = pool.Get();
             bullet.transform.SetPositionAndRotation(spawnPosition, targetRotation);
-            bullet.Initialize(weaponStats, pool);
+            bullet.Initialize(weaponStats, pool, isEnemyBullet);
         }
     }
 }

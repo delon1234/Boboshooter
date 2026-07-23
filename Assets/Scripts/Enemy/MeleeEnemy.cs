@@ -4,103 +4,119 @@ using UnityEngine;
 public class MeleeEnemy : BasicEnemy
 {
     [Header("Melee Attack Settings")]
-    [SerializeField] private float attackRange = 1.2f;
+    [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float attackCooldown = 1.5f;
     [SerializeField] private float attackDamage = 5f;
+
+    [Header("Movement Settings")]
+    [SerializeField] private bool useFlankPathing = true;
+    [SerializeField] private float flankOffsetMultiplier = 0.8f;
+    [SerializeField] private bool usePredictiveChasing = true;
+    [SerializeField] private float predictionLeadTime = 0.35f;
+
+    [Header("Attack Movement Settings")]
+    [Tooltip("Speed multiplier while attacking. 0 = complete stop, 0.7 = 70% speed during attack, 1.5 = aggressive forward lunge.")]
+    [SerializeField] private float attackMoveSpeedMultiplier = 0.7f;
+    [Tooltip("If true, drives straight toward player direction while attacking instead of side pathing.")]
+    [SerializeField] private bool lungeTowardsPlayerOnAttack = true;
+
+    [Tooltip("Seconds from attack start until the hit frame. Match this to when the weapon visually strikes.")]
     [SerializeField] private float attackWindup = 0.25f;
+
+    [Tooltip("Total seconds the full attack animation plays. Set to the clip length.")]
     [SerializeField] private float attackDuration = 0.6f;
 
-    [Header("Animation & Visuals")]
-    [SerializeField] private Animator animator;
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private bool defaultFacingLeft = true;
-    [SerializeField] private float deathDelay = 0.5f;
+    [Header("Attack Indicator Settings")]
+    [SerializeField] private GameObject attackIndicatorPrefab;
 
     private float attackCooldownTimer;
     private bool isAttacking;
-    private bool isDead;
-    private Collider2D enemyCollider;
+    private GameObject activeIndicator;
 
-    // Parameter hashes for high-performance Animator updates
-    private static readonly int SpeedHash = Animator.StringToHash("speed");
-    private static readonly int AttackHash = Animator.StringToHash("attack");
-    private static readonly int HurtHash = Animator.StringToHash("hurt");
-    private static readonly int DieHash = Animator.StringToHash("die");
-
-    protected override void Awake()
-    {
-        base.Awake();
-        if (animator == null) animator = GetComponentInChildren<Animator>();
-        if (spriteRenderer == null) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        enemyCollider = GetComponent<Collider2D>();
-    }
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        if (Health != null)
-        {
-            Health.OnTakingDamage += HandleHurt;
-        }
-    }
+    public bool IsAttacking => isAttacking;
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        if (Health != null)
-        {
-            Health.OnTakingDamage -= HandleHurt;
-        }
+        if (activeIndicator != null)
+            Destroy(activeIndicator);
     }
 
-    private void Update()
+    protected override void Update()
     {
         if (isDead) return;
 
         if (attackCooldownTimer > 0f)
-        {
             attackCooldownTimer -= Time.deltaTime;
-        }
 
-        // Face player direction
-        if (playerTransform != null && spriteRenderer != null)
-        {
-            Vector2 dir = GetDirectionToPlayer();
-            if (Mathf.Abs(dir.x) > 0.05f)
-            {
-                bool movingRight = dir.x > 0f;
-                spriteRenderer.flipX = defaultFacingLeft ? movingRight : !movingRight;
-            }
-        }
+        base.Update();
 
-        // Trigger Melee Attack when in range & cooldown ready
+        // Trigger attack when in range and cooldown is ready
         if (!isAttacking && attackCooldownTimer <= 0f && GetDistanceToPlayer() <= attackRange)
-        {
             StartCoroutine(PerformAttack());
-        }
+    }
 
-        // Update Animator speed
-        if (animator != null)
-        {
-            float speedValue = isAttacking ? 0f : rb.linearVelocity.sqrMagnitude;
-            animator.SetFloat(SpeedHash, speedValue);
-        }
+    protected override float GetAnimationSpeed()
+    {
+        return isAttacking ? 0f : base.GetAnimationSpeed();
     }
 
     protected override void WalkLogic()
     {
-        if (isDead || isAttacking)
+        if (isDead || playerTransform == null)
         {
             rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        // Walk to player if outside attack range
+        // Maintain movement while attacking based on attackMoveSpeedMultiplier
+        if (isAttacking)
+        {
+            if (attackMoveSpeedMultiplier <= 0f)
+            {
+                rb.linearVelocity = Vector2.zero;
+                return;
+            }
+
+            Vector2 attackMoveDir;
+            if (lungeTowardsPlayerOnAttack)
+            {
+                attackMoveDir = GetDirectionToPlayer();
+            }
+            else
+            {
+                Vector2 targetPos = usePredictiveChasing 
+                    ? GetPredictedPlayerPosition(predictionLeadTime) 
+                    : (Vector2)playerTransform.position;
+                attackMoveDir = (targetPos - (Vector2)transform.position).normalized;
+            }
+
+            rb.linearVelocity = attackMoveDir * (speed * attackMoveSpeedMultiplier);
+            return;
+        }
+
+        // Normal walk logic when not attacking
         float dist = GetDistanceToPlayer();
         if (dist > attackRange)
         {
-            Vector2 direction = GetDirectionToPlayer();
-            rb.linearVelocity = direction * speed;
+            Vector2 targetPos = usePredictiveChasing 
+                ? GetPredictedPlayerPosition(predictionLeadTime) 
+                : (Vector2)playerTransform.position;
+
+            Vector2 moveDirection;
+            if (useFlankPathing)
+            {
+                float sideSign = (transform.position.x >= targetPos.x) ? 1f : -1f;
+                Vector2 targetOffset = new Vector2(sideSign * attackRange * flankOffsetMultiplier, 0f);
+                Vector2 finalTarget = targetPos + targetOffset;
+                moveDirection = (finalTarget - (Vector2)transform.position).normalized;
+            }
+            else
+            {
+                moveDirection = (targetPos - (Vector2)transform.position).normalized;
+            }
+
+            rb.linearVelocity = moveDirection * speed;
         }
         else
         {
@@ -111,62 +127,52 @@ public class MeleeEnemy : BasicEnemy
     private IEnumerator PerformAttack()
     {
         isAttacking = true;
-        rb.linearVelocity = Vector2.zero;
 
-        if (animator != null)
+        // Instantiate indicator circle overlay centred on enemy during attack windup
+        if (attackIndicatorPrefab != null)
         {
-            animator.ResetTrigger(AttackHash);
-            animator.SetTrigger(AttackHash);
+            activeIndicator = Instantiate(attackIndicatorPrefab, transform.position, Quaternion.identity, transform);
+            activeIndicator.transform.localScale = Vector3.one * (attackRange * 2f);
         }
 
-        // Wait for windup before dealing damage
+        TriggerAttackAnimation();
+
+        // Wait for windup before dealing damage (WalkLogic continuously manages movement in Update)
         yield return new WaitForSeconds(attackWindup);
 
-        // Check if player is still in range to hit
-        if (!isDead && GetDistanceToPlayer() <= attackRange + 0.5f)
+        // Remove indicator once windup ends
+        if (activeIndicator != null)
+        {
+            Destroy(activeIndicator);
+        }
+
+        // 360-degree radial check: deal damage if player is within attackRange
+        if (!isDead && GetDistanceToPlayer() <= attackRange)
         {
             DealDamageToPlayer(attackDamage);
         }
 
-        // Wait out remainder of attack animation duration
-        float remainingTime = attackDuration - attackWindup;
-        if (remainingTime > 0f)
-        {
-            yield return new WaitForSeconds(remainingTime);
-        }
+        // Wait out remainder of the attack animation
+        float remaining = attackDuration - attackWindup;
+        if (remaining > 0f)
+            yield return new WaitForSeconds(remaining);
 
         attackCooldownTimer = attackCooldown;
         isAttacking = false;
     }
 
-    private void HandleHurt(DamageInfo damageInfo)
-    {
-        if (isDead || animator == null) return;
-        animator.ResetTrigger(HurtHash);
-        animator.SetTrigger(HurtHash);
-    }
-
     public override void OnEnemyDeath(BasicEnemy enemy)
     {
-        if (isDead) return;
-        isDead = true;
+        if (activeIndicator != null)
+            Destroy(activeIndicator);
 
-        // Stop movement and disable collisions during death sequence
-        if (rb != null) rb.linearVelocity = Vector2.zero;
-        if (enemyCollider != null) enemyCollider.enabled = false;
-
-        if (animator != null)
-        {
-            animator.SetTrigger(DieHash);
-        }
-
-        StartCoroutine(HandleDeathRoutine());
+        base.OnEnemyDeath(enemy);
     }
 
-    private IEnumerator HandleDeathRoutine()
+    private void OnDrawGizmosSelected()
     {
-        yield return new WaitForSeconds(deathDelay);
-        DropLoot();
-        Destroy(gameObject);
+        // Red sphere = attack trigger / damage radius
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

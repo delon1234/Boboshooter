@@ -19,6 +19,23 @@ public class BossData : ScriptableObject
     [Tooltip("Seconds to wait between the end of one attack and the start of the next chase.")]
     public float attackCooldown = 2f;
 
+    [Header("Phase Transition Invulnerability")]
+    [Tooltip("If true, boss gains invulnerability when transitioning to Phase 2.")]
+    public bool invulnerableOnPhaseTransition = true;
+
+    [Tooltip("Duration of invulnerability in seconds when transitioning to Phase 2.")]
+    public float phaseTransitionInvulnerabilityDuration = 2f;
+
+    [Header("Periodic Invulnerability")]
+    [Tooltip("If true, the boss gains invulnerability periodically on a timer.")]
+    public bool periodicInvulnerabilityEnabled = false;
+
+    [Tooltip("Time in seconds between periodic invulnerability activations.")]
+    public float periodicInvulnerabilityInterval = 10f;
+
+    [Tooltip("Duration of each periodic invulnerability in seconds.")]
+    public float periodicInvulnerabilityDuration = 3f;
+
     [Header("Phase 1 (Full health → phase threshold)")]
     public EnemyAttackBehaviour phase1Attack;
 

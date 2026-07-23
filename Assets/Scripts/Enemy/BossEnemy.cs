@@ -23,6 +23,7 @@ public class BossEnemy : BasicEnemy
     private BossState currentState = BossState.Chase;
 
     private float cooldownTimer;
+    private float periodicInvulnerabilityTimer;
     private bool isPhaseTwo = false;
 
     // ── Unity lifecycle ───────────────────────────────────────────────────────────
@@ -33,9 +34,22 @@ public class BossEnemy : BasicEnemy
         attackController = GetComponent<EnemyAttackController>();
     }
 
-    private void Update()
+    protected override void Start()
     {
+        base.Start();
+        if (data != null)
+        {
+            periodicInvulnerabilityTimer = data.periodicInvulnerabilityInterval;
+        }
+    }
+
+    protected override void Update()
+    {
+        if (isDead) return;
+        base.Update();
+
         CheckPhaseTransition();
+        TickPeriodicInvulnerability();
         TickFSM();
     }
 
@@ -75,9 +89,38 @@ public class BossEnemy : BasicEnemy
         if (healthPercent < data.phase2HealthThreshold)
         {
             isPhaseTwo = true;
+
+            if (data.invulnerableOnPhaseTransition && data.phaseTransitionInvulnerabilityDuration > 0f)
+            {
+                GainInvulnerability(data.phaseTransitionInvulnerabilityDuration);
+            }
+
             // Interrupt the current attack immediately and start phase 2
             attackController.StopAttack();
             EnterAttack();
+        }
+    }
+
+    private void TickPeriodicInvulnerability()
+    {
+        if (data == null || !data.periodicInvulnerabilityEnabled || data.periodicInvulnerabilityInterval <= 0f) return;
+
+        periodicInvulnerabilityTimer -= Time.deltaTime;
+        if (periodicInvulnerabilityTimer <= 0f)
+        {
+            periodicInvulnerabilityTimer = data.periodicInvulnerabilityInterval;
+            GainInvulnerability(data.periodicInvulnerabilityDuration);
+        }
+    }
+
+    /// <summary>
+    /// Grants invulnerability to the boss for the specified duration in seconds.
+    /// </summary>
+    public void GainInvulnerability(float duration)
+    {
+        if (Health != null)
+        {
+            Health.GainInvulnerability(duration);
         }
     }
 

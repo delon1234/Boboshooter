@@ -79,9 +79,9 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -801913765
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: a7334312768a84249b504aa6fee608c3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d9a0840eef9d9ae4d97c3f29ddafea51, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 5784454363283574928}
   - component: {fileID: 4353720960643028114}
   - component: {fileID: 1225586055164298815}
-  - component: {fileID: 2736888925549574827}
+  - component: {fileID: 2898337857046372899}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -284,8 +284,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   movementSpeed: 5
-  dashSpeed: 10
-  dashDuration: 0.5
+  dashSpeed: 15
+  dashDuration: 0.2
   buffer: 0.1
   dashCooldown: 1
 --- !u!114 &3925627923625933034
@@ -347,6 +347,7 @@ MonoBehaviour:
   shootPoint: {fileID: 8118916696568009510}
   weaponTransform: {fileID: 799252376111801323}
   activeWeapon: {fileID: 11400000, guid: c4bba32429a863347b7b04caa11d5c09, type: 2}
+  fallbackWeapon: {fileID: 11400000, guid: c4bba32429a863347b7b04caa11d5c09, type: 2}
   cachedStaticStats:
     fireRate: 0
     magazineSize: 0
@@ -381,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44eb2442163c2514a81fb7891d5e4b0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scripts::PlayerUpgrades
---- !u!114 &2736888925549574827
+--- !u!114 &2898337857046372899
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -390,9 +391,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1765204014813142826}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44eb2442163c2514a81fb7891d5e4b0f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b9a42bed7f53cb46a639d62778cf593, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Scripts::PlayerUpgrades
+  m_EditorClassIdentifier: Scripts::WeaponDropManager
+  weaponPickupPrefab: {fileID: -3853559955089819166, guid: 875ac4bedc9911c4082384efc099987a, type: 3}
+  spawnOffset: {x: 0.5, y: 0, z: 0}
 --- !u!1 &2290543837856853993
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,8 +565,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -801913765
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 513017ea72516404ba971aaac6258120, type: 3}

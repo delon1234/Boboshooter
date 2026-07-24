@@ -15,7 +15,7 @@ public class HealthComponent : MonoBehaviour
     public float CurrentHealth { get; private set; } // Float for max flexibility in damage calculations
 
     // Public setter to allow other components to enable/disable invulnerability
-    [SerializeField] public bool testInvulnerable = true;
+    [SerializeField] public bool testInvulnerable = false;
     [SerializeField] public float invulnerableDuration = 5.0f;
         
     // Invincibility property to allow for temporary invincibility

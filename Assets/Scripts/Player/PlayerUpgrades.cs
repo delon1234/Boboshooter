@@ -54,8 +54,8 @@ public class PlayerUpgrades : MonoBehaviour
     private void HandleWeaponEquipped(WeaponData _)
     {
         // Weapon changed — recompute modifiers on top of the new weapon's base stats.
-        // isWeaponSwap = true so AmmoComponent does a full reset (SyncFromStats).
-        RecalculateStaticStats(isWeaponSwap: true);
+        // isWeaponSwap = false so Shooter controls the exact ammo restoration (SyncFromStats).
+        RecalculateStaticStats(isWeaponSwap: false);
     }
 
     /// <summary>

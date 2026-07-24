@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e1f20d2e7e7d84eb6bdda11f75d51e, type: 3}
+  m_Name: BossEye
+  m_EditorClassIdentifier: Scripts::BossData
+  attackRange: 30
+  movementTolerance: 0.3
+  attackCooldown: 2
+  invulnerableOnPhaseTransition: 1
+  phaseTransitionInvulnerabilityDuration: 2
+  periodicInvulnerabilityEnabled: 1
+  periodicInvulnerabilityInterval: 10
+  periodicInvulnerabilityDuration: 3
+  phase1Attack: {fileID: 11400000, guid: 40c90fd4c253d4540a21aa5810928204, type: 2}
+  phase2HealthThreshold: 0.5
+  phase2Attack: {fileID: 11400000, guid: 0efeeafb408b6d043be8eec39bc293b5, type: 2}

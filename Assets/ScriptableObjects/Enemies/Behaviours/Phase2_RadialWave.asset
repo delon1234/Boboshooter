@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0649b69c59912444b8330ef6ea45dab, type: 3}
+  m_Name: Phase2_RadialWave
+  m_EditorClassIdentifier: Scripts::WaveAttack
+  attackData: {fileID: 11400000, guid: 0d0371f5c7b4c324e8ec6ccc5d042a7b, type: 2}
+  waveCount: 4
+  timeBetweenWaves: 0.6

@@ -131,22 +131,6 @@ PrefabInstance:
       propertyPath: minimapObject
       value: 
       objectReference: {fileID: 929698426}
-    - target: {fileID: 3575216235375334813, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
-      propertyPath: EnemySpawnTable.BasicEnemies.Array.data[0].weight
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 3575216235375334813, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
-      propertyPath: EnemySpawnTable.BasicEnemies.Array.data[1].weight
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3575216235375334813, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
-      propertyPath: EnemySpawnTable.BasicEnemies.Array.data[2].weight
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 3575216235375334813, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
-      propertyPath: EnemySpawnTable.BasicEnemies.Array.data[3].weight
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 4260736431420215310, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
       propertyPath: playerHealth
       value: 

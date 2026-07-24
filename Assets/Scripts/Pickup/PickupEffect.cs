@@ -33,6 +33,15 @@ public static class PickupEffect
                     ammoComp.ReplenishMaxReserve(); // Fully replenishes reserves
                 }
                 break;
+            case PickupType.Weapon:
+                if (definition is WeaponPickupDefinition weaponDef && weaponDef.weaponData != null)
+                {
+                    if (player.TryGetComponent<Shooter>(out var shooter))
+                    {
+                        shooter.EquipWeapon(weaponDef.weaponData);
+                    }
+                }
+                break;
         }
     }
 }

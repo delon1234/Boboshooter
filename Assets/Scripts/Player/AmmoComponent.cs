@@ -51,16 +51,24 @@ public class AmmoComponent : MonoBehaviour
     }
 
     /// <summary>
-    /// Full reset — called on weapon equip only.
-    /// Resets current ammo counts to the new weapon's full capacity.
+    /// Full reset or sync — called on weapon equip.
+    /// Resets or restores current ammo counts based on provided parameters (clamped to max caps).
     /// </summary>
-    public void SyncFromStats(WeaponStats stats) {
+    public void SyncFromStats(WeaponStats stats, int overrideMag = -1, int overrideReserve = -1) {
         CancelReload();
         maxMagazineSize = stats.magazineSize;
         maxReserveSize = stats.ammoReserveCapacity;
         reloadTime = stats.reloadTime;
-        currentMagazineSize = maxMagazineSize;
-        currentReserveSize = maxReserveSize;
+
+        currentMagazineSize = overrideMag >= 0 ? Mathf.Clamp(overrideMag, 0, maxMagazineSize) : maxMagazineSize;
+        if (!HasInfiniteReserves) {
+            currentReserveSize = overrideReserve >= 0 ? Mathf.Clamp(overrideReserve, 0, maxReserveSize) : maxReserveSize;
+        } else {
+            currentReserveSize = maxReserveSize;
+        }
+
+        Debug.Log($"[AmmoComponent] SyncFromStats -> Current Mag: {currentMagazineSize}/{maxMagazineSize}, Reserve: {(HasInfiniteReserves ? "∞" : currentReserveSize.ToString())}/{maxReserveSize}");
+
         OnAmmoChanged?.Invoke(CurrentAmmo);
     }
 
@@ -173,6 +181,7 @@ public class AmmoComponent : MonoBehaviour
             currentReserveSize -= toTransfer;
             print($"Reloaded: {toTransfer}, Needed: {needed}");
         }
+        OnAmmoChanged?.Invoke(CurrentAmmo);
     }
 }
 

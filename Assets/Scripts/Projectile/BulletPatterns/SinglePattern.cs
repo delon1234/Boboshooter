@@ -8,8 +8,8 @@ public class SinglePattern : BulletPattern
     {
         Bullet bullet = pool.Get(); // Retrieves bullet from object pool
         bullet.transform.SetPositionAndRotation(shootPoint.position, shootPoint.rotation);
-        bool isEnemyBullet = shootPoint.GetComponentInParent<Player>() == null;
-        bullet.Initialize(weaponStats, pool, isEnemyBullet);
+        GameObject owner = shootPoint.GetComponentInParent<BasicEnemy>()?.gameObject ?? shootPoint.GetComponentInParent<Player>()?.gameObject ?? shootPoint.root.gameObject;
+        bullet.Initialize(weaponStats, pool, owner);
     }
 }
 

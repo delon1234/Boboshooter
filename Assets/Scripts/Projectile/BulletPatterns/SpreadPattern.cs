@@ -10,14 +10,14 @@ public class SpreadPattern : BulletPattern
     {
         /* Arc approach (Fixed Boundary) for spread*/
         int count = weaponStats.projectileCount;
-        bool isEnemyBullet = shootPoint.GetComponentInParent<Player>() == null;
+        GameObject owner = shootPoint.GetComponentInParent<BasicEnemy>()?.gameObject ?? shootPoint.GetComponentInParent<Player>()?.gameObject ?? shootPoint.root.gameObject;
         
         // Fallback for single bullet to avoid division by zero
         if (count <= 1)
         {
             Bullet bullet = pool.Get();
             bullet.transform.SetPositionAndRotation(shootPoint.position, shootPoint.rotation);
-            bullet.Initialize(weaponStats, pool, isEnemyBullet);
+            bullet.Initialize(weaponStats, pool, owner);
             return;
         }
 
@@ -33,7 +33,7 @@ public class SpreadPattern : BulletPattern
 
             Bullet bullet = pool.Get();
             bullet.transform.SetPositionAndRotation(shootPoint.position, targetRotation);
-            bullet.Initialize(weaponStats, pool, isEnemyBullet);
+            bullet.Initialize(weaponStats, pool, owner);
         }
     }
 }

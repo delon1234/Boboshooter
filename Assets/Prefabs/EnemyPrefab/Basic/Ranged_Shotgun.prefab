@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 117080391559702806}
   - component: {fileID: 767087212850742440}
   m_Layer: 8
-  m_Name: Enemy_Ranged
+  m_Name: Ranged_Shotgun
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c58f3ee68c48654c930ec1a6d3f7ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scripts::HealthComponent
-  <MaxHealth>k__BackingField: 30
+  <MaxHealth>k__BackingField: 50
   testInvulnerable: 0
   invulnerableDuration: 5
 --- !u!114 &117080391559702806
@@ -231,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Scripts::Shooter
   shootPoint: {fileID: 3644347108209974056}
   weaponTransform: {fileID: 2256845840485689811}
-  activeWeapon: {fileID: 11400000, guid: 393a91c0df6199741853f5f6f6f3c095, type: 2}
+  activeWeapon: {fileID: 11400000, guid: f41a599bce774ad4caf5630e7b84eb72, type: 2}
   cachedStaticStats:
     fireRate: 0
     magazineSize: 0

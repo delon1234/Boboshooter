@@ -100,12 +100,14 @@ MonoBehaviour:
   EnemySpawnTable:
     BasicEnemies:
     - Prefab: {fileID: 7850202121345256729, guid: 0ab193cadf0697f488a2d599118ebd18, type: 3}
-      weight: 1
+      weight: 5
     - Prefab: {fileID: 5433600441815644450, guid: 5f595a7ed5a1c194681bae5b76c0b3ae, type: 3}
-      weight: 1
+      weight: 5
     - Prefab: {fileID: 1316268369567121090, guid: 5de697e856d7f12468f1b38b9e775417, type: 3}
-      weight: 1
+      weight: 10
     - Prefab: {fileID: 474725970709593238, guid: bb3e84d3914c3474ea7c8679e86e5b16, type: 3}
+      weight: 3
+    - Prefab: {fileID: 474725970709593238, guid: e08bedb6ad03f6640a880a19b53f3754, type: 3}
       weight: 1
     BossEnemies:
     - Prefab: {fileID: 151581463682937583, guid: db6a9f868c52bd842892954fc6659159, type: 3}

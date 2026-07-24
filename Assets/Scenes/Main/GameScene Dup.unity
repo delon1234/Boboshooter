@@ -127,9 +127,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 799252376111801323, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 799252376111801323, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.06
+      objectReference: {fileID: 0}
     - target: {fileID: 1765204014813142826, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866873954357245047, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: m_Size.x
+      value: 1.1875
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866873954357245047, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: m_Size.y
+      value: 0.46875
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866873954357245047, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b0ca476966dda4b47ac64873736c7b1f, type: 3}
+    - target: {fileID: 1866873954357245047, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3735118862527295342, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
       propertyPath: m_LocalPosition.x
@@ -174,10 +198,10 @@ PrefabInstance:
     - target: {fileID: 5784454363283574928, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
       propertyPath: activeWeapon
       value: 
-      objectReference: {fileID: 11400000, guid: fe1cc00f46935194c9ee44a746c05364, type: 2}
-    - target: {fileID: 6376162265139665616, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
-      propertyPath: <MaxHealth>k__BackingField
-      value: 5
+      objectReference: {fileID: 11400000, guid: 45fcc69a31f0f38469d36650a4fa3220, type: 2}
+    - target: {fileID: 8118916696568009510, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -496,6 +520,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3575216235375334813, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
+      propertyPath: MaxRoomCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575216235375334813, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
+      propertyPath: MinRoomCount
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3575216235375334813, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
       propertyPath: minimapObject
       value: 

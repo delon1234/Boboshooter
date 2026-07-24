@@ -286,9 +286,8 @@ MonoBehaviour:
   flankOffsetMultiplier: 0.8
   usePredictiveChasing: 1
   predictionLeadTime: 0.35
-  useAttackLunge: 1
-  lungeSpeedMultiplier: 1.8
-  lungeDuration: 0.15
+  attackMoveSpeedMultiplier: 0.7
+  lungeTowardsPlayerOnAttack: 1
   attackWindup: 0.25
   attackDuration: 0.5
   attackIndicatorPrefab: {fileID: 718788098941457479, guid: 398d45a971b800c419f2bc5d6f7ec4bd, type: 3}
@@ -341,7 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c58f3ee68c48654c930ec1a6d3f7ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scripts::HealthComponent
-  <MaxHealth>k__BackingField: 50
+  <MaxHealth>k__BackingField: 75
   testInvulnerable: 0
   invulnerableDuration: 5
 --- !u!114 &2799090305876837890

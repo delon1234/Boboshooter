@@ -36,8 +36,8 @@ public class Shooter : MonoBehaviour
     #region Public API
     // PlayerUpgrades reads this to know BaseStats of weapons to apply upgrades
     public WeaponData ActiveWeapon => activeWeapon;
-    // Fired with the OLD weapon just before it is replaced — Pickup uses this to spawn it in the world
-    public event Action<WeaponData> OnWeaponDropped;
+    // Fired with the OLD weapon info just as it is replaced — Pickup uses this to spawn it in the world
+    public event Action<DroppedWeaponInfo> OnWeaponDropped;
     // Fired after the new weapon is fully set — PlayerUpgrades uses this to recalculate static stats
     public event Action<WeaponData> OnWeaponEquipped;
     #endregion
@@ -108,23 +108,39 @@ public class Shooter : MonoBehaviour
     }
 
     /// <summary>
-    /// Swaps the current weapon for a new one. Always a swap — never equip from nothing.
-    /// Fires OnWeaponDropped(old) then OnWeaponEquipped(new).
+    /// Swaps the current weapon for a new one.
+    /// Preserves old weapon ammo state when firing OnWeaponDropped, and restores target Magazine & Reserve ammo.
     /// </summary>
-    public void EquipWeapon(WeaponData weapon) {
+    public void EquipWeapon(WeaponData weapon, int targetMagazine = -1, int targetReserve = -1) {
         if (isBursting && burstCoroutine != null) {
             StopCoroutine(burstCoroutine);
             isBursting = false;
             burstCoroutine = null;
         }
 
-        OnWeaponDropped?.Invoke(activeWeapon);  // old weapon — pickup spawner creates world object
+        // Store old weapon & ammo state before swapping
+        WeaponData oldWeapon = activeWeapon;
+        int oldMag = ammoComponent != null ? ammoComponent.CurrentAmmo.CurrentMagazine : -1;
+        int oldReserve = ammoComponent != null ? ammoComponent.CurrentAmmo.CurrentReserve : -1;
+
         activeWeapon = weapon;
-        UpdateBaseStats(activeWeapon.baseStats); // baseline; PlayerUpgrades overrides via OnWeaponEquipped
+        UpdateBaseStats(activeWeapon.baseStats); // baseline
         ApplyWeaponVisualOffsets();
-        OnWeaponEquipped?.Invoke(activeWeapon);  // PlayerUpgrades recalculates static modifiers
+
+        // Apply target ammo state onto AmmoComponent BEFORE notifying upgrades
+        if (ammoComponent != null) {
+            ammoComponent.SyncFromStats(cachedStaticStats, targetMagazine, targetReserve);
+        }
+
+        OnWeaponEquipped?.Invoke(activeWeapon);  // PlayerUpgrades recalculates static modifiers & updates caps
         SubscribeToInput();
-        ammoComponent?.SyncFromStats(cachedStaticStats);
+
+        Debug.Log($"[Shooter] Swapped weapon to '{weapon.weaponName}'. Restoring Mag: {targetMagazine}, Reserve: {targetReserve} (Old weapon '{oldWeapon?.weaponName}' dropped with Mag: {oldMag}, Reserve: {oldReserve})");
+
+        // Fire drop event with captured old weapon and ammo state
+        if (oldWeapon != null) {
+            OnWeaponDropped?.Invoke(new DroppedWeaponInfo(oldWeapon, oldMag, oldReserve));
+        }
     }
 
     public void UpdateBaseStats(WeaponStats newBaseStats) {

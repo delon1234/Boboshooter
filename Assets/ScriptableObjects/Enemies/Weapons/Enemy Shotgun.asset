@@ -27,9 +27,9 @@ MonoBehaviour:
     magazineSize: 8
     reloadTime: 3
     ammoReserveCapacity: 64
-    damage: 5
+    damage: 20
     projectileSpeed: 5
-    projectileLifetime: 2
+    projectileLifetime: 4
     projectileScale: 1
     projectileCount: 3
   bulletPattern: {fileID: 11400000, guid: e9c1a3168e5bc024badd6eef8c1e4832, type: 2}

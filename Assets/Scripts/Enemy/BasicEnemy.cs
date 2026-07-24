@@ -222,6 +222,9 @@ public abstract class BasicEnemy : MonoBehaviour
         if (selfCollider != null) selfCollider.enabled = false;
         if (animator != null)      animator.SetTrigger(DieHash);
 
+        // Despawn bullets shot by this specific enemy on death
+        Bullet.DespawnBulletsFromOwner(gameObject);
+
         StartCoroutine(HandleDeathRoutine());
     }
 

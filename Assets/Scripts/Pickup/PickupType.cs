@@ -6,5 +6,6 @@ public enum PickupType
     Heal,
     MaxHealth,
     Magazine,
-    AmmoCrate
+    AmmoCrate,
+    Weapon
 }

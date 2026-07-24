@@ -77,6 +77,9 @@ public class Player : MonoBehaviour
         {
             col.enabled = false;
         }
+
+        // 5. Despawn active enemy bullets when player dies
+        Bullet.DespawnAllEnemyBullets();
     }
 
     // Commands to expose

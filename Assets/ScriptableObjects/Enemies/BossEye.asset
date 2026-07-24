@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53e1f20d2e7e7d84eb6bdda11f75d51e, type: 3}
   m_Name: BossEye
   m_EditorClassIdentifier: Scripts::BossData
-  attackRange: 10
+  attackRange: 30
   movementTolerance: 0.3
   attackCooldown: 2
   invulnerableOnPhaseTransition: 1

@@ -28,7 +28,7 @@ MonoBehaviour:
     reloadTime: 2.2
     ammoReserveCapacity: 240
     damage: 14
-    projectileSpeed: 5
+    projectileSpeed: 18
     projectileLifetime: 3
     projectileScale: 1
     projectileCount: 3

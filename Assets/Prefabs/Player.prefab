@@ -284,8 +284,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   movementSpeed: 5
-  dashSpeed: 10
-  dashDuration: 0.5
+  dashSpeed: 15
+  dashDuration: 0.2
   buffer: 0.1
   dashCooldown: 1
 --- !u!114 &3925627923625933034
@@ -347,6 +347,7 @@ MonoBehaviour:
   shootPoint: {fileID: 8118916696568009510}
   weaponTransform: {fileID: 799252376111801323}
   activeWeapon: {fileID: 11400000, guid: c4bba32429a863347b7b04caa11d5c09, type: 2}
+  fallbackWeapon: {fileID: 11400000, guid: c4bba32429a863347b7b04caa11d5c09, type: 2}
   cachedStaticStats:
     fireRate: 0
     magazineSize: 0

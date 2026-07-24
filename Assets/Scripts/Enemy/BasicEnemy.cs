@@ -40,6 +40,7 @@ public abstract class BasicEnemy : MonoBehaviour
     // Pickup Drops. Each Enemy has own LootTable
     [SerializeField] private LootTable lootTable;
     [SerializeField] private PickupBehaviour pickupPrefab;
+    [SerializeField] protected Vector3 lootDropOffset = Vector3.zero;
     private RoomRuntime roomRuntime;
 
     protected virtual void Awake()
@@ -208,7 +209,7 @@ public abstract class BasicEnemy : MonoBehaviour
         {
             return;
         }
-        PickupBehaviour PickupObject = Instantiate(pickupPrefab, transform.position, Quaternion.identity, roomRuntime.transform);
+        PickupBehaviour PickupObject = Instantiate(pickupPrefab, transform.position + lootDropOffset, Quaternion.identity, roomRuntime != null ? roomRuntime.transform : null);
         PickupObject.Initialize(RandomLoot.definition);
     }
 

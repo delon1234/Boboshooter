@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 929698426}
     - target: {fileID: 3575216235375334813, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
       propertyPath: EnemySpawnTable.BasicEnemies.Array.data[0].weight
-      value: 25
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3575216235375334813, guid: 5ad5bbb9ebec12547b358af4b8141357, type: 3}
       propertyPath: EnemySpawnTable.BasicEnemies.Array.data[1].weight
@@ -254,6 +254,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6376162265139665616, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
       propertyPath: <MaxHealth>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861524273887590787, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: dashSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861524273887590787, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: dashCooldown
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861524273887590787, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: dashDuration
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861524273887590787, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+      propertyPath: movementSpeed
       value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []

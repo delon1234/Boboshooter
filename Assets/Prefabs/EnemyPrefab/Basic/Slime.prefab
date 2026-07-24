@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
   collisionDamage: 1
-  speed: 3
+  speed: 2.5
   animator: {fileID: 7252859660481304292}
   spriteRenderer: {fileID: 5888543698307317037}
   defaultFacingLeft: 1
@@ -270,14 +270,12 @@ MonoBehaviour:
   collisionDamageInterval: 0.5
   lootTable:
     LootDropTable:
-    - definition: {fileID: 11400000, guid: e3565cf6ffa98f14583bd57010a57096, type: 2}
-      weight: 40
     - definition: {fileID: 11400000, guid: 7dbcecdd393c5174bb26fdf7e5840747, type: 2}
-      weight: 100
+      weight: 70
+    - definition: {fileID: 11400000, guid: e3565cf6ffa98f14583bd57010a57096, type: 2}
+      weight: 30
     - definition: {fileID: 11400000, guid: e730429ba109e2f4badddf4d420965e3, type: 2}
-      weight: 2
-    - definition: {fileID: 11400000, guid: 90a3fd41eed5d6b45abeb41b2698596c, type: 2}
-      weight: 1
+      weight: 5
   pickupPrefab: {fileID: 1869031800356667107, guid: ed70c1eee69f0894ca12ee2b4dfcd285, type: 3}
   attackRange: 1.5
   attackCooldown: 1.5
@@ -340,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c58f3ee68c48654c930ec1a6d3f7ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scripts::HealthComponent
-  <MaxHealth>k__BackingField: 75
+  <MaxHealth>k__BackingField: 90
   testInvulnerable: 0
   invulnerableDuration: 5
 --- !u!114 &2799090305876837890

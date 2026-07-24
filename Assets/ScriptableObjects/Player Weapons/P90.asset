@@ -23,12 +23,12 @@ MonoBehaviour:
   burstCount: 0
   burstDelay: 0
   baseStats:
-    fireRate: 5
+    fireRate: 15
     magazineSize: 30
     reloadTime: 3
     ammoReserveCapacity: 300
     damage: 5
-    projectileSpeed: 5
+    projectileSpeed: 15
     projectileLifetime: 3
     projectileScale: 1
     projectileCount: 1

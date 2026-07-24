@@ -16,7 +16,7 @@ MonoBehaviour:
   shootSound: {fileID: 0}
   bulletPattern: {fileID: 11400000, guid: 58eddc32f5ba82d49b1a3f9ccd0c1109, type: 2}
   projectileCount: 8
-  projectileSpeed: 7
+  projectileSpeed: 6
   projectileLifetime: 3
   damage: 1
   projectileScale: 1

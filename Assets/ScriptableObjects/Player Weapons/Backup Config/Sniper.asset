@@ -26,10 +26,10 @@ MonoBehaviour:
     fireRate: 0.8
     magazineSize: 5
     reloadTime: 3
-    ammoReserveCapacity: 45
-    damage: 80
-    projectileSpeed: 28
-    projectileLifetime: 5
+    ammoReserveCapacity: 100
+    damage: 75
+    projectileSpeed: 10
+    projectileLifetime: 4
     projectileScale: 1.2
     projectileCount: 1
   bulletPattern: {fileID: 11400000, guid: 4b685eda060be3e40a08db4e5687c1cb, type: 2}

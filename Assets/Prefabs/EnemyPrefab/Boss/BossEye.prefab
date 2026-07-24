@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c58f3ee68c48654c930ec1a6d3f7ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scripts::HealthComponent
-  <MaxHealth>k__BackingField: 500
+  <MaxHealth>k__BackingField: 100
   testInvulnerable: 0
   invulnerableDuration: 5
 --- !u!114 &3296365744903923575
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossEnemy
   collisionDamage: 1
-  speed: 3
+  speed: 1
   animator: {fileID: 0}
   spriteRenderer: {fileID: 6603973566475947170}
   defaultFacingLeft: 0
@@ -172,9 +172,8 @@ MonoBehaviour:
     LootDropTable:
     - definition: {fileID: 11400000, guid: 35a876e0f6a56ce4692aed5b6464d67a, type: 2}
       weight: 100
-    - definition: {fileID: 11400000, guid: 90a3fd41eed5d6b45abeb41b2698596c, type: 2}
-      weight: 100
   pickupPrefab: {fileID: 1869031800356667107, guid: ed70c1eee69f0894ca12ee2b4dfcd285, type: 3}
+  lootDropOffset: {x: 0, y: 0, z: 0}
   data: {fileID: 11400000, guid: d0a988c7e9ea6c741be9d5af2128e38d, type: 2}
 --- !u!114 &3423369016851156323
 MonoBehaviour:

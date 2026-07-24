@@ -21,6 +21,7 @@ public class RoomRuntime : MonoBehaviour , IRoomRuntime
     [SerializeField] private Tilemap staircaseTilemap;
     [SerializeField] private Tile staircaseTile;
     [SerializeField] private GameObject staircaseTriggerPrefab;
+    [SerializeField] private Vector3 staircaseSpawnOffset = new Vector3(0f, 1.5f, 0f);
 
     // Need this for Staircase logic
     private GameFlowManager gameFlowManager;
@@ -104,11 +105,13 @@ public class RoomRuntime : MonoBehaviour , IRoomRuntime
     // Tilemaps uses Vector3 and Vector3Int
     public void SpawnStaircase(Vector3 worldPosition)
     {
-        Vector3Int cell = staircaseTilemap.WorldToCell(worldPosition);
+        if (staircaseTilemap == null || staircaseTriggerPrefab == null) return;
+
+        Vector3 targetPosition = worldPosition + staircaseSpawnOffset;
+        Vector3Int cell = staircaseTilemap.WorldToCell(targetPosition);
         staircaseTilemap.SetTile(cell, staircaseTile);
 
         GameObject staircase = Instantiate(staircaseTriggerPrefab, staircaseTilemap.GetCellCenterWorld(cell), Quaternion.identity, transform);
         staircase.GetComponent<StaircaseTrigger>().Initialize(gameFlowManager);
-
     }
 }

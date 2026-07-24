@@ -14,6 +14,8 @@ public class Shooter : MonoBehaviour
     [SerializeField] private Transform shootPoint;
     [SerializeField] private Transform weaponTransform;
     [SerializeField] private WeaponData activeWeapon;
+    [Tooltip("Weapon to equip when current weapon runs completely out of ammo.")]
+    [SerializeField] private WeaponData fallbackWeapon;
     #endregion
 
     #region References
@@ -165,6 +167,14 @@ public class Shooter : MonoBehaviour
         if (ammoComponent != null) {
             if (ammoComponent.IsReloading) return; // Do nothing when reloading
             if (ammoComponent.IsMagazineEmpty) {
+                // Automatically swap to fallback weapon if out of reserves
+                if (!ammoComponent.HasInfiniteReserves && ammoComponent.CurrentAmmo.CurrentReserve <= 0) {
+                    if (fallbackWeapon != null && activeWeapon != fallbackWeapon) {
+                        EquipWeapon(fallbackWeapon);
+                    }
+                    return;
+                }
+                
                 ammoComponent.TriggerReload(); // Reload if out of bullets
                 return;
             }
@@ -213,8 +223,15 @@ public class Shooter : MonoBehaviour
             if (i < shotsRemaining - 1)
                 yield return new WaitForSeconds(activeWeapon.burstDelay);
         }
-        if (ammoComponent != null && ammoComponent.IsMagazineEmpty)
-            ammoComponent.TriggerReload();
+        if (ammoComponent != null && ammoComponent.IsMagazineEmpty) {
+            if (!ammoComponent.HasInfiniteReserves && ammoComponent.CurrentAmmo.CurrentReserve <= 0) {
+                if (fallbackWeapon != null && activeWeapon != fallbackWeapon) {
+                    EquipWeapon(fallbackWeapon);
+                }
+            } else {
+                ammoComponent.TriggerReload();
+            }
+        }
         isBursting = false;
         burstCoroutine = null;
     }

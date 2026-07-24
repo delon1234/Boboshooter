@@ -23,13 +23,13 @@ MonoBehaviour:
   burstCount: 0
   burstDelay: 0
   baseStats:
-    fireRate: 1
+    fireRate: 1.2
     magazineSize: 8
-    reloadTime: 3
-    ammoReserveCapacity: 64
-    damage: 20
-    projectileSpeed: 5
+    reloadTime: 2.5
+    ammoReserveCapacity: 80
+    damage: 8
+    projectileSpeed: 13
     projectileLifetime: 2
     projectileScale: 1
-    projectileCount: 3
+    projectileCount: 6
   bulletPattern: {fileID: 11400000, guid: e9c1a3168e5bc024badd6eef8c1e4832, type: 2}

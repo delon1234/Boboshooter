@@ -41,7 +41,12 @@ public class WeaponDropManager : MonoBehaviour
         }
 
         Vector3 dropPosition = playerShooter.transform.position + spawnOffset;
-        WeaponPickupBehaviour droppedPickup = Instantiate(weaponPickupPrefab, dropPosition, Quaternion.identity);
+        
+        // Find the currently active room to parent the dropped weapon
+        RoomRuntime activeRoom = FindFirstObjectByType<RoomRuntime>();
+        Transform parentTransform = activeRoom != null ? activeRoom.transform : null;
+
+        WeaponPickupBehaviour droppedPickup = Instantiate(weaponPickupPrefab, dropPosition, Quaternion.identity, parentTransform);
         droppedPickup.Initialize(droppedInfo.Weapon, droppedInfo.CurrentMagazine, droppedInfo.CurrentReserve);
     }
 }

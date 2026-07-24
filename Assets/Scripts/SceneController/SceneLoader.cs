@@ -16,6 +16,11 @@ public static class SceneLoader
         SceneManager.LoadScene("GameScene");
     }
 
+    public static void LoadShop()
+    {
+        SceneManager.LoadScene("PermanentShop");
+    }
+
     public static void LoadRunOver()
     {
         SceneManager.LoadScene("RunOver");

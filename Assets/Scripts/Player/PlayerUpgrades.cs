@@ -34,6 +34,11 @@ public class PlayerUpgrades : MonoBehaviour
 
     private void Start()
     {
+        // Always add PermenantStatModifier from the Permanent Shop Source
+        // the class will handle the values to be added as a static modifier
+        // to be further handled down the stats pipeline
+        AddStaticModifier(new PermanentStatModifier());
+
         // Subscribe in Start (not Awake) — Player.Instance and Shooter are guaranteed
         // to have finished their own Awake() by this point.
         if (shooter != null)

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7711243082801731081}
   - component: {fileID: 4260736431420215310}
   - component: {fileID: 3575216235375334813}
+  - component: {fileID: 8641622386518981886}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -113,3 +114,16 @@ MonoBehaviour:
     BossEnemies:
     - Prefab: {fileID: 151581463682937583, guid: db6a9f868c52bd842892954fc6659159, type: 3}
       weight: 1
+--- !u!114 &8641622386518981886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8418091332409987813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d48b0a887a97244da33e2b83532912d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Scripts::MetaDataLoader
+  database: {fileID: 11400000, guid: 068427459dfe8b448a69587643e963bd, type: 2}

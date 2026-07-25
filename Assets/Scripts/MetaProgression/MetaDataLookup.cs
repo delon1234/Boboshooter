@@ -16,7 +16,6 @@ public static class MetaDataLookup
         }
     }
 
-
     public static float GetEffectValueByType(PermanentUpgradeType type)
     {
         // Query for Definition Information

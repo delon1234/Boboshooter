@@ -6,13 +6,13 @@ public class PermanentShopUI : MonoBehaviour
 {
     [SerializeField] private Transform contentParent;
     [SerializeField] private PermanentUpgradeEntryUI entryPrefab;
-    [SerializeField] private PermanentUpgradeDefinition[] definitions; // Helps to Order the definitions in the Shop
+    [SerializeField] private PermanentUpgradeDatabase database; // Helps to Order the definitions in the Shop
     [SerializeField] private TMP_Text metaCurrencyText;
 
     private void Start()
     {
         PopulateShop();
-        MetaDataLookup.RegisterDefinitions(definitions);
+        MetaDataLookup.RegisterDefinitions(database.Definitions);
     }
 
     private void Awake()
@@ -29,7 +29,7 @@ public class PermanentShopUI : MonoBehaviour
     // Each entry will have its own PermanentShopEntryUI, and be further edited within each entry
     private void PopulateShop()
     {
-        foreach (PermanentUpgradeDefinition definition in definitions)
+        foreach (PermanentUpgradeDefinition definition in database.Definitions)
         {
             PermanentUpgradeEntryUI entry = Instantiate(entryPrefab, contentParent);
             entry.name = definition.DisplayName;

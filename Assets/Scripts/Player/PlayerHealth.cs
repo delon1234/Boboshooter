@@ -40,6 +40,18 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IHealth, IInvulnerable
         remove => healthComponent.OnDeath -= value;
     }
 
+    // Applies Permanent Upgrades related to Health
+    private void Start()
+    {
+        ApplyPermanentUpgrades();
+    }
+
+    private void ApplyPermanentUpgrades()
+    {
+        float bonusHealth = MetaDataLookup.GetEffectValueByType(PermanentUpgradeType.MaxHealth);
+        UpgradeMaxHealth(bonusHealth);
+    }
+
     public void TakeDamage(DamageInfo damageInfo)
     {
         // Player-specific logic for damage dealt (E.g. damage reduction/i-frame for dash)

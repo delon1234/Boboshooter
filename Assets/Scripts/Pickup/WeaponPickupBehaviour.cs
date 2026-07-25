@@ -3,10 +3,10 @@ using UnityEngine;
 // Specialized pickup for weapons placed in scenes or dropped in the world
 public class WeaponPickupBehaviour : BasePickupBehaviour
 {
-    [SerializeField] private WeaponData weaponData;
-    [SerializeField] private int currentMagazine = -1;
-    [SerializeField] private int currentReserve = -1;
-    [SerializeField] private float pickupCooldown = 0.8f;
+    private WeaponData weaponData;
+    private int currentMagazine = -1;
+    private int currentReserve = -1;
+    private float pickupCooldown = 0.8f;
 
     private float spawnTime;
 

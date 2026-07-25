@@ -19,7 +19,8 @@ public class GameFlowManager : MonoBehaviour
 
     public void AdvanceFloor()
     {
-        if (RunData.CurrentFloor > RunData.FinalFloor)
+        // If CurrentFloor is already at Final and attempts to Advance again, it is Victory
+        if (RunData.CurrentFloor >= RunData.FinalFloor)
         {
             EndRun(RunResult.Victory);
         }

@@ -28,6 +28,11 @@ public class CameraController : MonoBehaviour
         //Vector3 desiredPosition = new Vector3(player.position.x, player.position.y, fixedZ);
         //cam.position = Vector3.Lerp(cam.position, desiredPosition, speed * Time.deltaTime);
 
+        // Failsafe for Camera, needed for Integration Test to not fail during Teardown
+        if(playerTransform == null)
+        {
+            return;
+        }
         // Adjust the camera's position to be between the player's position and the mouse position to see more enemies
 
         // 1. Using Unity's new Input System to read the mouse position and convert it to world coordinates

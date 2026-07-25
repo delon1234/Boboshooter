@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] public float movementSpeed = 5f;
+    public float persistentMovementSpeed;
 
     [Header("Dash Settings")]
     [SerializeField] private float dashSpeed = 10f;
@@ -27,6 +28,14 @@ public class PlayerController : MonoBehaviour
         _input = GetComponent<PlayerInputHandler>();
         _rb = GetComponent<Rigidbody2D>();
         _health = GetComponent<PlayerHealth>();
+
+        ApplyPermanentMovementSpeed();
+    }
+
+    private void ApplyPermanentMovementSpeed()
+    {
+        float PermanentBonus = MetaDataLookup.GetEffectValueByType(PermanentUpgradeType.MoveSpeed);
+        persistentMovementSpeed = movementSpeed + PermanentBonus;
     }
 
     private void FixedUpdate()
@@ -34,7 +43,7 @@ public class PlayerController : MonoBehaviour
         if (_isDashing) { return; } // Disable movement input from affecting player during dash
         // Normalize the input vector to ensure consistent movement speed in all directions
         // Solves the issue of faster diagonal movement when both horizontal and vertical inputs are active
-        _rb.linearVelocity = Vector2.ClampMagnitude(_input.MoveInput, 1f) * movementSpeed;
+        _rb.linearVelocity = Vector2.ClampMagnitude(_input.MoveInput, 1f) * persistentMovementSpeed;
     }
 
     private void OnEnable()

@@ -17,9 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main/RunOver.unity
     guid: 5acb1390d5a7bac43a6468c0a2c5e09f
-  - enabled: 0
-    path: Assets/Scenes/Development Test/Prototype.unity
-    guid: 7739ef18a170cac4188b4ac83839d396
+  - enabled: 1
+    path: Assets/Scenes/Integration Tests/PermanentUpgradeStatsTest.unity
+    guid: cb48fd6d7a48c654cb56815dde6e42e5
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

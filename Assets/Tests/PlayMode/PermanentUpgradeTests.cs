@@ -21,6 +21,9 @@ public class PermanentUpgradeTests
     [SetUp]
     public void SetUp()
     {
+        MetaData.Clear();
+        MetaDataLookup.Clear();
+        
         // Create fake ScriptableObject and "Initialize" it with Logic Values, more targetted towards EffectValues
         testDefinition = ScriptableObject.CreateInstance<PermanentUpgradeDefinition>();
         testDefinition.Type = testType;
@@ -38,11 +41,13 @@ public class PermanentUpgradeTests
             LevelThreeEffect
         };
 
+        // Handles initialising MetaDataLookup, was previously handled by MetaDataLoader.cs during runtime
+        PermanentUpgradeRegistry registry = ScriptableObject.CreateInstance<PermanentUpgradeRegistry>();
+        registry.SetDefinitions(new[] {testDefinition});
+        MetaDataLookup.RegisterRegistry(registry);
+
         // Initializes a specific Save value
         MetaData.LoadFromSave(new SaveData(InitialCurrency, new Dictionary<PermanentUpgradeType, int>()));
-
-        // For effect values, need to register definitions first
-        MetaDataLookup.RegisterDefinitions(new PermanentUpgradeDefinition[]{testDefinition});
     }
 
     [TearDown]

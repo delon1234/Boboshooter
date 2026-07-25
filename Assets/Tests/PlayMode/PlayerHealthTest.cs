@@ -10,9 +10,12 @@ public class PlayerHealthTests
     [SetUp]
     public void SetUp()
     {
+        MetaData.Clear();
+        MetaDataLookup.Clear();
+
         testGo = new GameObject("PlayerObject");
-        playerHealth = testGo.AddComponent<PlayerHealth>();
         healthComp = testGo.AddComponent<HealthComponent>();
+        playerHealth = testGo.AddComponent<PlayerHealth>();        
 
         // Inject healthComponent using C# reflection since it is a private serialized field
         var field = typeof(PlayerHealth).GetField("healthComponent", 
@@ -34,12 +37,13 @@ public class PlayerHealthTests
     public void Heal_RestoresCurrentHealth()
     {
         // 1. Take damage to lower health
-        playerHealth.TakeDamage(new DamageInfo(3f, null, Vector2.zero));
+        playerHealth.TakeDamage(new DamageInfo(1f, null, Vector2.zero));
         float healthAfterDamage = playerHealth.CurrentHealth;
+        Assert.AreEqual(playerHealth.MaxHealth - 1f, playerHealth.CurrentHealth);
 
         // 2. Heal the player
-        playerHealth.Heal(2f);
-        Assert.AreEqual(healthAfterDamage + 2f, playerHealth.CurrentHealth);
+        playerHealth.Heal(1f);
+        Assert.AreEqual(healthAfterDamage + 1f, playerHealth.CurrentHealth);
     }
 
     [Test]

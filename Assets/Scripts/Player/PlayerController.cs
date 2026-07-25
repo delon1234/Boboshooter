@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] public float movementSpeed = 5f;
     public float persistentMovementSpeed;
 
     [Header("Dash Settings")]

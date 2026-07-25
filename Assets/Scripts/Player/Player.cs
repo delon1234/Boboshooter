@@ -49,6 +49,12 @@ public class Player : MonoBehaviour
 
     private void OnDestroy()
     {
+        // if attempt to destroy this Singleton, remove reference as well
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+
         if (Health != null)
         {
             Health.OnDeath -= HandleDeath;
@@ -99,5 +105,4 @@ public class Player : MonoBehaviour
     {
         Health.UpgradeMaxHealth(amount);
     }
-
 }

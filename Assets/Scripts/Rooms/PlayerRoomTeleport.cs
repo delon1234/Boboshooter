@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerRoomTeleport
+public class PlayerRoomTeleport : MonoBehaviour
 {
     [SerializeField] private GameObject player;
 

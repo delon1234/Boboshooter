@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float movementSpeed = 5f;
-    private float persistentMovementSpeed;
+    public float persistentMovementSpeed;
 
     [Header("Dash Settings")]
     [SerializeField] private float dashSpeed = 10f;
@@ -29,13 +29,13 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _health = GetComponent<PlayerHealth>();
 
-        persistentMovementSpeed = GetModifiedMovementSpeed();
+        ApplyPermanentMovementSpeed();
     }
 
-    private float GetModifiedMovementSpeed()
+    private void ApplyPermanentMovementSpeed()
     {
         float PermanentBonus = MetaDataLookup.GetEffectValueByType(PermanentUpgradeType.MoveSpeed);
-        return movementSpeed + PermanentBonus;
+        persistentMovementSpeed = movementSpeed + PermanentBonus;
     }
 
     private void FixedUpdate()

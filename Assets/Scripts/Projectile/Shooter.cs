@@ -26,6 +26,8 @@ public class Shooter : MonoBehaviour
 
     [field: SerializeField, HideInInspector] 
     private WeaponStats cachedStaticStats; // View changes by upgrades
+    public WeaponStats CurrentStats => cachedStaticStats; // Exposed for System Test
+    
     private readonly List<IDynamicModifier> dynamicModifiers = new List<IDynamicModifier>();
 
     #region State variables

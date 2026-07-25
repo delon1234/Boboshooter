@@ -5,10 +5,10 @@ using UnityEngine;
 // In the future, ideally a PlayerData class should be made and ensured that code workflow is clean
 public class MetaDataLoader : MonoBehaviour
 {
-    [SerializeField] private PermanentUpgradeDatabase database;
+    [SerializeField] private PermanentUpgradeRegistry registry;
 
     private void Awake()
     {
-        MetaDataLookup.RegisterDefinitions(database.Definitions);
+        MetaDataLookup.RegisterRegistry(registry);
     }
 }

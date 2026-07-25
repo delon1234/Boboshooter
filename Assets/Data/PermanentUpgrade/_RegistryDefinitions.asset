@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9b3834f45921104bbb0aa1141f15a9d, type: 3}
-  m_Name: _DatabaseDefinitions
+  m_Name: _RegistryDefinitions
   m_EditorClassIdentifier: Scripts::PermanentUpgradeDatabase
   Definitions:
   - {fileID: 11400000, guid: b8deaacd7ecd57e44bc99af0701cb4b8, type: 2}

@@ -7,6 +7,9 @@ using UnityEngine.InputSystem;
 // Orchestrator of all Floor related Managers
 public class FloorManager : MonoBehaviour
 {
+    // Serialized Player object
+    [SerializeField] private GameObject player;
+
     // Serialized map settings and room icons.
     [Header("Minimap Parent")]
     [SerializeField] private Transform minimapObject;
@@ -66,10 +69,13 @@ public class FloorManager : MonoBehaviour
 
         // Contains current state of map mutated by Generation and used by Renderer
         state = new MapGenerationState();
+
+        // create and save reference to various instanced managers
         generator = new MapGenerator(config, state);
         minimap = new MinimapRenderer(minimapObject, config, state);
         RoomSpawner = new RoomSpawner(state, RoomSpawnTable);
         RoomManager = new RoomManager(state, RoomSpawner);
+        PlayerRoomTeleport = new PlayerRoomTeleport(player);
         EnemySpawner = new EnemySpawner(EnemySpawnTable);
     }
 
@@ -77,7 +83,7 @@ public class FloorManager : MonoBehaviour
     {
         // Help other MonoBehaviour scripts subscribes to RoomChange event
         RoomManager.OnRoomChanged += minimap.OnRoomChanged;
-        RoomManager.OnRoomChanged += PlayerRoomTeleport.Instance.OnRoomChanged;
+        RoomManager.OnRoomChanged += PlayerRoomTeleport.OnRoomChanged;
         RoomManager.OnRoomChanged += EnemySpawner.OnRoomChanged;
 
         GenerateFloor();

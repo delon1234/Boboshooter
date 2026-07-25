@@ -59,9 +59,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231ac7fef25a6f943b4c5e0aaa4a9ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GenerateLevel
+  player: {fileID: 0}
   minimapObject: {fileID: 0}
-  Height: 500
-  Width: 500
+  Height: 400
+  Width: 400
   Scale: 1
   IconScale: 0.05
   Padding: 0.005

@@ -19,6 +19,7 @@ public static class RunData
 
     // Events
     public static event Action<OnCoinsChangedArgs> OnCoinsChanged;
+    public static event Action<OnFloorChangedArgs> OnFloorChanged;
 
     public static void StartNewRun()
     {
@@ -26,11 +27,13 @@ public static class RunData
         Coins = 0;
         EnemiesKilled = 0;
         OnCoinsChanged?.Invoke(new OnCoinsChangedArgs(0, 0));
+        OnFloorChanged?.Invoke(new OnFloorChangedArgs(CurrentFloor, FinalFloor));
     }
 
     public static void AdvanceFloor()
     {
         CurrentFloor++;
+        OnFloorChanged?.Invoke(new OnFloorChangedArgs(CurrentFloor, FinalFloor));
     }
 
     public static void AddCoins(int amt)

@@ -1,16 +1,13 @@
 using System;
 using UnityEngine;
 
-public class PlayerRoomTeleport : MonoBehaviour
+public class PlayerRoomTeleport
 {
     [SerializeField] private GameObject player;
-    [SerializeField] private RoomSpawner spawner;
-    public static PlayerRoomTeleport Instance;
 
-    // Need static Instance as I need to Serialize fields 
-    private void Awake()
+    public PlayerRoomTeleport(GameObject player)
     {
-        Instance = this;
+        this.player = player;
     }
 
     public void TeleportToRoom(Room targetRoom, Vector2 fromDirection, GameObject GameRoom)

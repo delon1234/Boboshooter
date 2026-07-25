@@ -104,4 +104,11 @@ public static class MetaData
         OnPermanentUpgradesChanged?.Invoke(definition);
         return true;
     }
+
+    // SOLELY FOR TEST CASES, dont want MetaData progression to affect test cases
+    public static void Clear()
+    {
+        MetaCoins = 0;
+        UpgradeLevels.Clear();
+    }
 }

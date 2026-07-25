@@ -12,6 +12,11 @@ public static class MetaDataLookup
 
     public static float GetEffectValueByType(PermanentUpgradeType type)
     {
+        if (registry == null)
+        {
+            return 0;
+        }
+
         // Query for Definition Information
         PermanentUpgradeDefinition definition = registry.GetDefinition(type);
         if (!definition)
@@ -21,5 +26,11 @@ public static class MetaDataLookup
         // Query for Level Information
         int level = MetaData.GetUpgradeLevel(definition);
         return definition.GetCurrentEffectValue(level);
+    }
+
+    // SOLELY FOR TEST CASES, dont want MetaData progression to affect test cases
+    public static void Clear()
+    {
+        registry = null;
     }
 }

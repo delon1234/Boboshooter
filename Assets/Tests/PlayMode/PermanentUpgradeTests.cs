@@ -21,6 +21,9 @@ public class PermanentUpgradeTests
     [SetUp]
     public void SetUp()
     {
+        MetaData.Clear();
+        MetaDataLookup.Clear();
+        
         // Create fake ScriptableObject and "Initialize" it with Logic Values, more targetted towards EffectValues
         testDefinition = ScriptableObject.CreateInstance<PermanentUpgradeDefinition>();
         testDefinition.Type = testType;

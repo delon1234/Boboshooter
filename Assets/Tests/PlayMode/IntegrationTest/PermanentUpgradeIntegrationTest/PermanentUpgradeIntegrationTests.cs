@@ -84,7 +84,9 @@ public class PermanentUpgradeIntegrationTests
     public void PermanentUpgrade_Damage_AffectsWeaponStats()
     {
         PermanentUpgradeDefinition DamageDefinition = registry.GetDefinition(PermanentUpgradeType.Damage);
-        float damageMultiplier = DamageDefinition.LevelEffectValues[0];
-        Assert.AreEqual(damageMultiplier * starterPistol.baseStats.damage, shooter.CurrentStats.damage);
+        Assert.AreEqual(1, MetaData.GetUpgradeLevel(DamageDefinition)); // ensures it is really at level 1
+
+        float damageMultiplier = 1f + DamageDefinition.GetCurrentEffectValue(1);
+        Assert.AreEqual(damageMultiplier * starterPistol.baseStats.damage, shooter.CurrentStats.damage, 0.001f);
     }
 }

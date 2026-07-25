@@ -43,6 +43,11 @@ public class PermanentUpgradeRegistry : ScriptableObject
 
     private void OnEnable()
     {
+        // this happens inside Test Cases, where Registry is created in memory without definitions
+        if (Definitions == null || Definitions.Length == 0)
+        {
+            return;
+        }
         BuildLookup();
     }
 }

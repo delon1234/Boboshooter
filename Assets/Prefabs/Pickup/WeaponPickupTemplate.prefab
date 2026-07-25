@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2274434731425236511}
   - component: {fileID: -3853559955089819166}
   m_Layer: 11
-  m_Name: WeaponPickup
+  m_Name: WeaponPickupTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

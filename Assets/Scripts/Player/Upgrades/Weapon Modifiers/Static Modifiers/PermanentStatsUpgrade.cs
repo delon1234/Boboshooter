@@ -9,6 +9,8 @@ public class PermanentStatModifier : IStaticModifier
     {
         stats.damage *= 1f + MetaDataLookup.GetEffectValueByType(PermanentUpgradeType.Damage) / 100;
         stats.fireRate *= 1f + MetaDataLookup.GetEffectValueByType(PermanentUpgradeType.FireRate) / 100;
+        Debug.Log(MetaDataLookup.GetEffectValueByType(PermanentUpgradeType.Damage) / 100);
+        Debug.Log(MetaDataLookup.GetEffectValueByType(PermanentUpgradeType.FireRate) / 100);
         return stats;
     }
 }

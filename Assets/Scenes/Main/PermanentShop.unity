@@ -1075,7 +1075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Scripts::PermanentShopUI
   contentParent: {fileID: 1365429427}
   entryPrefab: {fileID: 4420260389749622791, guid: d2590fc4458c9944684fe8c0658dea40, type: 3}
-  database: {fileID: 11400000, guid: 068427459dfe8b448a69587643e963bd, type: 2}
+  registry: {fileID: 11400000, guid: 068427459dfe8b448a69587643e963bd, type: 2}
   metaCurrencyText: {fileID: 488150511}
 --- !u!1 &1365429426
 GameObject:

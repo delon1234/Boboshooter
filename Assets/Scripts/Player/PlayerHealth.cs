@@ -57,10 +57,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IHealth, IInvulnerable
         // Player-specific logic for damage dealt (E.g. damage reduction/i-frame for dash)
         if (healthComponent.IsInvulnerable) return; // If dashing/just take damage, return
 
-        // DamageInfo playerDamageInfo = new DamageInfo(1f, damageInfo.Attacker, damageInfo.HitDirection);
-        // healthComponent.ApplyDamage(playerDamageInfo);
+        // Forces 1 damage
+        DamageInfo playerDamageInfo = new DamageInfo(1f, damageInfo.Attacker, damageInfo.HitDirection);
+        healthComponent.ApplyDamage(playerDamageInfo);
 
-        healthComponent.ApplyDamage(damageInfo);
+        // healthComponent.ApplyDamage(damageInfo);
         healthComponent.GainInvulnerability(onHitInvulnDuration);
     }
 

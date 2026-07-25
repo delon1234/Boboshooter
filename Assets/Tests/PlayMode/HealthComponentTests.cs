@@ -9,6 +9,9 @@ public class HealthComponentTests
     [SetUp]
     public void SetUp()
     {
+        MetaData.Clear();
+        MetaDataLookup.Clear();
+        
         testGo = new GameObject("TestObject");
         healthComp = testGo.AddComponent<HealthComponent>();
         // Disable the auto-invulnerability feature from Start() during tests
@@ -31,13 +34,15 @@ public class HealthComponentTests
     public void RestoreHealth_IncreasesCurrentHealth_UpToMaxHealth()
     {
         // 1. Apply some damage to lower the health below max
-        var damageInfo = new DamageInfo(3f, null, Vector2.zero);
+        var damageInfo = new DamageInfo(1f, null, Vector2.zero);
         healthComp.ApplyDamage(damageInfo);
+        Assert.AreEqual(healthComp.MaxHealth - 1f, healthComp.CurrentHealth);
+
         float healthAfterDamage = healthComp.CurrentHealth;
 
         // 2. Restore some health
-        healthComp.RestoreHealth(2f);
-        Assert.AreEqual(healthAfterDamage + 2f, healthComp.CurrentHealth);
+        healthComp.RestoreHealth(1f);
+        Assert.AreEqual(healthAfterDamage + 1f, healthComp.CurrentHealth);
 
         // 3. Restore more than the max health, it should clamp to MaxHealth
         healthComp.RestoreHealth(10f);

@@ -33,6 +33,7 @@ public class GameFlowManager : MonoBehaviour
 
     private void HandlePlayerDeath()
     {
+        Debug.Log("Handling Player Death");
         EndRun(RunResult.Defeat);
     }
 

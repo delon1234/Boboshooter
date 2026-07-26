@@ -201,6 +201,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+--- !u!114 &504820953 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3925627923625933034, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+  m_PrefabInstance: {fileID: 504820952}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222395207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0052e50ca1d3f944b2b3a9d73de32df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
 --- !u!1001 &672776406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -572,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7673fd338f9544f972a55fcc1fc4c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFlowManager
-  playerHealth: {fileID: 3925627923625933034, guid: 2b960e1f5d1d9bc43ab36f5cea210794, type: 3}
+  playerHealth: {fileID: 504820953}
   floorManager: {fileID: 3575216234206527477}
 --- !u!1001 &6593748058039322520
 PrefabInstance:

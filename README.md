@@ -33,3 +33,14 @@ Boboshooter is a fast-paced 2D roguelike dungeon crawler bullet hell game, inspi
   * **Mac Users:** The game is primarily built for Windows. While a Mac build is provided, it is largely untested and performance is not guaranteed.
   * **Getting Started:** Download the respective ZIP file for your OS, unzip, and run the executable.
 
+### Credits for Game Assets
+ * Enemy Sprites, Player Bullet and Enemy Bullet: [Learn To Create A Roguelike Game In Unity](https://www.udemy.com/course/unityroguelike/)
+ * Player Sprite: [Pixel Art Sprite Mixer by KingBell🗡️](https://kingbell.itch.io/pixel-sprite-mixer)
+ * Slime Sprite: [Animated Pixel Slime by rvros](https://rvros.itch.io/pixel-art-animated-slime)
+ * Fantasy Knight - [Free Pixelart Animated Character by aamatniekss](https://aamatniekss.itch.io/fantasy-knight-free-pixelart-animated-character)
+ * Map: [Dungeon Tileset II Extended by Niji](https://nijikokun.itch.io/dungeontileset-ii-extended)
+ * Crosshair: [Free Animated Crosshair Cursor Pack by CyanGlaz](https://cyanglaz.itch.io/animated-crosshair-cursor-pack)
+ * [Icon Set for Permanent Upgrade Shop (Creator declared that AI is used)](https://trulymalicious.itch.io/status-icon-set-1-free)
+ * MetaCoin: [Coin](https://www.flaticon.com/free-icon/badge_18339104?term=game+coin&page=1&position=22&origin=tag&related_id=18339104)
+
+
